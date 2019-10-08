@@ -1,10 +1,4 @@
- grammar slategrammar;
-
-/*
- * Parser Rules
- */
-
- printcomm           : PRINTOUT TEXT;
+grammar Slate;
 
 /*
  * Lexer Rules
@@ -45,8 +39,17 @@
  WORD                : (LOWERCASE | UPPERCASE | '_')+ ;
 
  WHITESPACE          : (' ' | '\t') ;
- NEWLINE             : ('\r'? '\n' | '\r')+ ;
- TEXT                : ~[\])]+ ;
 
- PRINTOUT            : (P R I N T ' ' O U T);
- PICKUP              : (P I C K ' ' U P);
+ NEWLINE             : ('\r'? '\n' | '\r')+ ;
+
+ TEXT                : ('"') .*? ('"') ;
+
+ SAY                 : (S A Y WHITESPACE) ;
+
+ PICKUP              : (P I C K WHITESPACE U P) ;
+
+/*
+ * Parser Rules
+ */
+
+ printcomm           : (SAY TEXT) ;

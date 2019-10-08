@@ -12,6 +12,8 @@ plugins {
 
     // Apply the application plugin to add support for building an application
     id 'application'
+
+    id 'antlr'
 }
 
 repositories {
@@ -26,6 +28,8 @@ dependencies {
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
+
+    antlr "org.antlr:antlr4:4.5.3"
 }
 
 // Define the main class for the application

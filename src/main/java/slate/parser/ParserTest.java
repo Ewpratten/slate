@@ -1,4 +1,4 @@
-package slate;
+package slate.parser;
 
 import java.util.Scanner;
 

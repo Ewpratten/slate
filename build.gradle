@@ -29,7 +29,7 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 
-    antlr "org.antlr:antlr4:4.5.3"
+    antlr "org.antlr:antlr4:4.7.2"
 }
 
 // Define the main class for the application

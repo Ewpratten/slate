@@ -1,4 +1,5 @@
-package gen;// Generated from D:/Users/barts/eclipse-workspace/slate-dev/src/main/resources\SlateGrammar.g4 by ANTLR 4.7.2
+// Generated from D:/Users/barts/eclipse-workspace/slate-dev/src/main/resources\Slate.g4 by ANTLR 4.7.2
+package slate.parser;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -9,7 +10,7 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class SlateGrammarLexer extends Lexer {
+public class SlateLexer extends Lexer {
 	static { RuntimeMetaData.checkVersion("4.7.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -80,13 +81,13 @@ public class SlateGrammarLexer extends Lexer {
 	}
 
 
-	public SlateGrammarLexer(CharStream input) {
+	public SlateLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	@Override
-	public String getGrammarFileName() { return "SlateGrammar.g4"; }
+	public String getGrammarFileName() { return "Slate.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

@@ -1,20 +1,19 @@
 package slate.parser;
 
-import org.antlr.runtime.ANTLRInputStream;
-
-import java.io.IOException;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
 
 public class ParserTest {
 
     public static void main(String[] args) {
-        try {
-            ANTLRInputStream stream = new ANTLRInputStream(System.in);
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-
-
+        CharStream inputStream = CharStreams.fromString(
+                "Say \"Egg Salad\"");
+        SlateLexer slateLexer = new SlateLexer(inputStream);
+        CommonTokenStream commonTokenStream = new CommonTokenStream(slateLexer);
+        SlateParser slateParser = new SlateParser(commonTokenStream);
+        SlateParser.PrintcommContext printcommContext = slateParser.printcomm();
+        SlateBaseVisitor visitor = new SlateBaseVisitor();
+        visitor.visit(printcommContext);
     }
-
-
 }

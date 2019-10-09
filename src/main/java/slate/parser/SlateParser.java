@@ -1,4 +1,5 @@
-package gen;// Generated from D:/Users/barts/eclipse-workspace/slate-dev/src/main/resources\SlateGrammar.g4 by ANTLR 4.7.2
+// Generated from D:/Users/barts/eclipse-workspace/slate-dev/src/main/resources\Slate.g4 by ANTLR 4.7.2
+package slate.parser;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -9,7 +10,7 @@ import java.util.Iterator;
 import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class SlateGrammarParser extends Parser {
+public class SlateParser extends Parser {
 	static { RuntimeMetaData.checkVersion("4.7.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -71,7 +72,7 @@ public class SlateGrammarParser extends Parser {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "SlateGrammar.g4"; }
+	public String getGrammarFileName() { return "Slate.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -82,29 +83,29 @@ public class SlateGrammarParser extends Parser {
 	@Override
 	public ATN getATN() { return _ATN; }
 
-	public SlateGrammarParser(TokenStream input) {
+	public SlateParser(TokenStream input) {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	public static class PrintcommContext extends ParserRuleContext {
-		public TerminalNode SAY() { return getToken(SlateGrammarParser.SAY, 0); }
-		public TerminalNode TEXT() { return getToken(SlateGrammarParser.TEXT, 0); }
+		public TerminalNode SAY() { return getToken(SlateParser.SAY, 0); }
+		public TerminalNode TEXT() { return getToken(SlateParser.TEXT, 0); }
 		public PrintcommContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_printcomm; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SlateGrammarListener ) ((SlateGrammarListener)listener).enterPrintcomm(this);
+			if ( listener instanceof SlateListener ) ((SlateListener)listener).enterPrintcomm(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SlateGrammarListener ) ((SlateGrammarListener)listener).exitPrintcomm(this);
+			if ( listener instanceof SlateListener ) ((SlateListener)listener).exitPrintcomm(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SlateGrammarVisitor ) return ((SlateGrammarVisitor<? extends T>)visitor).visitPrintcomm(this);
+			if ( visitor instanceof SlateVisitor ) return ((SlateVisitor<? extends T>)visitor).visitPrintcomm(this);
 			else return visitor.visitChildren(this);
 		}
 	}

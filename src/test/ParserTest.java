@@ -1,4 +1,4 @@
-package slate.parser;
+package slate;
 
 public class ParserTest {
 

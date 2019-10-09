@@ -32,5 +32,20 @@ dependencies {
     antlr "org.antlr:antlr4:4.7.2"
 }
 
+sourceSets {
+
+    test {
+        java {
+            srcDirs = ["src/test/slate"]  
+        }
+    }
+}
+
 // Define the main class for the application
 mainClassName = 'slate.App'
+
+test {
+    afterTest { desc, result -> 
+        logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+    }
+}

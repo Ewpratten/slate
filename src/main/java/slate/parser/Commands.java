@@ -50,7 +50,7 @@ public class Commands {
         Commands.parseCommand(inputStream);
     }
 
-    private static void parseCommand(CharStream inputStream) {
+    protected static void parseCommand(CharStream inputStream) {
         //Lex
         SlateLexer lexer = new SlateLexer(inputStream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);

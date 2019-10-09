@@ -1,5 +1,5 @@
 // Generated from D:/Users/barts/eclipse-workspace/slate-dev/src/main/resources/commands\Slate.g4 by ANTLR 4.7.2
-package slate.parser;
+package commands;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -268,10 +268,8 @@ public class SlateParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			{
 			setState(17);
 			match(HELP);
-			}
 			}
 		}
 		catch (RecognitionException re) {

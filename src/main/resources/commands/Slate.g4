@@ -36,6 +36,8 @@ grammar Slate;
 
  fragment LOWERCASE  : [a-z] ;
  fragment UPPERCASE  : [A-Z] ;
+ fragment ANYSYMBOL : . ;
+
  WORD                : (LOWERCASE | UPPERCASE | '_')+ ;
 
  WHITESPACE          : (' ' | '\t') ;
@@ -44,12 +46,22 @@ grammar Slate;
 
  TEXT                : ('"') .*? ('"') ;
 
+ ITEMNAME            : ('[') .*? (']') ;
+
  SAY                 : (S A Y WHITESPACE) ;
 
- PICKUP              : (P I C K WHITESPACE U P) ;
+ SHOUT               : (S H O U T WHITESPACE) ;
 
+ PICKUP              : (P I C K WHITESPACE U P WHITESPACE) ;
+
+ TAKE                : (T A K E WHITESPACE) ;
+
+ HELP                : ('!' H E L P) ;
 /*
  * Parser Rules
  */
 
- printcomm           : (SAY TEXT) ;
+ saycomm           : (SAY TEXT) ;
+ shoutcomm         : (SHOUT TEXT) ;
+ pickupcomm        : ((PICKUP|TAKE) ITEMNAME) ;
+ helpcomm          : (HELP);

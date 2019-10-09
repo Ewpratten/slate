@@ -1,27 +1,27 @@
 package slate.items;
-
 import slate.bases.ItemBase;
+import slate.bases.String;
 
+public class Beaker extends ItemBase {
 
-public class InvisibilityCloak extends ItemBase {
-
-	public InvisibilityCloak() {
+	public Beaker() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public InvisibilityCloak(ItemBase item) {
+	public Beaker(ItemBase item) {
 		super(item);
 		// TODO Auto-generated constructor stub
 	}
+	
 	@Override
 	public int getWeight() {
 		// TODO Auto-generated method stub
-		return 15;
+		return 7;
 	}
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return "invisibility cloak";
+		return "Beaker";
 	}
 
 }

@@ -1,29 +1,14 @@
 package slate.rooms;
 
-import slate.bases.Direction;
 import slate.bases.RoomBase;
 
 public class TestRoom extends RoomBase {
 
-    @Override
-    public String getPeakInfo() {
-        return null;
-    }
-
-    @Override
-    public String getRoomInfo() {
-        return null;
-    }
-
-    @Override
-    public String getName() {
-        return "Test Room";
-    }
-
-    @Override
-    public void addPathway(RoomBase room, Direction direction) {
-        // TODO Auto-generated method stub
+    public TestRoom() {
+        this.name = "Test room";
+        this.room_info = "This room may change dimensions randomly";
+        this.peak_info = "Looks odd..";
 
     }
-    
+
 }

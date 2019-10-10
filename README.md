@@ -1,5 +1,23 @@
-# slate
-🎮 Infiltrate the lab
+# *SLATE* : Infiltration
+A text-based adventure game by: @mosefrey085, @exvacuum, and @ewpratten
+
+## Software design
+
+### Command parsing
+Slate's command parsing system is based off [ANTLR v4](), and follows this general flow:
+```
+-- User input
+|
++-> Lexical analysis & Parsing
+|
++-> Tokenization
+|
++-> Command processing
+```
+
+This system allows us to define our own "control language" with it's own grammar and syntax for user inputs during gameplay. 
+
+### Game design
 
 ## Notes
  - Random gen map

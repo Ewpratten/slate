@@ -18,6 +18,9 @@ public class App {
     App() {
         // Pint the map introduction text
         System.out.println(current_map.getDescription());
+        System.out.println(current_map.nav.getCurrentRoom().getRoomInfo());
+
+        
         
     }
 }

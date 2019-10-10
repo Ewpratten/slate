@@ -5,6 +5,9 @@ package slate;
 
 import slate.bases.MapBase;
 import slate.maps.TestMap;
+import slate.parser.Command;
+
+import static slate.parser.Commands.getInput;
 
 public class App {
 
@@ -20,7 +23,13 @@ public class App {
         System.out.println(current_map.getDescription());
         System.out.println(current_map.nav.getCurrentRoom().getRoomInfo());
 
-        
-        
+
+        while (true) {
+           Command comm = getInput();
+
+           //If command is valid, execute it.
+           if(comm.validate()) comm.execute();
+        }
+      
     }
 }

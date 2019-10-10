@@ -1,10 +1,4 @@
- grammar slategrammar;
-
-/*
- * Parser Rules
- */
-
- printcomm           : PRINTOUT TEXT;
+grammar Slate;
 
 /*
  * Lexer Rules
@@ -42,11 +36,32 @@
 
  fragment LOWERCASE  : [a-z] ;
  fragment UPPERCASE  : [A-Z] ;
+ fragment ANYSYMBOL : . ;
+
  WORD                : (LOWERCASE | UPPERCASE | '_')+ ;
 
  WHITESPACE          : (' ' | '\t') ;
- NEWLINE             : ('\r'? '\n' | '\r')+ ;
- TEXT                : ~[\])]+ ;
 
- PRINTOUT            : (P R I N T ' ' O U T);
- PICKUP              : (P I C K ' ' U P);
+ NEWLINE             : ('\r'? '\n' | '\r')+ ;
+
+ TEXT                : ('"') .*? ('"') ;
+
+ ITEMNAME            : ('[') .*? (']') ;
+
+ SAY                 : (S A Y WHITESPACE) ;
+
+ SHOUT               : (S H O U T WHITESPACE) ;
+
+ PICKUP              : (P I C K WHITESPACE U P WHITESPACE) ;
+
+ TAKE                : (T A K E WHITESPACE) ;
+
+ HELP                : ('!' H E L P) ;
+/*
+ * Parser Rules
+ */
+
+ saycomm           : (SAY TEXT) ;
+ shoutcomm         : (SHOUT TEXT) ;
+ pickupcomm        : ((PICKUP|TAKE) ITEMNAME) ;
+ helpcomm          : (HELP);

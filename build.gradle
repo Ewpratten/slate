@@ -12,6 +12,8 @@ plugins {
 
     // Apply the application plugin to add support for building an application
     id 'application'
+
+    id 'antlr'
 }
 
 repositories {
@@ -26,7 +28,24 @@ dependencies {
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
+
+    antlr "org.antlr:antlr4:4.7.2"
+}
+
+sourceSets {
+
+    test {
+        java {
+            srcDirs = ["src/test/slate"]  
+        }
+    }
 }
 
 // Define the main class for the application
 mainClassName = 'slate.App'
+
+test {
+    afterTest { desc, result -> 
+        logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+    }
+}

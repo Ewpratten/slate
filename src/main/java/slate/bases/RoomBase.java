@@ -1,42 +1,84 @@
 package slate.bases;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public abstract class RoomBase {
+public class RoomBase {
     ArrayList<ItemBase> items = new ArrayList<ItemBase>();
-    protected HashMap<Direction, RoomBase> attached_rooms = new HashMap<Direction, RoomBase>();
+    protected ArrayList<RoomBase> attached_rooms = new ArrayList<RoomBase>();
+    public boolean visited = false;
 
-    public abstract String getName();
+    protected String name, peak_info, room_info = "";
 
-    public abstract String getPeakInfo();
+    public String getName() {
+        return name;
+    }
 
-    public abstract String getRoomInfo();
+    public String getPeakInfo() {
+        return peak_info;
+    }
+
+    public String getRoomInfo() {
+        return room_info;
+    }
+
+    public RoomBase() {
+
+    }
+
+    /**
+     * Copy a room
+     * 
+     * @param room
+     */
+    public RoomBase(RoomBase room) {
+        items = new ArrayList<ItemBase>(room.items);
+        attached_rooms = new ArrayList<RoomBase>(room.attached_rooms);
+        visited = room.visited;
+        name = room.name;
+        peak_info = room.peak_info;
+        room_info = room.room_info;
+
+    }
 
     /**
      * Add a pathway attached to this room
      * 
-     * @param room New room
+     * @param room      New room
      * @param direction Room location
      */
-    public void addPathway(RoomBase room, Direction direction) {
+    public void addPathway(RoomBase room) {
         // This will override pre-existing rooms
-        attached_rooms.put(direction, room);
+        attached_rooms.add(room);
     }
 
     /**
-     * Check if this room has an attached room at a specific direction
-     * @param direction Direction to check
-     * @return Is a room attached
+     * Add an item to the room
+     * 
+     * @param item Item to add
      */
-    public boolean hasRoomAtDirection(Direction direction) {
-        for (Direction key : attached_rooms.keySet()) {
-            if (key == direction) {
-                return true;
-            }
+    public void addItem(ItemBase item) {
+        items.add(item);
+
+    }
+
+    /**
+     * Get a list of all items in the room
+     * 
+     * @return List of all item names
+     */
+    public String[] getItemNames() {
+        ArrayList<String> output = new ArrayList<String>();
+
+        for (ItemBase item : items) {
+            output.add(item.name);
         }
-        
-        return false;
+
+        return output.toArray(new String[output.size()]);
+    }
+
+    public boolean equals(RoomBase room) {
+        return room.getName() == getName() && room.getRoomInfo() == getRoomInfo() && room.getPeakInfo() == getPeakInfo()
+                && attached_rooms.equals(room.attached_rooms) && items.equals(room.items) && visited == room.visited;
     }
 
 }

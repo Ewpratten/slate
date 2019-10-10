@@ -11,7 +11,7 @@ public class ItemBase {
     public ItemBase(ItemBase item){
         this.is_consumable = item.is_consumable;
         this.weight = item.weight;
-        this.name = item.name;
+        this.name = new String(item.name);
     }
 
     

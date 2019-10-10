@@ -1,10 +1,10 @@
 package slate.bases;
 
+import slate.Navigator;
+
 public abstract class MapBase {
-
-    public abstract RoomBase getCurrentRoom();
-
-    public abstract void moveTo(RoomBase room);
+    public Navigator nav;
+    protected String description;
 
     public abstract String getDescription();
 }

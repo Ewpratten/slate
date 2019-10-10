@@ -1,5 +1,5 @@
 # slate
-Text-based aadventure game for ICS4U
+🎮 Infiltrate the lab
 
 ## Notes
  - Random gen map

@@ -26,7 +26,7 @@ public class Command{
             data = Files.readAllBytes(file.toPath());
 
             //Create an array of lines from byte array
-            usageContent = new String(data, "UTF-8").split("\\n?\\r");
+            usageContent = new String(data, "UTF-8").split("\\r?");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {
@@ -77,14 +77,15 @@ public class Command{
 
         //Link type to commands
         HashMap<Integer, CommInterface> commandMap = new HashMap<Integer, CommInterface>();
-        commandMap.put(SlateParser.SAY, new SayCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():""));
-        commandMap.put(SlateParser.SHOUT, new ShoutCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():""));
-        commandMap.put(SlateParser.PICKUP, new PickupCommand((context.getToken(SlateParser.ITEMNAME,0))!=null?(context.getToken(SlateParser.ITEMNAME,0)).getText():""));
-        commandMap.put(SlateParser.HELP, new HelpCommand());
+        commandMap.put(SlateParser.SAY, new SayCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
+        commandMap.put(SlateParser.SHOUT, new ShoutCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
+        commandMap.put(SlateParser.PICKUP, new PickupCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
+        commandMap.put(SlateParser.HELP, new HelpCommand(null));
+        commandMap.put(SlateParser.EXIT, new ExitCommand(null));
 
         CommInterface command = commandMap.get(type);
 
-        command.execute();
+        if(command.getData()!=null)command.execute();
     }
 
     void printUsage(){
@@ -100,6 +101,7 @@ public class Command{
 
         //All Commands Must have an Execute Method
         public void execute();
+        public Object getData();
     }
 
     //SAY
@@ -115,12 +117,16 @@ public class Command{
         public void execute(){
 
             //Strip quotes from message
-            String message = (data.substring(data.indexOf("\"")+1,data.lastIndexOf("\"")));
+            String message = (data);
 
             //Print message
             System.out.println(message);
         }
 
+        @Override
+        public Object getData(){
+            return data;
+        }
     }
 
     //SHOUT
@@ -136,10 +142,15 @@ public class Command{
         public void execute(){
 
             //Strip quotes from message
-            String message = (data.substring(data.indexOf("\"")+1,data.lastIndexOf("\""))).toUpperCase();
+            String message = (data).toUpperCase();
 
             //Print message
             System.out.println(message);
+        }
+
+        @Override
+        public Object getData(){
+            return data;
         }
 
     }
@@ -159,10 +170,21 @@ public class Command{
             System.out.println("WIP");
         }
 
+        @Override
+        public Object getData(){
+            return data;
+        }
+
     }
 
     //PRINT HELP
     class HelpCommand implements CommInterface{
+
+        String data;
+
+        HelpCommand(String data){
+            this.data = data;
+        }
 
         @Override
         public void execute(){
@@ -173,5 +195,32 @@ public class Command{
            }
         }
 
+        @Override
+        public Object getData(){
+            return "";
+        }
+    }
+
+    //EXIT GAME
+    class ExitCommand implements CommInterface{
+
+        String data;
+
+        ExitCommand(String data){
+            this.data = data;
+        }
+
+        @Override
+        public void execute(){
+
+            //Exit
+            System.out.println("You are a terrible person.");
+            System.exit(0);
+        }
+
+        @Override
+        public Object getData(){
+            return "";
+        }
     }
 }

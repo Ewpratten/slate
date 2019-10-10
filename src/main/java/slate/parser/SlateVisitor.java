@@ -34,4 +34,10 @@ public interface SlateVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitHelpcomm(SlateParser.HelpcommContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SlateParser#exitcomm}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExitcomm(SlateParser.ExitcommContext ctx);
 }

@@ -18,7 +18,7 @@ public class Commands {
 
         //Read next line as input stream for parsing
         CharStream inputStream = CharStreams.fromString(
-                sc.nextLine());
+                '!'+sc.nextLine());
 
          return parseCommand(inputStream);
     }
@@ -39,8 +39,8 @@ public class Commands {
         contextMap.put(SlateParser.SAY, new  Context.sayContext());
         contextMap.put(SlateParser.SHOUT, new  Context.shoutContext());
         contextMap.put(SlateParser.PICKUP, new  Context.pickupContext());
-        contextMap.put(SlateParser.TAKE, new  Context.pickupContext());
         contextMap.put(SlateParser.HELP, new  Context.helpContext());
+        contextMap.put(SlateParser.EXIT, new Context.exitContext());
 
         //Get context
         ParserRuleContext context = contextMap.get(type)!=null?contextMap.get(type).open(parser):null;

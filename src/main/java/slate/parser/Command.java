@@ -21,6 +21,7 @@ public class Command{
         try {
             //Get file from res folder
             file = new File(Commands.class.getResource("../../commands/CommandUsage.slateinfo").toURI());
+            // file = new File(Commands.class.getResource("commands/CommandUsage.slateinfo").toURI());
 
             //Place all bytes into array
             data = Files.readAllBytes(file.toPath());

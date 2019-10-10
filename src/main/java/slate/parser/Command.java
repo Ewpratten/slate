@@ -27,7 +27,7 @@ public class Command{
             data = Files.readAllBytes(file.toPath());
 
             //Create an array of lines from byte array
-            usageContent = new String(data, "UTF-8").split("\\n?\\r");
+            usageContent = new String(data, "UTF-8").split("\\r?");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {

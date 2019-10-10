@@ -23,7 +23,6 @@ public class App {
         System.out.println(current_map.getDescription());
         System.out.println(current_map.nav.getCurrentRoom().getRoomInfo());
 
-
         while (true) {
            Command comm = getInput();
 

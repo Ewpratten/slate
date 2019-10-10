@@ -5,16 +5,8 @@ import slate.bases.RoomBase;
 public class Laboratory extends RoomBase {
 
 	public Laboratory() {
-		// TODO Auto-generated constructor stub
-	}
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return "Laboratory";
-	}
-	@Override
-	public String getRoomInfo() {
-		// TODO Auto-generated method stub
-		return "You are in a laboratory filled with.... ITEMS?";
+		this.name = "Laboratory";
+		this.peak_info = "Looks like a lab.. I wonder what it's used for.";
+		this.room_info = "Very clean, but I see some things lying around. Maybe I should check them out?";
 	}
 }

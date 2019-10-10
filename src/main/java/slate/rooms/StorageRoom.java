@@ -1,20 +1,13 @@
 package slate.rooms;
+
 import slate.bases.RoomBase;
 
 public class StorageRoom extends RoomBase {
 
 	public StorageRoom() {
-		// TODO Auto-generated constructor stub
-	}
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return "Storage Room";
-	}
-	@Override
-	public String getRoomInfo() {
-		// TODO Auto-generated method stub
-		return "You are surrounded by many boxes filled with strange items and equipment.";
+		this.name = "Storage Room";
+		this.peak_info = "A storage room. Seems like a safe place to rest, there are some items too!";
+		this.room_info = "There are many boxes filled with strange items and equipment.";
 	}
 
 }

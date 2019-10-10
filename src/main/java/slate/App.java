@@ -5,6 +5,9 @@ package slate;
 
 import slate.bases.MapBase;
 import slate.maps.TestMap;
+import slate.parser.Command;
+
+import static slate.parser.Commands.getInput;
 
 public class App {
 
@@ -18,6 +21,12 @@ public class App {
     App() {
         // Pint the map introduction text
         System.out.println(current_map.getDescription());
-        
+
+        while (true) {
+           Command comm = getInput();
+
+           //If command is valid, execute it.
+           if(comm.validate()) comm.execute();
+        }
     }
 }

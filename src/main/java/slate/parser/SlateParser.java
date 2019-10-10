@@ -17,8 +17,8 @@ public class SlateParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		NUMBER=1, WORD=2, WHITESPACE=3, NEWLINE=4, TEXT=5, ITEMNAME=6, SAY=7, 
-		SHOUT=8, PICKUP=9, TAKE=10, HELP=11;
+		NUMBER=1, WORD=2, WHITESPACE=3, NEWLINE=4, ITEMNAME=5, SAY=6, SHOUT=7, 
+		PICKUP=8, TAKE=9, HELP=10, TEXT=11;
 	public static final int
 		RULE_saycomm = 0, RULE_shoutcomm = 1, RULE_pickupcomm = 2, RULE_helpcomm = 3;
 	private static String[] makeRuleNames() {
@@ -35,8 +35,8 @@ public class SlateParser extends Parser {
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "NUMBER", "WORD", "WHITESPACE", "NEWLINE", "TEXT", "ITEMNAME", 
-			"SAY", "SHOUT", "PICKUP", "TAKE", "HELP"
+			null, "NUMBER", "WORD", "WHITESPACE", "NEWLINE", "ITEMNAME", "SAY", "SHOUT", 
+			"PICKUP", "TAKE", "HELP", "TEXT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -288,9 +288,9 @@ public class SlateParser extends Parser {
 	public static final String _serializedATN =
 		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\r\26\4\2\t\2\4\3"+
 		"\t\3\4\4\t\4\4\5\t\5\3\2\3\2\3\2\3\3\3\3\3\3\3\4\3\4\3\4\3\5\3\5\3\5\2"+
-		"\2\6\2\4\6\b\2\3\3\2\13\f\2\21\2\n\3\2\2\2\4\r\3\2\2\2\6\20\3\2\2\2\b"+
-		"\23\3\2\2\2\n\13\7\t\2\2\13\f\7\7\2\2\f\3\3\2\2\2\r\16\7\n\2\2\16\17\7"+
-		"\7\2\2\17\5\3\2\2\2\20\21\t\2\2\2\21\22\7\b\2\2\22\7\3\2\2\2\23\24\7\r"+
+		"\2\6\2\4\6\b\2\3\3\2\n\13\2\21\2\n\3\2\2\2\4\r\3\2\2\2\6\20\3\2\2\2\b"+
+		"\23\3\2\2\2\n\13\7\b\2\2\13\f\7\r\2\2\f\3\3\2\2\2\r\16\7\t\2\2\16\17\7"+
+		"\r\2\2\17\5\3\2\2\2\20\21\t\2\2\2\21\22\7\7\2\2\22\7\3\2\2\2\23\24\7\f"+
 		"\2\2\24\t\3\2\2\2\2";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());

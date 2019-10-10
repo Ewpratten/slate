@@ -3,134 +3,48 @@ package slate.parser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ParserRuleContext;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Commands {
-    static Commands comm;
 
-    static File file;
-    static byte[] data;
-    static String[] usageContent;
-
-    static {
-        try {
-            //Get file from res folder
-            file = new File(Commands.class.getResource("../../commands/CommandUsage.slateinfo").toURI());
-
-            //Place all bytes into array
-            data = Files.readAllBytes(file.toPath());
-
-            //Create string from byte array
-            usageContent = new String(data, "UTF-8").split("\\n?\\r");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-
-            //End program if file is not found
-            System.out.println("File not found!");
-            e.printStackTrace();
-            System.exit(0);
-        }
-    }
-
+    //Scanner for player input
     static Scanner sc = new Scanner(System.in);
 
-    public static void getInput(){
+    //Get player's input (Static, call with Commands.getInput();)
+    public static Command getInput(){
+
         //Read next line as input stream for parsing
         CharStream inputStream = CharStreams.fromString(
                 sc.nextLine());
 
-        Commands.parseCommand(inputStream);
+         return parseCommand(inputStream);
     }
 
-    protected static void parseCommand(CharStream inputStream) {
+    public static Command parseCommand(CharStream inputStream) {
         //Lex
         SlateLexer lexer = new SlateLexer(inputStream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
 
         //Parse
         SlateParser parser = new SlateParser(tokenStream);
-        switch (parser.getCurrentToken().getType()) {
-            case SlateParser.SAY:
-                sayCommand(parser);
-                break;
-            case SlateParser.SHOUT:
-                shoutCommand(parser);
-                break;
-            case SlateParser.PICKUP:
-            case SlateParser.TAKE:
-                pickupCommand(parser);
-                break;
-            case SlateParser.HELP:
-                helpCommand(parser);
-                break;
-            default:
-                System.out.println("Unrecognized Command. For a list of commands, type !Help");
-                break;
-        }
-    }
 
-    //Simple Printing Command
-    private static void sayCommand(SlateParser parser){
-        SlateParser.SaycommContext saycommContext = parser.saycomm();
+        //Determine Command type
+        int type = parser.getCurrentToken().getType();
 
-        SlateBaseVisitor visitor = new SlateBaseVisitor();
-        visitor.visit(saycommContext);
+        //Map contexts
+        HashMap<Integer, Context.contextInterface> contextMap = new HashMap<Integer,  Context.contextInterface>();
+        contextMap.put(SlateParser.SAY, new  Context.sayContext());
+        contextMap.put(SlateParser.SHOUT, new  Context.shoutContext());
+        contextMap.put(SlateParser.PICKUP, new  Context.pickupContext());
+        contextMap.put(SlateParser.TAKE, new  Context.pickupContext());
+        contextMap.put(SlateParser.HELP, new  Context.helpContext());
 
-        if(saycommContext.exception==null){
-            String message = saycommContext.TEXT().getText();
-            System.out.println(message.substring(message.indexOf("\"")+1, message.lastIndexOf("\"")));
-        }else{
-            System.out.println("Say Usage: SAY \"MESSAGE\"");
-        }
-    }
+        //Get context
+        ParserRuleContext context = contextMap.get(type)!=null?contextMap.get(type).open(parser):null;
 
-    //Shouting Command
-    private static void shoutCommand(SlateParser parser){
-        SlateParser.ShoutcommContext shoutcommContext = parser.shoutcomm();
-
-        SlateBaseVisitor visitor = new SlateBaseVisitor();
-        visitor.visit(shoutcommContext);
-
-        if(shoutcommContext.exception==null){
-            String message = shoutcommContext.TEXT().getText().toUpperCase();
-            System.out.println(message.substring(message.indexOf("\"")+1, message.lastIndexOf("\"")));
-        }else{
-            System.out.println("Shout Usage: SHOUT \"MESSAGE\"");
-        }
-    }
-
-    //Pickup Command
-    private static void pickupCommand(SlateParser parser){
-        SlateParser.PickupcommContext pickupcommContext = parser.pickupcomm();
-
-        SlateBaseVisitor visitor = new SlateBaseVisitor();
-        visitor.visit(pickupcommContext);
-
-        if(pickupcommContext.exception==null){
-            String message = pickupcommContext.ITEMNAME().getText().toLowerCase();
-            System.out.println("Picked up " + message.substring(message.indexOf("[")+1, message.lastIndexOf("]")));
-        }
-    }
-
-    //Help Command
-    private static void helpCommand(SlateParser parser){
-        SlateParser.HelpcommContext helpcommContext = parser.helpcomm();
-
-        SlateBaseVisitor visitor = new SlateBaseVisitor();
-        visitor.visit(helpcommContext);
-
-        if(helpcommContext.exception==null){
-            for(int i = 0; i<usageContent.length; i++){
-                    System.out.print(usageContent[i]);
-            }
-        }
+        return new Command(type, context, parser);
     }
 }

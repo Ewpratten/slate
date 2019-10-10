@@ -39,4 +39,12 @@ public class Context {
             return parser.helpcomm();
         }
     }
+
+    //EXIT
+    static class exitContext implements contextInterface {
+        @Override
+        public ParserRuleContext open(SlateParser parser) {
+            return parser.exitcomm();
+        }
+    }
 }

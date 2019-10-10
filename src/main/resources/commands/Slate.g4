@@ -36,7 +36,7 @@ grammar Slate;
 
  fragment LOWERCASE  : [a-z] ;
  fragment UPPERCASE  : [A-Z] ;
- fragment ANYSYMBOL : . ;
+ fragment COMMANDINDICATOR : '!';
 
  WORD                : (LOWERCASE | UPPERCASE | '_')+ ;
 
@@ -44,24 +44,28 @@ grammar Slate;
 
  NEWLINE             : ('\r'? '\n' | '\r')+ ;
 
- ITEMNAME            : ('[') .*? (']') ;
+ SAY                 : (COMMANDINDICATOR S A Y) ;
 
- SAY                 : (S A Y WHITESPACE) ;
+ SHOUT               : (COMMANDINDICATOR S H O U T) ;
 
- SHOUT               : (S H O U T WHITESPACE) ;
+ PICKUP              : (COMMANDINDICATOR P I C K WHITESPACE U P|
+                        COMMANDINDICATOR P I C K U P|
+                        COMMANDINDICATOR T A K E) ;
 
- PICKUP              : (P I C K WHITESPACE U P WHITESPACE) ;
+ HELP                : (COMMANDINDICATOR H E L P) ;
 
- TAKE                : (T A K E WHITESPACE) ;
+ IDENTIFIER          :  (WORD|NUMBER) ;
 
- HELP                : (H E L P (EOF|(WHITESPACE)+)) ;
+ TEXT                : (IDENTIFIER (WHITESPACE|EOF))+;
 
- TEXT                : ('"') .*? ('"') ;
+ EXIT                : (COMMANDINDICATOR E X I T);
+
 /*
  * Parser Rules
  */
 
- saycomm           : (SAY TEXT) ;
- shoutcomm         : (SHOUT TEXT) ;
- pickupcomm        : ((PICKUP|TAKE) ITEMNAME) ;
+ saycomm           : (SAY WHITESPACE? TEXT) ;
+ shoutcomm         : (SHOUT WHITESPACE? TEXT) ;
+ pickupcomm        : (PICKUP WHITESPACE? TEXT (WHITESPACE? )) ;
  helpcomm          : (HELP) ;
+ exitcomm          : (EXIT) ;

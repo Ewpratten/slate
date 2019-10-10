@@ -1,6 +1,6 @@
 package slate.items;
 import slate.bases.ItemBase;
-import slate.bases.String;
+
 
 public class Beaker extends ItemBase {
 

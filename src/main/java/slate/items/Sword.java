@@ -1,7 +1,7 @@
 package slate.items;
 
 import slate.bases.ItemBase;
-import slate.bases.String;
+
 
 public class Sword extends ItemBase {
 

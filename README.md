@@ -17,7 +17,6 @@ Slate's command parsing system is based off [ANTLR v4](), and follows this gener
 
 This system allows us to define our own "control language" with it's own grammar and syntax for user inputs during gameplay. 
 
-### Game design
 
 ## Notes
  - Random gen map

@@ -216,7 +216,7 @@ public class Command{
         public void execute(){
 
            //Check for rooms attached to current room
-            game.
+            // game.
         }
 
         @Override

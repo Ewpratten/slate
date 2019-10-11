@@ -12,7 +12,7 @@ import static slate.parser.Commands.getInput;
 public class App {
 
     // Define the map to use
-    MapBase current_map = new TestMap();
+    public MapBase current_map = new TestMap();
 
     public static void main(String[] args) {
         new App();
@@ -28,7 +28,9 @@ public class App {
            comm.game = this;
 
            //If command is valid, execute it.
-           if(comm.validate()) comm.execute();
+           if(comm.validate()) {
+               comm.execute();
+           }
         }
       
     }

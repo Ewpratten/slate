@@ -1,9 +1,6 @@
 package slate.parser;
 
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.*;
 
 import java.util.HashMap;
 import java.util.Scanner;
@@ -26,21 +23,27 @@ public class Commands {
     public static Command parseCommand(CharStream inputStream) {
         //Lex
         SlateLexer lexer = new SlateLexer(inputStream);
+        lexer.removeErrorListeners();
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
 
         //Parse
         SlateParser parser = new SlateParser(tokenStream);
+        parser.removeErrorListeners();
 
         //Determine Command type
         int type = parser.getCurrentToken().getType();
 
         //Map contexts
-        HashMap<Integer, Context.contextInterface> contextMap = new HashMap<Integer,  Context.contextInterface>();
-        contextMap.put(SlateParser.SAY, new  Context.sayContext());
-        contextMap.put(SlateParser.SHOUT, new  Context.shoutContext());
-        contextMap.put(SlateParser.PICKUP, new  Context.pickupContext());
-        contextMap.put(SlateParser.HELP, new  Context.helpContext());
-        contextMap.put(SlateParser.EXIT, new Context.exitContext());
+        HashMap<Integer, Context.ContextInterface> contextMap = new HashMap<Integer, Context.ContextInterface>();
+        contextMap.put(SlateParser.SAY, new Context.SayContext());
+        contextMap.put(SlateParser.SHOUT, new Context.ShoutContext());
+        contextMap.put(SlateParser.PICKUP, new Context.PickupContext());
+        contextMap.put(SlateParser.HELP, new Context.HelpContext());
+        contextMap.put(SlateParser.EXIT, new Context.ExitContext());
+        contextMap.put(SlateParser.CHECKDOORS, new Context.CheckDoorsContext());
+        contextMap.put(SlateParser.SEARCH, new Context.SearchContext());
+        contextMap.put(SlateParser.MOVE, new Context.MoveContext());
+        contextMap.put(SlateParser.PEEK, new Context.PeekContext());
 
         //Get context
         ParserRuleContext context = contextMap.get(type)!=null?contextMap.get(type).open(parser):null;

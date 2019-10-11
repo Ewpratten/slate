@@ -12,6 +12,18 @@ Usage: SHOUT MESSAGE
 Pick Up: Literally steal things.
 Usage: PICK UP/TAKE ITEM_NAME
 ----------------
+Check Doors: Lists available room paths.
+Usage: CHECK DOORS
+----------------
+Peek: Take a quick look through a door.
+Usage: PEEK ROOM_NAME
+----------------
+Move: Move to a new room.
+Usage: MOVE ROOM_NAME
+----------------
+Search: Check room for things to literally steal.
+Usage: SEARCH
+----------------
 Exit: Kill everything in this program.
 There's actually a whole world full of people outside the facility, you know.
 Usage: EXIT

@@ -20,6 +20,7 @@ public class TestMap extends MapBase {
 
         // Set up starting room
         first_room = new TestRoom();
+        second_room = new TestRoom();
         first_room.addPathway(second_room);
 
         // Set up second room

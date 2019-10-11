@@ -4,12 +4,12 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public class Context {
     //Interface for context hashmap
-    interface contextInterface {
+    interface ContextInterface {
         public ParserRuleContext open(SlateParser parser);
     }
 
     //SAY
-    static class sayContext implements contextInterface {
+    static class SayContext implements ContextInterface {
         @Override
         public ParserRuleContext open(SlateParser parser) {
             return parser.saycomm();
@@ -17,7 +17,7 @@ public class Context {
     }
 
     //SHOUT
-    static class shoutContext implements contextInterface {
+    static class ShoutContext implements ContextInterface {
         @Override
         public ParserRuleContext open(SlateParser parser) {
             return parser.shoutcomm();
@@ -25,7 +25,7 @@ public class Context {
     }
 
     //PICKUP
-    static class pickupContext implements contextInterface {
+    static class PickupContext implements ContextInterface {
         @Override
         public ParserRuleContext open(SlateParser parser) {
             return parser.pickupcomm();
@@ -33,15 +33,39 @@ public class Context {
     }
 
     //HELP
-    static class helpContext implements contextInterface {
+    static class HelpContext implements ContextInterface {
         @Override
         public ParserRuleContext open(SlateParser parser) {
             return parser.helpcomm();
         }
     }
 
+    //CHECK DOORS
+    static class CheckDoorsContext implements ContextInterface {
+        @Override
+        public ParserRuleContext open(SlateParser parser) { return parser.checkdoorscomm(); }
+    }
+
+    //SEARCH ROOM
+    static class SearchContext implements ContextInterface {
+        @Override
+        public ParserRuleContext open(SlateParser parser) { return parser.searchcomm(); }
+    }
+
+    //PEEK
+    static class PeekContext implements ContextInterface {
+        @Override
+        public ParserRuleContext open(SlateParser parser) { return parser.peekcomm(); }
+    }
+
+    //MOVE
+    static class MoveContext implements ContextInterface {
+        @Override
+        public ParserRuleContext open(SlateParser parser) { return parser.movecomm(); }
+    }
+
     //EXIT
-    static class exitContext implements contextInterface {
+    static class ExitContext implements ContextInterface {
         @Override
         public ParserRuleContext open(SlateParser parser) {
             return parser.exitcomm();

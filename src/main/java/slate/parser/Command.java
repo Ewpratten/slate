@@ -2,11 +2,13 @@ package slate.parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import slate.App;
+import slate.bases.RoomBase;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 //Command Object
@@ -28,7 +30,7 @@ public class Command{
             data = Files.readAllBytes(file.toPath());
 
             //Create an array of lines from byte array
-            usageContent = new String(data, "UTF-8").split("\\r?");
+            usageContent = new String(data, "UTF-8").split("\\r?\\n");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {
@@ -37,10 +39,15 @@ public class Command{
             e.printStackTrace();
         }
 
-        usagesMap.put(SlateParser.SAY, usageContent[9]);
-        usagesMap.put(SlateParser.SHOUT, usageContent[14]);
-        usagesMap.put(SlateParser.PICKUP, usageContent[19]);
-        usagesMap.put(SlateParser.HELP, usageContent[4]);
+        usagesMap.put(SlateParser.SAY, usageContent[6]);
+        usagesMap.put(SlateParser.SHOUT, usageContent[9]);
+        usagesMap.put(SlateParser.PICKUP, usageContent[12]);
+        usagesMap.put(SlateParser.HELP, usageContent[3]);
+        usagesMap.put(SlateParser.MOVE, usageContent[21]);
+        usagesMap.put(SlateParser.CHECKDOORS, usageContent[15]);
+        usagesMap.put(SlateParser.PEEK, usageContent[18]);
+        usagesMap.put(SlateParser.SEARCH, usageContent[24]);
+        usagesMap.put(SlateParser.EXIT,  usageContent[28]);
     }
 
     int type;
@@ -67,7 +74,7 @@ public class Command{
                 return true;
             }
             //Display Error Message
-            System.out.println("Bad Syntax, " + usagesMap.get(type));
+            System.out.printf("Bad Syntax, %s\n", usagesMap.get(type));
             return false;
         }
         //Display Error Message
@@ -82,6 +89,10 @@ public class Command{
         commandMap.put(SlateParser.SAY, new SayCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
         commandMap.put(SlateParser.SHOUT, new ShoutCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
         commandMap.put(SlateParser.PICKUP, new PickupCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
+        commandMap.put(SlateParser.MOVE, new MoveCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
+        commandMap.put(SlateParser.PEEK, new PeekCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
+        commandMap.put(SlateParser.CHECKDOORS, new CheckDoorsCommand(null));
+        commandMap.put(SlateParser.SEARCH, new SearchCommand(null));
         commandMap.put(SlateParser.HELP, new HelpCommand(null));
         commandMap.put(SlateParser.EXIT, new ExitCommand(null));
 
@@ -193,13 +204,91 @@ public class Command{
 
             //Print help
            for(int i = 0; i < usageContent.length; i++){
-               System.out.print(usageContent[i]);
+               System.out.println(usageContent[i]);
            }
         }
 
         @Override
         public Object getData(){
             return "";
+        }
+    }
+
+    //SEARCH ROOM
+    class SearchCommand implements CommInterface{
+
+        String data;
+
+        SearchCommand(String data){
+            this.data = data;
+        }
+
+        @Override
+        public void execute(){
+
+            //Search Room
+            System.out.println("WIP");
+        }
+
+        @Override
+        public Object getData(){
+            return "";
+        }
+    }
+
+    //MOVE
+    class MoveCommand implements CommInterface{
+
+        String data;
+
+        MoveCommand(String data){
+            this.data = data;
+        }
+
+        @Override
+        public void execute(){
+
+            //Check for room
+            for(RoomBase r: game.current_map.nav.getCurrentRoom().getAttached_rooms()){
+
+                //Go to correct room
+                if(r.getName().equalsIgnoreCase(data))game.current_map.nav.moveTo(r);
+                return;
+            }
+            System.out.println("Room not found.");
+        }
+
+        @Override
+        public Object getData(){
+           return data;
+        }
+    }
+
+    //PEEK
+    class PeekCommand implements CommInterface{
+
+        String data;
+
+        PeekCommand(String data){
+            this.data = data;
+        }
+
+        @Override
+        public void execute(){
+
+            //Check for room
+            for(RoomBase r: game.current_map.nav.getCurrentRoom().getAttached_rooms()){
+
+                //Peek correct room
+                if(r.getName().equalsIgnoreCase(data))System.out.println(r.getPeekInfo());
+                return;
+            }
+            System.out.println("Room not found.");
+        }
+
+        @Override
+        public Object getData(){
+            return data;
         }
     }
 
@@ -215,9 +304,14 @@ public class Command{
         @Override
         public void execute(){
 
+            ArrayList<RoomBase> rooms = game.current_map.nav.getCurrentRoom().getAttached_rooms();
+
            //Check for rooms attached to current room
-            game.
-        }
+            System.out.printf("I Look around the room and see %d doors:\n", rooms.size());
+            for(RoomBase r: rooms) {
+                System.out.println("- " + r.getName());
+            }
+         }
 
         @Override
         public Object getData(){

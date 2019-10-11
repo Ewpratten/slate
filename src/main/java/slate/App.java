@@ -25,6 +25,7 @@ public class App {
 
         while (true) {
            Command comm = getInput();
+           comm.game = this;
 
            //If command is valid, execute it.
            if(comm.validate()) comm.execute();

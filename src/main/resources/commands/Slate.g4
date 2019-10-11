@@ -48,9 +48,17 @@ grammar Slate;
 
  SHOUT               : (COMMANDINDICATOR S H O U T) ;
 
- PICKUP              : (COMMANDINDICATOR P I C K WHITESPACE U P|
-                        COMMANDINDICATOR P I C K U P|
-                        COMMANDINDICATOR T A K E) ;
+ PEEK                : (COMMANDINDICATOR P E E K);
+
+ SEARCH              : (COMMANDINDICATOR S E A R C H);
+
+ CHECKDOORS          : (COMMANDINDICATOR (C H E C K WHITESPACE? D O O R S));
+
+ MOVE                : (COMMANDINDICATOR (M O V E (WHITESPACE? T O)?|
+                                          G O (WHITESPACE? T O)?));
+
+ PICKUP              : (COMMANDINDICATOR (P I C K WHITESPACE? U P|
+                                          T A K E)) ;
 
  HELP                : (COMMANDINDICATOR H E L P) ;
 
@@ -64,8 +72,12 @@ grammar Slate;
  * Parser Rules
  */
 
- saycomm           : (SAY WHITESPACE? TEXT) ;
- shoutcomm         : (SHOUT WHITESPACE? TEXT) ;
- pickupcomm        : (PICKUP WHITESPACE? TEXT (WHITESPACE? )) ;
+ saycomm           : (SAY WHITESPACE+? TEXT) ;
+ shoutcomm         : (SHOUT WHITESPACE+? TEXT) ;
+ pickupcomm        : (PICKUP WHITESPACE+? TEXT) ;
+ checkdoorscomm    : (CHECKDOORS);
+ peekcomm          : (PEEK WHITESPACE+? TEXT);
+ searchcomm        : (SEARCH);
+ movecomm          : (MOVE WHITESPACE+? TEXT);
  helpcomm          : (HELP) ;
  exitcomm          : (EXIT) ;

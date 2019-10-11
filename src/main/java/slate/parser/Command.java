@@ -1,6 +1,7 @@
 package slate.parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import slate.App;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +17,7 @@ public class Command{
     static byte[] data;
     static String[] usageContent;
     static HashMap<Integer, String> usagesMap = new HashMap<Integer, String>();
+    public App game;
 
     static {
         try {
@@ -193,6 +195,28 @@ public class Command{
            for(int i = 0; i < usageContent.length; i++){
                System.out.print(usageContent[i]);
            }
+        }
+
+        @Override
+        public Object getData(){
+            return "";
+        }
+    }
+
+    //CHECK DOORS
+    class CheckDoorsCommand implements CommInterface{
+
+        String data;
+
+        CheckDoorsCommand(String data){
+            this.data = data;
+        }
+
+        @Override
+        public void execute(){
+
+           //Check for rooms attached to current room
+            game.
         }
 
         @Override

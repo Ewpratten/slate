@@ -15,7 +15,7 @@ public class Commands {
 
         //Read next line as input stream for parsing
         CharStream inputStream = CharStreams.fromString(
-                '!'+sc.nextLine());
+                '~'+sc.nextLine());
 
          return parseCommand(inputStream);
     }

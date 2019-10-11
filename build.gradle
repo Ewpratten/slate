@@ -49,3 +49,7 @@ test {
         logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
     }
 }
+
+run {
+standardInput = System.in
+}

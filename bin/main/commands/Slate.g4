@@ -44,8 +44,6 @@ grammar Slate;
 
  NEWLINE             : ('\r'? '\n' | '\r')+ ;
 
- TEXT                : ('"') .*? ('"') ;
-
  ITEMNAME            : ('[') .*? (']') ;
 
  SAY                 : (S A Y WHITESPACE) ;
@@ -56,7 +54,9 @@ grammar Slate;
 
  TAKE                : (T A K E WHITESPACE) ;
 
- HELP                : ('!' H E L P) ;
+ HELP                : (H E L P (EOF|(WHITESPACE)+)) ;
+
+ TEXT                : ('"') .*? ('"') ;
 /*
  * Parser Rules
  */
@@ -64,4 +64,4 @@ grammar Slate;
  saycomm           : (SAY TEXT) ;
  shoutcomm         : (SHOUT TEXT) ;
  pickupcomm        : ((PICKUP|TAKE) ITEMNAME) ;
- helpcomm          : (HELP);
+ helpcomm          : (HELP) ;

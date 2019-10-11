@@ -7,14 +7,14 @@ public class RoomBase {
     protected ArrayList<RoomBase> attached_rooms = new ArrayList<RoomBase>();
     public boolean visited = false;
 
-    protected String name, peak_info, room_info = "";
+    protected String name, peek_info, room_info = "";
 
     public String getName() {
         return name;
     }
 
-    public String getPeakInfo() {
-        return peak_info;
+    public String getPeekInfo() {
+        return peek_info;
     }
 
     public String getRoomInfo() {
@@ -35,7 +35,7 @@ public class RoomBase {
         attached_rooms = new ArrayList<RoomBase>(room.attached_rooms);
         visited = room.visited;
         name = room.name;
-        peak_info = room.peak_info;
+        peek_info = room.peek_info;
         room_info = room.room_info;
 
     }
@@ -77,7 +77,7 @@ public class RoomBase {
     }
 
     public boolean equals(RoomBase room) {
-        return room.getName() == getName() && room.getRoomInfo() == getRoomInfo() && room.getPeakInfo() == getPeakInfo()
+        return room.getName() == getName() && room.getRoomInfo() == getRoomInfo() && room.getPeekInfo() == getPeekInfo()
                 && attached_rooms.equals(room.attached_rooms) && items.equals(room.items) && visited == room.visited;
     }
 

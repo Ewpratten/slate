@@ -21,7 +21,6 @@ This system allows us to define our own "control language" with it's own grammar
 ## Notes
  - Random gen map
  - Enter, grab item, leave
- - Player can only move to new rooms (no backtracking. Just as an interesting mechanic)
 
 ## Components
  - Room

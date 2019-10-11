@@ -4,7 +4,7 @@ A text-based adventure game by: [@mosefrey085](https://github.com/mosefrey085), 
 ## Software design
 
 ### Command parsing
-Slate's command parsing system is based off [ANTLR v4](), and follows this general flow:
+Slate's command parsing system is based off [ANTLR v4](https://www.antlr.org/), and follows this general flow:
 ```
 -- User input
 |

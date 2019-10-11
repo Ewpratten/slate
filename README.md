@@ -15,7 +15,17 @@ Slate's command parsing system is based off [ANTLR v4](https://www.antlr.org/), 
 +-> Command processing
 ```
 
-This system allows us to define our own "control language" with it's own grammar and syntax for user inputs during gameplay. 
+This system allows us to define our own "control language" with it's own grammar and syntax for user inputs during gameplay.
+
+## Requirements
+This program requires Java 11, and will fail without it. We recommend installing java 11 through [sdkman](), as it simplifies the installation and linking process. With Java 11 installed, the following command must be run in the root of the project to init our libraries:
+```sh
+# Linux
+./gradlew assemble
+
+# Windows
+.\gradlew.bat assemble
+```
 
 
 ## Notes

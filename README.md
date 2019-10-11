@@ -1,5 +1,5 @@
 # *SLATE* : Infiltration
-A text-based adventure game by: @mosefrey085, @exvacuum, and @ewpratten
+A text-based adventure game by: [@mosefrey085](https://github.com/mosefrey085), [@exvacuum](https://github.com/exvacuum), and [@ewpratten](https://github.com/ewpratten)
 
 ## Software design
 

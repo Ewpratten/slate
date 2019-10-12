@@ -78,7 +78,7 @@ public class Command{
             return false;
         }
         //Display Error Message
-        System.out.println("Unrecognized command. For a list of commands and their usages, type help.");
+        System.out.println("Hmm... I don't know how to do that. For a list of commands and their usages, I should type help.");
         return false;
     }
 

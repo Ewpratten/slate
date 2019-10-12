@@ -36,9 +36,11 @@ grammar Slate;
 
  fragment LOWERCASE  : [a-z] ;
  fragment UPPERCASE  : [A-Z] ;
- fragment COMMANDINDICATOR : '!';
 
- WORD                : (LOWERCASE | UPPERCASE | '_')+ ;
+ fragment SYMBOL: '!' | '#'..'/' | ':'..'@' | '['..'`' | '{'..'}';
+ fragment COMMANDINDICATOR : '~';
+
+ WORD                : (LOWERCASE | UPPERCASE | DIGIT | SYMBOL)+ ;
 
  WHITESPACE          : (' ' | '\t') ;
 

@@ -44,7 +44,6 @@ public class RoomBase {
      * Add a pathway attached to this room
      * 
      * @param room      New room
-     * @param direction Room location
      */
     public void addPathway(RoomBase room) {
         // This will override pre-existing rooms
@@ -74,6 +73,13 @@ public class RoomBase {
         }
 
         return output.toArray(new String[output.size()]);
+    }
+
+    /*
+    * Get attached rooms
+     */
+    public ArrayList<RoomBase> getAttached_rooms(){
+        return attached_rooms;
     }
 
     public boolean equals(RoomBase room) {

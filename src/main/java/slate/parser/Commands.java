@@ -11,13 +11,18 @@ public class Commands {
     static Scanner sc = new Scanner(System.in);
 
     //Get player's input (Static, call with Commands.getInput();)
-    public static Command getInput(){
+    public static Command[] getInput(){
 
         //Read next line as input stream for parsing
-        CharStream inputStream = CharStreams.fromString(
-                '~'+sc.nextLine());
+        String[] commandQueue = (sc.nextLine()).split(" && ");
+        Command[] commands = new Command[commandQueue.length];
 
-         return parseCommand(inputStream);
+        for(int i = 0; i < commands.length; i++) {
+        CharStream inputStream = CharStreams.fromString("~"+commandQueue[i]);
+            commands[i] = parseCommand(inputStream);
+        }
+
+        return commands;
     }
 
     public static Command parseCommand(CharStream inputStream) {
@@ -38,12 +43,15 @@ public class Commands {
         contextMap.put(SlateParser.SAY, new Context.SayContext());
         contextMap.put(SlateParser.SHOUT, new Context.ShoutContext());
         contextMap.put(SlateParser.PICKUP, new Context.PickupContext());
+        contextMap.put(SlateParser.LEAVE, new Context.LeaveContext());
         contextMap.put(SlateParser.HELP, new Context.HelpContext());
         contextMap.put(SlateParser.EXIT, new Context.ExitContext());
         contextMap.put(SlateParser.CHECKDOORS, new Context.CheckDoorsContext());
         contextMap.put(SlateParser.SEARCH, new Context.SearchContext());
         contextMap.put(SlateParser.MOVE, new Context.MoveContext());
         contextMap.put(SlateParser.PEEK, new Context.PeekContext());
+        contextMap.put(SlateParser.OPEN, new Context.OpenContext());
+        contextMap.put(SlateParser.CLOSE, new Context.CloseContext());
 
         //Get context
         ParserRuleContext context = contextMap.get(type)!=null?contextMap.get(type).open(parser):null;

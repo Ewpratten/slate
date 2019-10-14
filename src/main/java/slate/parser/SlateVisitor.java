@@ -29,6 +29,12 @@ public interface SlateVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPickupcomm(SlateParser.PickupcommContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SlateParser#leavecomm}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLeavecomm(SlateParser.LeavecommContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SlateParser#checkdoorscomm}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -64,4 +70,16 @@ public interface SlateVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitExitcomm(SlateParser.ExitcommContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SlateParser#opencomm}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOpencomm(SlateParser.OpencommContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SlateParser#closecomm}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClosecomm(SlateParser.ClosecommContext ctx);
 }

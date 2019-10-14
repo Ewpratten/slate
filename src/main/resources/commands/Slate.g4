@@ -54,6 +54,10 @@ grammar Slate;
 
  SEARCH              : (COMMANDINDICATOR S E A R C H);
 
+ OPEN                : (COMMANDINDICATOR O P E N);
+
+ CLOSE               : (COMMANDINDICATOR C L O S E);
+
  CHECKDOORS          : (COMMANDINDICATOR (C H E C K WHITESPACE? D O O R S));
 
  MOVE                : (COMMANDINDICATOR (M O V E (WHITESPACE? T O)?|
@@ -61,6 +65,10 @@ grammar Slate;
 
  PICKUP              : (COMMANDINDICATOR (P I C K WHITESPACE? U P|
                                           T A K E)) ;
+
+ LEAVE              : (COMMANDINDICATOR (L E A V E|
+                                           P U T|
+                                           D R O P)) ;
 
  HELP                : (COMMANDINDICATOR H E L P) ;
 
@@ -75,11 +83,25 @@ grammar Slate;
  */
 
  saycomm           : (SAY WHITESPACE+? TEXT) ;
+
  shoutcomm         : (SHOUT WHITESPACE+? TEXT) ;
+
  pickupcomm        : (PICKUP WHITESPACE+? TEXT) ;
+
+ leavecomm         : (LEAVE WHITESPACE+? TEXT) ;
+
  checkdoorscomm    : (CHECKDOORS);
+
  peekcomm          : (PEEK WHITESPACE+? TEXT);
+
  searchcomm        : (SEARCH);
+
  movecomm          : (MOVE WHITESPACE+? TEXT);
+
  helpcomm          : (HELP) ;
+
  exitcomm          : (EXIT) ;
+
+ opencomm          : (OPEN WHITESPACE+?  TEXT) ;
+
+ closecomm         : (CLOSE) ;

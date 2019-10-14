@@ -1,13 +1,18 @@
 package slate.bases;
 
+import slate.Inventory;
+
 import java.util.ArrayList;
 
 public class RoomBase {
     ArrayList<ItemBase> items = new ArrayList<ItemBase>();
+    ArrayList<Inventory> inventories = new ArrayList<Inventory>();
     protected ArrayList<RoomBase> attached_rooms = new ArrayList<RoomBase>();
     public boolean visited = false;
 
     protected String name, peek_info, room_info = "";
+
+    protected Inventory root_inventory = new Inventory("Room",100);
 
     public String getName() {
         return name;
@@ -31,7 +36,9 @@ public class RoomBase {
      * @param room
      */
     public RoomBase(RoomBase room) {
+        root_inventory = room.root_inventory;
         items = new ArrayList<ItemBase>(room.items);
+        inventories = room.inventories;
         attached_rooms = new ArrayList<RoomBase>(room.attached_rooms);
         visited = room.visited;
         name = room.name;
@@ -61,7 +68,7 @@ public class RoomBase {
     }
 
     /**
-     * Get a list of all items in the room
+     * Get a list of names of all items in the room
      * 
      * @return List of all item names
      */
@@ -87,4 +94,25 @@ public class RoomBase {
                 && attached_rooms.equals(room.attached_rooms) && items.equals(room.items) && visited == room.visited;
     }
 
+    public Inventory getRoot_inventory() {
+        return root_inventory;
+    }
+
+    /**
+     * Get a list of inventories in the room
+     *
+     * @return List of all inventories
+     */
+    public ArrayList<Inventory> getInventories(){
+        return inventories;
+    }
+
+    /**
+     * Add an inventory to the room
+     *
+     * @param inventory Item to add
+     */
+    public void addInventory(Inventory inventory){
+        inventories.add(inventory);
+    }
 }

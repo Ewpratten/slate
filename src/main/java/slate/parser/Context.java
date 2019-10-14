@@ -32,6 +32,14 @@ public class Context {
         }
     }
 
+    //LEAVE
+    static class LeaveContext implements ContextInterface {
+        @Override
+        public ParserRuleContext open(SlateParser parser) {
+            return parser.leavecomm();
+        }
+    }
+
     //HELP
     static class HelpContext implements ContextInterface {
         @Override
@@ -62,6 +70,18 @@ public class Context {
     static class MoveContext implements ContextInterface {
         @Override
         public ParserRuleContext open(SlateParser parser) { return parser.movecomm(); }
+    }
+
+    //OPEN
+    static class OpenContext implements ContextInterface{
+        @Override
+        public ParserRuleContext open(SlateParser parser) { return parser.opencomm(); }
+    }
+
+    //CLOSE
+    static class CloseContext implements ContextInterface{
+        @Override
+        public ParserRuleContext open(SlateParser parser) { return parser.closecomm(); }
     }
 
     //EXIT

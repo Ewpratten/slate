@@ -1,12 +1,12 @@
 package slate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
-
 import slate.bases.ItemBase;
 import slate.exceptions.ItemNotFoundException;
 import slate.exceptions.ItemSizeException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class Inventory {
 
@@ -27,8 +27,8 @@ public class Inventory {
      * A pair of an item name, and the number of them stored
      */
     public class Stack {
-        String name;
-        int count;
+        public String name;
+        public int count;
 
         public Stack(String name, int count) {
             this.name = name;
@@ -38,13 +38,16 @@ public class Inventory {
 
     HashMap<String, ItemCollection> storage = new HashMap<String, ItemCollection>();
     int max_size;
+    String name;
 
     /**
      * Construct an inventory of a specific size
-     * 
+     *
+     * @param name Inventory name
      * @param size Maximum size
      */
-    public Inventory(int size) {
+    public Inventory(String name, int size) {
+        this.name = name;
         this.max_size = size;
     }
 
@@ -147,4 +150,7 @@ public class Inventory {
         }
     }
 
+    public String getName(){
+        return name;
+    }
 }

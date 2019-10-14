@@ -52,6 +52,18 @@ public class SlateBaseListener implements SlateListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterLeavecomm(SlateParser.LeavecommContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLeavecomm(SlateParser.LeavecommContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCheckdoorscomm(SlateParser.CheckdoorscommContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -119,6 +131,30 @@ public class SlateBaseListener implements SlateListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExitcomm(SlateParser.ExitcommContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOpencomm(SlateParser.OpencommContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOpencomm(SlateParser.OpencommContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClosecomm(SlateParser.ClosecommContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClosecomm(SlateParser.ClosecommContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

@@ -42,6 +42,7 @@ public class Command{
             e.printStackTrace();
         }
 
+        //Usage information for each command
         usagesMap.put(SlateParser.HELP, usageContent[3]);
         usagesMap.put(SlateParser.SAY, usageContent[6]);
         usagesMap.put(SlateParser.SHOUT, usageContent[9]);
@@ -79,10 +80,12 @@ public class Command{
             if (context.exception == null){
                 return true;
             }
+
             //Display Error Message
-            System.out.printf("Bad Syntax, %s\n", usagesMap.get(type));
+            printUsage();
             return false;
         }
+
         //Display Error Message
         System.out.println("Hmm... I don't know how to do that. For a list of commands and their usages, I should type help.");
         return false;
@@ -90,7 +93,7 @@ public class Command{
 
     public void execute(){
 
-        //Link type to commands
+        //Link types to commands
         HashMap<Integer, CommInterface> commandMap = new HashMap<Integer, CommInterface>();
 
         commandMap.put(SlateParser.PICKUP, new PickupCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0).getText()):null));
@@ -112,10 +115,12 @@ public class Command{
         if(command.getData()!=null)command.execute();
     }
 
+    //Prints usage data for current command
     void printUsage(){
-
+        System.out.printf("Bad Syntax, %s\n", usagesMap.get(type));
     }
 
+    //Get command context
     public ParserRuleContext getContext(){
         return context;
     }
@@ -140,11 +145,8 @@ public class Command{
         @Override
         public void execute(){
 
-            //Strip quotes from message
-            String message = (data);
-
             //Print message
-            System.out.println(message);
+            System.out.println(data);
         }
 
         @Override
@@ -165,11 +167,8 @@ public class Command{
         @Override
         public void execute(){
 
-            //Strip quotes from message
-            String message = (data).toUpperCase();
-
             //Print message
-            System.out.println(message);
+            System.out.println((data).toUpperCase());
         }
 
         @Override
@@ -190,10 +189,15 @@ public class Command{
 
         @Override
         public void execute() {
+
+            //If current active inventory is not player's pockets
             if (game.player.getFocused_inventory()!=game.player.getInventory()) {
+
+                //Get item data in current active inventory
                 Inventory.Stack[] itemInfo = game.player.getFocused_inventory().getAllNames();
                 String itemName = data.substring(data.indexOf(" ") + 1);
 
+                //Get number of items to take from optional player input
                 int quantity;
                 try {
                     quantity = Integer.parseInt(data.substring(0, data.indexOf(" ")));
@@ -202,40 +206,60 @@ public class Command{
                     itemName = data;
                 }
 
+                //Find item match
                 for (Inventory.Stack item : itemInfo) {
                     if (item.name.equalsIgnoreCase(itemName)) {
 
-                        //Transfer items
-
+                        /*Transfer items
+                        Keep track of how many are taken*/
                         int numTaken = 0;
                         for (int i = 0; i < quantity; i++) {
+
+                            //If any of this item are remaining in the container
                             if (item.count > 0) {
+
+                                //Remove from current active inventory
                                 item.count -= 1;
                                 try {
+
+                                    //Add to player's pockets
                                     game.player.getInventory().addItem(item.name, game.player.getFocused_inventory().getItem(item.name));
+
+                                //If pockets become full
                                 } catch (ItemSizeException e) {
+
+                                    //If some were taken
                                     if(numTaken>0){
                                         System.out.println("There isn't enough room in my pockets, so I take " + numTaken + " instead.");
                                         return;
                                     }
+
+                                    //If none were taken, because pockets were too full
                                     System.out.println("There's no space left in my pockets!");
                                 } catch (ItemNotFoundException e) {
                                     e.printStackTrace();
                                 }
-
                                 numTaken++;
                             } else {
+
+                                //Some items were taken, so print out number taken
                                 System.out.println("There isn't enough of these, so I take " + numTaken + " instead.");
                                 return;
                             }
                         }
+
+                        //Best case scenario, all desired items are taken
                         System.out.println("I take " + quantity + " " + itemName + ".");
                         return;
                     }
                 }
+
+                //Desired item type does not exist
                 System.out.println("I can't find any of those in here...");
                 return;
             }
+
+            //Tried to take an item from pockets
             System.out.println("I can't take things from myself!");
         }
 
@@ -257,16 +281,20 @@ public class Command{
 
         @Override
         public void execute() {
+
+            //Targeted inventory is the room's root inventory by default
             Inventory target = game.current_map.nav.getCurrentRoom().getRoot_inventory();
 
+            //If current active inventory is not the player's pockets, set it as the target
             if (game.player.getFocused_inventory()!=game.player.getInventory()) {
                 target = game.player.getFocused_inventory();
             }
 
-            //Put items into focused inventory
+            //Get item info in player's pockets
             Inventory.Stack[] itemInfo = game.player.getInventory().getAllNames();
             String itemName = data.substring(data.indexOf(" ") + 1);
 
+            //Get number of items to take from optional player input
             int quantity;
             try {
                 quantity = Integer.parseInt(data.substring(0, data.indexOf(" ")));
@@ -275,39 +303,55 @@ public class Command{
                 itemName = data;
             }
 
+            //Find item match
             for (Inventory.Stack item : itemInfo) {
                 if (item.name.equalsIgnoreCase(itemName)) {
 
-                    //Transfer items
-
+                    //Keep track of number of items put in
                     int numPut = 0;
                     for (int i = 0; i < quantity; i++) {
+
+                        //If player has any more of the item
                         if (item.count > 0) {
+
+                            //Remove from pockets
                             item.count -= 1;
                             try {
+
+                                //Put item into targeted inventory
                                 target.addItem(item.name, game.player.getInventory().getItem(item.name));
+
+                            //If container full
                             } catch (ItemSizeException e) {
+
+                                //If some items fit in
                                 if(numPut>0){
                                     System.out.println("There's not enough space inside the " + target.getName() +", so I leave "+ numPut +" instead.");
                                     return;
                                 }
+
+                                //If no items fit in
                                 System.out.println("There's no space inside the " + target.getName() +" to put this...");
                                 return;
                             } catch (ItemNotFoundException e) {
                                 e.printStackTrace();
                             }
-
                             numPut++;
                         } else {
+
+                            //Player was only able to put some of the desired item into the container
                             System.out.println("I don't have enough of these, so I leave " + numPut + " instead.");
                             return;
                         }
                     }
+
+                    //Best case scenario, player places the desired quantity into the target successfully
                     System.out.println("I leave " + quantity + " " + itemName + ".");
                     return;
                 }
             }
 
+            //Player does not have any of this item
             System.out.println("I can't find any of those in my pockets...");
         }
 
@@ -330,7 +374,7 @@ public class Command{
         @Override
         public void execute(){
 
-            //Print help
+            //Print help, line by line
            for(int i = 0; i < usageContent.length; i++){
                System.out.println(usageContent[i]);
            }
@@ -357,7 +401,7 @@ public class Command{
             //Search Room
             if(game.player.getFocused_inventory() == game.current_map.nav.getCurrentRoom().getRoot_inventory()) {
 
-                //Items
+                //Get Loose Items
                 Inventory.Stack[] items = game.player.getFocused_inventory().getAllNames();
                 if (items.length > 0) {
                     System.out.printf("After a quick search of the room, I find the following %d item%s:\n", items.length, items.length > 1 ? "s" : "");
@@ -377,7 +421,7 @@ public class Command{
             }else{
                 //Search container
 
-                //Items
+                //Get Loose Items
                 Inventory.Stack[] items = game.player.getFocused_inventory().getAllNames();
                 if (items.length > 0) {
                     System.out.printf("Rummaging through the %s, I find the following %d item%s:\n", game.player.getFocused_inventory().getName(), items.length, items.length > 1 ? "s" : "");
@@ -413,11 +457,13 @@ public class Command{
                 if(r.getName().equalsIgnoreCase(data)){
                     game.current_map.nav.moveTo(r);
 
-                    //Set focused inventory to room default
+                    //Set focused inventory to room root
                     game.player.setFocused_inventory(game.current_map.nav.getCurrentRoom().getRoot_inventory());
                 }
                 return;
             }
+
+            //Room not found
             System.out.println("There's no access to that room from here...");
         }
 
@@ -446,7 +492,9 @@ public class Command{
                 if(r.getName().equalsIgnoreCase(data))System.out.println(r.getPeekInfo());
                 return;
             }
-            System.out.println("There's no access to that room from here...");
+
+            //Room not found
+            System.out.println("I can't see that room from here...");
         }
 
         @Override
@@ -467,6 +515,7 @@ public class Command{
         @Override
         public void execute(){
 
+            //Get possible paths
             ArrayList<RoomBase> rooms = game.current_map.nav.getCurrentRoom().getAttached_rooms();
 
            //Check for rooms attached to current room
@@ -493,7 +542,10 @@ public class Command{
 
         @Override
         public void execute(){
+
+            //List of inventories in the room
             ArrayList<Inventory> inventories = game.current_map.nav.getCurrentRoom().getInventories();
+
             //Check if input matches
             for(Inventory inventory : inventories){
                 if(inventory.getName().equalsIgnoreCase(data)){
@@ -505,6 +557,7 @@ public class Command{
                 }
             }
 
+            //Player's pockets
             if(data.equalsIgnoreCase("Pockets")){
 
                 //Set focus to targeted inventory
@@ -513,8 +566,8 @@ public class Command{
                 return;
             }
 
+            //Container not found
             System.out.println("I can't find that container, maybe I just imagined it...");
-
         }
 
 
@@ -536,14 +589,19 @@ public class Command{
         @Override
         public void execute(){
 
+            //Only close if not in room root
             if(game.player.getFocused_inventory()!=game.current_map.nav.getCurrentRoom().getRoot_inventory()) {
 
                 //Close Focused Inventory
                 System.out.println("I close the " + game.player.getFocused_inventory().getName());
+
+                //Reopen Room Root
                 game.player.setFocused_inventory(game.current_map.nav.getCurrentRoom().getRoot_inventory());
-            }else{
-                System.out.println("I haven't left anything open...");
+                return;
             }
+
+            //In room root
+            System.out.println("I haven't left anything open...");
         }
 
         @Override

@@ -3,7 +3,8 @@ package slate.parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class Context {
-    //Interface for context hashmap
+
+    //Interface for context hashmap, gets ParserRule Context without opening it.
     interface ContextInterface {
         public ParserRuleContext open(SlateParser parser);
     }

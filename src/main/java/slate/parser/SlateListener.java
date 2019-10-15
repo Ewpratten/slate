@@ -38,6 +38,16 @@ public interface SlateListener extends ParseTreeListener {
 	 */
 	void exitPickupcomm(SlateParser.PickupcommContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SlateParser#leavecomm}.
+	 * @param ctx the parse tree
+	 */
+	void enterLeavecomm(SlateParser.LeavecommContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SlateParser#leavecomm}.
+	 * @param ctx the parse tree
+	 */
+	void exitLeavecomm(SlateParser.LeavecommContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SlateParser#checkdoorscomm}.
 	 * @param ctx the parse tree
 	 */
@@ -97,4 +107,24 @@ public interface SlateListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExitcomm(SlateParser.ExitcommContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SlateParser#opencomm}.
+	 * @param ctx the parse tree
+	 */
+	void enterOpencomm(SlateParser.OpencommContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SlateParser#opencomm}.
+	 * @param ctx the parse tree
+	 */
+	void exitOpencomm(SlateParser.OpencommContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SlateParser#closecomm}.
+	 * @param ctx the parse tree
+	 */
+	void enterClosecomm(SlateParser.ClosecommContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SlateParser#closecomm}.
+	 * @param ctx the parse tree
+	 */
+	void exitClosecomm(SlateParser.ClosecommContext ctx);
 }

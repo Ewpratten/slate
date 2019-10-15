@@ -10,28 +10,36 @@ import slate.parser.Command;
 import static slate.parser.Commands.getInput;
 
 public class App {
+    //Player
+    public Player player = Player.getInstance();
 
     // Define the map to use
     public MapBase current_map = new TestMap();
+
 
     public static void main(String[] args) {
         new App();
     }
 
     App() {
+
         // Pint the map introduction text
         System.out.println(current_map.getDescription());
         System.out.println(current_map.nav.getCurrentRoom().getRoomInfo());
 
-        while (true) {
-           Command comm = getInput();
-           comm.game = this;
+        //Set starting inventory
+        player.setFocused_inventory(current_map.nav.getCurrentRoom().getRoot_inventory());
 
-           //If command is valid, execute it.
-           if(comm.validate()) {
-               comm.execute();
-           }
+        while (true) {
+            Command[] comms = getInput();
+            for (Command comm : comms) {
+                comm.game = this;
+
+                //If command is valid, execute it.
+                if (comm.validate()) {
+                    comm.execute();
+                }
+            }
         }
-      
     }
 }

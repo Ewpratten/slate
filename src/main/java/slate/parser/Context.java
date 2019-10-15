@@ -3,7 +3,8 @@ package slate.parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class Context {
-    //Interface for context hashmap
+
+    //Interface for context hashmap, gets ParserRule Context without opening it.
     interface ContextInterface {
         public ParserRuleContext open(SlateParser parser);
     }
@@ -29,6 +30,14 @@ public class Context {
         @Override
         public ParserRuleContext open(SlateParser parser) {
             return parser.pickupcomm();
+        }
+    }
+
+    //LEAVE
+    static class LeaveContext implements ContextInterface {
+        @Override
+        public ParserRuleContext open(SlateParser parser) {
+            return parser.leavecomm();
         }
     }
 
@@ -62,6 +71,18 @@ public class Context {
     static class MoveContext implements ContextInterface {
         @Override
         public ParserRuleContext open(SlateParser parser) { return parser.movecomm(); }
+    }
+
+    //OPEN
+    static class OpenContext implements ContextInterface{
+        @Override
+        public ParserRuleContext open(SlateParser parser) { return parser.opencomm(); }
+    }
+
+    //CLOSE
+    static class CloseContext implements ContextInterface{
+        @Override
+        public ParserRuleContext open(SlateParser parser) { return parser.closecomm(); }
     }
 
     //EXIT

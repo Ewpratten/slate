@@ -5,20 +5,12 @@ import slate.bases.ItemBase;
 public class Apple extends ItemBase {
 
 	public Apple() {
-		// TODO Auto-generated constructor stub
+		name = "Apple";
+		weight = 2;
 	}
 
 	public Apple(ItemBase item) {
 		super(item);
-		// TODO Auto-generated constructor stub
-	}
-	@Override
-	public int getWeight() {
-		return 2;
-	}
-	@Override
-	public String getName() {
-		return "apple";
 	}
 
 }

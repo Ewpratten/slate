@@ -386,7 +386,7 @@ public class Command{
         }
     }
 
-    //SEARCH ROOM
+    //SEARCH
     class SearchCommand implements CommInterface{
 
         String data;
@@ -408,6 +408,8 @@ public class Command{
                     for (Inventory.Stack item : items) {
                         System.out.println(String.format("- %s x%d", item.name, item.count));
                     }
+                }else{
+                    System.out.println("I can't find any loose items here.");
                 }
 
                 ArrayList<Inventory> inventories = game.current_map.nav.getCurrentRoom().getInventories();

@@ -12,7 +12,7 @@ public class RoomBase {
 
     protected String name, peek_info, room_info = "";
 
-    protected Inventory root_inventory = new Inventory("Room",100);
+    protected Inventory root_inventory = new Inventory("Room", 100);
 
     public String getName() {
         return name;
@@ -47,10 +47,17 @@ public class RoomBase {
 
     }
 
+    public void addPathway(RoomBase... rooms) {
+        for (RoomBase room : rooms) {
+            addPathway(room);
+
+        }
+    }
+
     /**
      * Add a pathway attached to this room
      * 
-     * @param room      New room
+     * @param room New room
      */
     public void addPathway(RoomBase room) {
         // This will override pre-existing rooms
@@ -83,9 +90,9 @@ public class RoomBase {
     }
 
     /*
-    * Get attached rooms
+     * Get attached rooms
      */
-    public ArrayList<RoomBase> getAttached_rooms(){
+    public ArrayList<RoomBase> getAttached_rooms() {
         return attached_rooms;
     }
 
@@ -103,7 +110,7 @@ public class RoomBase {
      *
      * @return List of all inventories
      */
-    public ArrayList<Inventory> getInventories(){
+    public ArrayList<Inventory> getInventories() {
         return inventories;
     }
 
@@ -112,7 +119,11 @@ public class RoomBase {
      *
      * @param inventory Item to add
      */
-    public void addInventory(Inventory inventory){
+    public void addInventory(Inventory inventory) {
         inventories.add(inventory);
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

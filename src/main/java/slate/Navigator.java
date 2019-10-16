@@ -25,6 +25,8 @@ public class Navigator {
         // Set the room as the current
         current_room = room;
 
+        // System.out.println(room.getName());
+
     }
 
 }

@@ -2,6 +2,7 @@ package slate.parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import slate.App;
+import slate.Guard;
 import slate.Inventory;
 import slate.bases.RoomBase;
 import slate.exceptions.ItemNotFoundException;
@@ -51,10 +52,11 @@ public class Command{
         usagesMap.put(SlateParser.CHECKDOORS, usageContent[21]);
         usagesMap.put(SlateParser.PEEK, usageContent[23]);
         usagesMap.put(SlateParser.MOVE, usageContent[26]);
-        usagesMap.put(SlateParser.SEARCH, usageContent[29]);
-        usagesMap.put(SlateParser.OPEN, usageContent[32]);
-        usagesMap.put(SlateParser.CLOSE, usageContent[35]);
-        usagesMap.put(SlateParser.EXIT,  usageContent[38]);
+        usagesMap.put(SlateParser.MOVE, usageContent[29]);
+        usagesMap.put(SlateParser.SEARCH, usageContent[32]);
+        usagesMap.put(SlateParser.OPEN, usageContent[35]);
+        usagesMap.put(SlateParser.CLOSE, usageContent[38]);
+        usagesMap.put(SlateParser.EXIT,  usageContent[41]);
     }
 
     int type;
@@ -101,6 +103,7 @@ public class Command{
         commandMap.put(SlateParser.SAY, new SayCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
         commandMap.put(SlateParser.SHOUT, new ShoutCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
         commandMap.put(SlateParser.MOVE, new MoveCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
+        commandMap.put(SlateParser.WAIT, new WaitCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
         commandMap.put(SlateParser.PEEK, new PeekCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
         commandMap.put(SlateParser.OPEN, new OpenCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
         commandMap.put(SlateParser.CHECKDOORS, new CheckDoorsCommand(null));
@@ -456,13 +459,21 @@ public class Command{
             for(RoomBase r: game.current_map.nav.getCurrentRoom().getAttached_rooms()){
 
                 //Go to correct room
-                if(r.getName().equalsIgnoreCase(data)){
+                if(r.getName().equalsIgnoreCase(data)) {
                     game.current_map.nav.moveTo(r);
+                    System.out.println(game.current_map.nav.getCurrentRoom().getRoomInfo());
 
                     //Set focused inventory to room root
                     game.player.setFocused_inventory(game.current_map.nav.getCurrentRoom().getRoot_inventory());
+
+                    //Move Guards
+                    for (RoomBase room : game.current_map.getAllRooms()) {
+                        for (Guard g : room.getGuards()) {
+                            g.patrol();
+                        }
+                    }
+                    return;
                 }
-                return;
             }
 
             //Room not found
@@ -492,6 +503,14 @@ public class Command{
 
                 //Peek correct room
                 if(r.getName().equalsIgnoreCase(data))System.out.println(r.getPeekInfo());
+
+                //Check for guards
+                if(r.getGuards().size()>0){
+                    System.out.println(String.format("There %s %d guard%s in there!", (r.getGuards().size()>1)?"are":"is", r.getGuards().size(), (r.getGuards().size()>1)?"s":""));
+                    return;
+                }
+
+                System.out.println("Looks all clear...");
                 return;
             }
 
@@ -502,6 +521,32 @@ public class Command{
         @Override
         public Object getData(){
             return data;
+        }
+    }
+
+    //WAIT
+    class WaitCommand implements CommInterface{
+        String data;
+
+        WaitCommand(String data){
+            this.data = data;
+        }
+
+        @Override
+        public void execute(){
+
+            //Move Guards
+            System.out.println("I'll wait here for now...");
+            for(RoomBase r: game.current_map.getAllRooms()){
+                for(Guard g: r.getGuards()){
+                    g.patrol();
+                }
+            }
+        }
+
+        @Override
+        public Object getData(){
+            return "";
         }
     }
 

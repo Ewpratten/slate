@@ -26,6 +26,9 @@ Usage: PEEK ROOM NAME
 Move: Move to a new room.
 Usage: MOVE ROOM_NAME
 ----------------
+Wait: Stay in the current room, hope the guards go away.
+Usage: WAIT
+----------------
 Search: Check room for things to literally steal.
 Usage: SEARCH
 ----------------

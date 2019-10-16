@@ -16,7 +16,6 @@ public class App {
     // Define the map to use
     public MapBase current_map = new TestMap();
 
-
     public static void main(String[] args) {
         new App();
     }
@@ -38,6 +37,11 @@ public class App {
                 //If command is valid, execute it.
                 if (comm.validate()) {
                     comm.execute();
+                }
+
+                //Handle running into guards
+                if(current_map.nav.getCurrentRoom().getGuards().size()>0){
+                    System.out.println("I ran into a guard, I'm lucky nobody has added any penalties to the game yet.");
                 }
             }
         }

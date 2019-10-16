@@ -59,6 +59,12 @@ public interface SlateVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMovecomm(SlateParser.MovecommContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SlateParser#waitcomm}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWaitcomm(SlateParser.WaitcommContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SlateParser#helpcomm}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -88,6 +88,16 @@ public interface SlateListener extends ParseTreeListener {
 	 */
 	void exitMovecomm(SlateParser.MovecommContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SlateParser#waitcomm}.
+	 * @param ctx the parse tree
+	 */
+	void enterWaitcomm(SlateParser.WaitcommContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SlateParser#waitcomm}.
+	 * @param ctx the parse tree
+	 */
+	void exitWaitcomm(SlateParser.WaitcommContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SlateParser#helpcomm}.
 	 * @param ctx the parse tree
 	 */

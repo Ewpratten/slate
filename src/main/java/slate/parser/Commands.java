@@ -49,6 +49,7 @@ public class Commands {
         contextMap.put(SlateParser.CHECKDOORS, new Context.CheckDoorsContext());
         contextMap.put(SlateParser.SEARCH, new Context.SearchContext());
         contextMap.put(SlateParser.MOVE, new Context.MoveContext());
+        contextMap.put(SlateParser.WAIT, new Context.WaitContext());
         contextMap.put(SlateParser.PEEK, new Context.PeekContext());
         contextMap.put(SlateParser.OPEN, new Context.OpenContext());
         contextMap.put(SlateParser.CLOSE, new Context.CloseContext());

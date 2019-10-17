@@ -46,7 +46,8 @@ grammar Slate;
 
  NEWLINE             : ('\r'? '\n' | '\r')+ ;
 
- SAY                 : (COMMANDINDICATOR S A Y) ;
+ SAY                 : (COMMANDINDICATOR (S A Y|
+                                        E C H O)) ;
 
  SHOUT               : (COMMANDINDICATOR S H O U T) ;
 
@@ -81,7 +82,7 @@ grammar Slate;
 
  TEXT                : (IDENTIFIER (WHITESPACE|EOF))+ ;
 
- EXIT                : (COMMANDINDICATOR E X I T) ;
+ EXIT                : (COMMANDINDICATOR (Q U I T | E X I T)) ;
 
 /*
  * Parser Rules

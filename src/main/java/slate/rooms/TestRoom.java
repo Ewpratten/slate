@@ -1,6 +1,5 @@
 package slate.rooms;
 
-import slate.Guard;
 import slate.Inventory;
 import slate.bases.RoomBase;
 import slate.exceptions.ItemSizeException;
@@ -9,10 +8,6 @@ import slate.items.TestItem;
 public class TestRoom extends RoomBase {
 
     public TestRoom() {
-
-
-        //Put a guard here for now
-        guards.add(new Guard(this));
 
         name = "Test room";
         room_info = "This room may change dimensions randomly";

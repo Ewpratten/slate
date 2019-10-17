@@ -10,12 +10,12 @@ Shout: For when you're quite fed up with the situation.
 Usage: SHOUT MESSAGE
 ----------------
 Pick Up: Literally steal things.
-Usage: PICK UP/TAKE ITEM NAME
+Usage: PICK UP/TAKE NUMBER? ITEM NAME
 ----------------
 Leave: Leave items, so that you can free up space for literally stealing things.
 If pockets are currently open, places items on floor of room.
 Otherwise places items form pockets to current active container.
-Usage: LEAVE/PUT ITEM NAME
+Usage: LEAVE/PUT NUMBER? ITEM NAME
 ----------------
 Check Doors: Lists available room paths.
 Usage: CHECK DOORS

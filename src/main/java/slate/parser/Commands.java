@@ -1,6 +1,9 @@
 package slate.parser;
 
-import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.HashMap;
 import java.util.Scanner;
@@ -9,6 +12,23 @@ public class Commands {
 
     //Scanner for player input
     static Scanner sc = new Scanner(System.in);
+    //Map contexts
+    static HashMap<Integer, Context.ContextInterface> contextMap = new HashMap<Integer, Context.ContextInterface>();
+    static {
+        contextMap.put(SlateParser.SAY, new Context.SayContext());
+        contextMap.put(SlateParser.SHOUT, new Context.ShoutContext());
+        contextMap.put(SlateParser.PICKUP, new Context.PickupContext());
+        contextMap.put(SlateParser.LEAVE, new Context.LeaveContext());
+        contextMap.put(SlateParser.HELP, new Context.HelpContext());
+        contextMap.put(SlateParser.EXIT, new Context.ExitContext());
+        contextMap.put(SlateParser.CHECKDOORS, new Context.CheckDoorsContext());
+        contextMap.put(SlateParser.SEARCH, new Context.SearchContext());
+        contextMap.put(SlateParser.MOVE, new Context.MoveContext());
+        contextMap.put(SlateParser.WAIT, new Context.WaitContext());
+        contextMap.put(SlateParser.PEEK, new Context.PeekContext());
+        contextMap.put(SlateParser.OPEN, new Context.OpenContext());
+        contextMap.put(SlateParser.CLOSE, new Context.CloseContext());
+    }
 
     //Get player's input (Static, call with Commands.getInput();)
     public static Command[] getInput(){
@@ -37,22 +57,6 @@ public class Commands {
 
         //Determine Command type
         int type = parser.getCurrentToken().getType();
-
-        //Map contexts
-        HashMap<Integer, Context.ContextInterface> contextMap = new HashMap<Integer, Context.ContextInterface>();
-        contextMap.put(SlateParser.SAY, new Context.SayContext());
-        contextMap.put(SlateParser.SHOUT, new Context.ShoutContext());
-        contextMap.put(SlateParser.PICKUP, new Context.PickupContext());
-        contextMap.put(SlateParser.LEAVE, new Context.LeaveContext());
-        contextMap.put(SlateParser.HELP, new Context.HelpContext());
-        contextMap.put(SlateParser.EXIT, new Context.ExitContext());
-        contextMap.put(SlateParser.CHECKDOORS, new Context.CheckDoorsContext());
-        contextMap.put(SlateParser.SEARCH, new Context.SearchContext());
-        contextMap.put(SlateParser.MOVE, new Context.MoveContext());
-        contextMap.put(SlateParser.WAIT, new Context.WaitContext());
-        contextMap.put(SlateParser.PEEK, new Context.PeekContext());
-        contextMap.put(SlateParser.OPEN, new Context.OpenContext());
-        contextMap.put(SlateParser.CLOSE, new Context.CloseContext());
 
         //Get context
         ParserRuleContext context = contextMap.get(type)!=null?contextMap.get(type).open(parser):null;

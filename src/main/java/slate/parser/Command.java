@@ -1,12 +1,5 @@
 package slate.parser;
 
-import org.antlr.v4.runtime.ParserRuleContext;
-import slate.App;
-import slate.Inventory;
-import slate.bases.RoomBase;
-import slate.exceptions.ItemNotFoundException;
-import slate.exceptions.ItemSizeException;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -14,10 +7,19 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-//Command Object
-public class Command {
+import org.antlr.v4.runtime.ParserRuleContext;
 
-    // Reading in Command Usage Data
+import slate.App;
+import slate.Guard;
+import slate.Inventory;
+import slate.bases.RoomBase;
+import slate.exceptions.ItemNotFoundException;
+import slate.exceptions.ItemSizeException;
+
+//Command Object
+public class Command{
+
+    //Reading in Command Usage Data
     static File file;
     static byte[] data;
     static String[] usageContent;
@@ -26,13 +28,13 @@ public class Command {
 
     static {
         try {
-            // Get file from res folder
+            //Get file from res folder
             file = new File(Commands.class.getResource("../../commands/CommandUsage.slateinfo").toURI());
 
-            // Place all bytes into array
+            //Place all bytes into array
             data = Files.readAllBytes(file.toPath());
 
-            // Create an array of lines from byte array
+            //Create an array of lines from byte array
             usageContent = new String(data, "UTF-8").split("\\r?\\n");
         } catch (IOException e) {
             e.printStackTrace();
@@ -42,7 +44,7 @@ public class Command {
             e.printStackTrace();
         }
 
-        // Usage information for each command
+        //Usage information for each command
         usagesMap.put(SlateParser.HELP, usageContent[3]);
         usagesMap.put(SlateParser.SAY, usageContent[6]);
         usagesMap.put(SlateParser.SHOUT, usageContent[9]);
@@ -51,10 +53,11 @@ public class Command {
         usagesMap.put(SlateParser.CHECKDOORS, usageContent[21]);
         usagesMap.put(SlateParser.PEEK, usageContent[23]);
         usagesMap.put(SlateParser.MOVE, usageContent[26]);
-        usagesMap.put(SlateParser.SEARCH, usageContent[29]);
-        usagesMap.put(SlateParser.OPEN, usageContent[32]);
-        usagesMap.put(SlateParser.CLOSE, usageContent[35]);
-        usagesMap.put(SlateParser.EXIT, usageContent[38]);
+        usagesMap.put(SlateParser.WAIT, usageContent[29]);
+        usagesMap.put(SlateParser.SEARCH, usageContent[32]);
+        usagesMap.put(SlateParser.OPEN, usageContent[35]);
+        usagesMap.put(SlateParser.CLOSE, usageContent[38]);
+        usagesMap.put(SlateParser.EXIT,  usageContent[41]);
     }
 
     int type;
@@ -62,166 +65,130 @@ public class Command {
     SlateParser parser;
     SlateBaseVisitor visitor = new SlateBaseVisitor();
 
-    // Constructor
-    Command(int type, ParserRuleContext context, SlateParser parser) {
+    //Constructor
+    Command(int type,  ParserRuleContext context, SlateParser parser) {
         this.type = type;
         this.context = context;
         this.parser = parser;
     }
 
-    // Validate User Input
-    public boolean validate() {
+    //Validate User Input
+    public boolean validate(){
 
-        // If Valid Command, check syntax
-        if (context != null) {
+        //If Valid Command, check syntax
+        if(context!=null) {
             visitor.visit(context);
 
-            // Returns true if no errors found
-            if (context.exception == null) {
+            //Returns true if no errors found
+            if (context.exception == null){
                 return true;
             }
 
-            // Display Error Message
+            //Display Error Message
             printUsage();
             return false;
         }
 
-        // Display Error Message
-        System.out.println(
-                "Hmm... I don't know how to do that. For a list of commands and their usages, I should type help.");
+        //Display Error Message
+        System.out.println("Hmm... I don't know how to do that. For a list of commands and their usages, I should type help.");
         return false;
     }
 
-    public void execute() {
+    public void execute(){
 
-        // Link types to commands
+        //Link types to commands
         HashMap<Integer, CommInterface> commandMap = new HashMap<Integer, CommInterface>();
 
-        commandMap.put(SlateParser.PICKUP,
-                new PickupCommand((context.getToken(SlateParser.TEXT, 0)) != null
-                        ? (context.getToken(SlateParser.TEXT, 0).getText())
-                        : null));
-        commandMap.put(SlateParser.LEAVE,
-                new LeaveCommand((context.getToken(SlateParser.TEXT, 0)) != null
-                        ? (context.getToken(SlateParser.TEXT, 0).getText())
-                        : null));
-        commandMap.put(SlateParser.SAY,
-                new SayCommand((context.getToken(SlateParser.TEXT, 0)) != null
-                        ? (context.getToken(SlateParser.TEXT, 0)).getText()
-                        : null));
-        commandMap.put(SlateParser.SHOUT,
-                new ShoutCommand((context.getToken(SlateParser.TEXT, 0)) != null
-                        ? (context.getToken(SlateParser.TEXT, 0)).getText()
-                        : null));
-        commandMap.put(SlateParser.MOVE,
-                new MoveCommand((context.getToken(SlateParser.TEXT, 0)) != null
-                        ? (context.getToken(SlateParser.TEXT, 0)).getText()
-                        : null));
-        commandMap.put(SlateParser.PEEK,
-                new PeekCommand((context.getToken(SlateParser.TEXT, 0)) != null
-                        ? (context.getToken(SlateParser.TEXT, 0)).getText()
-                        : null));
-        commandMap.put(SlateParser.OPEN,
-                new OpenCommand((context.getToken(SlateParser.TEXT, 0)) != null
-                        ? (context.getToken(SlateParser.TEXT, 0)).getText()
-                        : null));
-        commandMap.put(SlateParser.CHECKDOORS, new CheckDoorsCommand(null));
-        commandMap.put(SlateParser.SEARCH, new SearchCommand(null));
-        commandMap.put(SlateParser.CLOSE, new CloseCommand(null));
-        commandMap.put(SlateParser.HELP, new HelpCommand(null));
-        commandMap.put(SlateParser.EXIT, new ExitCommand(null));
+        commandMap.put(SlateParser.PICKUP, new PickupCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
+        commandMap.put(SlateParser.LEAVE, new LeaveCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
+        commandMap.put(SlateParser.SAY, new SayCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
+        commandMap.put(SlateParser.SHOUT, new ShoutCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
+        commandMap.put(SlateParser.MOVE, new MoveCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
+        commandMap.put(SlateParser.PEEK, new PeekCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
+        commandMap.put(SlateParser.OPEN, new OpenCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
+        commandMap.put(SlateParser.WAIT, new WaitCommand());
+        commandMap.put(SlateParser.CHECKDOORS, new CheckDoorsCommand());
+        commandMap.put(SlateParser.SEARCH, new SearchCommand());
+        commandMap.put(SlateParser.CLOSE, new CloseCommand());
+        commandMap.put(SlateParser.HELP, new HelpCommand());
+        commandMap.put(SlateParser.EXIT, new ExitCommand());
 
+        //Execute proper command
         CommInterface command = commandMap.get(type);
-
-        // Check returns data value if data required, otherwise returns "".
-        if (command.getData() != null)
-            command.execute();
+        command.execute();
     }
 
-    // Prints usage data for current command
-    void printUsage() {
+    //Prints usage data for current command
+    void printUsage(){
         System.out.printf("Bad Syntax, %s\n", usagesMap.get(type));
     }
 
-    // Get command context
-    public ParserRuleContext getContext() {
+    //Get command context
+    public ParserRuleContext getContext(){
         return context;
     }
 
-    // Command Interface
-    interface CommInterface {
+    //Command Interface
+    interface CommInterface{
 
-        // All Commands Must have an Execute Method
+        //All Commands Must have an Execute Method
         public void execute();
-
-        public Object getData();
     }
 
-    // SAY
-    class SayCommand implements CommInterface {
+    //SAY
+    class SayCommand implements CommInterface{
 
         String data;
 
-        SayCommand(String data) {
+        SayCommand(String data){
             this.data = data;
         }
 
         @Override
-        public void execute() {
+        public void execute(){
 
-            // Print message
+            //Print message
             System.out.println(data);
         }
-
-        @Override
-        public Object getData() {
-            return data;
-        }
     }
 
-    // SHOUT
-    class ShoutCommand implements CommInterface {
+    //SHOUT
+    class ShoutCommand implements CommInterface{
 
         String data;
 
-        ShoutCommand(String data) {
+        ShoutCommand(String data){
             this.data = data;
         }
 
         @Override
-        public void execute() {
+        public void execute(){
 
-            // Print message
+            //Print message
             System.out.println((data).toUpperCase());
         }
-
-        @Override
-        public Object getData() {
-            return data;
-        }
-
     }
 
-    // PICK UP ITEM
-    class PickupCommand implements CommInterface {
+    //PICK UP ITEM
+    class PickupCommand implements CommInterface{
 
         String data;
 
-        PickupCommand(String data) {
+        PickupCommand(String data){
             this.data = data;
         }
 
         @Override
         public void execute() {
 
-            // If current active inventory is not player's pockets
-            if (game.player.getFocused_inventory() != game.player.getInventory()) {
+            //If current active inventory is not player's pockets
+            if (game.player.getFocused_inventory()!=game.player.getInventory()) {
 
-                // Get item data in current active inventory
+                //Get item data in current active inventory
                 Inventory.Stack[] itemInfo = game.player.getFocused_inventory().getAllNames();
                 String itemName = data.substring(data.indexOf(" ") + 1);
 
-                // Get number of items to take from optional player input
+                //Get number of items to take from optional player input
                 int quantity;
                 try {
                     quantity = Integer.parseInt(data.substring(0, data.indexOf(" ")));
@@ -230,98 +197,89 @@ public class Command {
                     itemName = data;
                 }
 
-                // Find item match
+                //Find item match
                 for (Inventory.Stack item : itemInfo) {
                     if (item.name.equalsIgnoreCase(itemName)) {
 
-                        /*
-                         * Transfer items Keep track of how many are taken
-                         */
+                        /*Transfer items
+                        Keep track of how many are taken*/
                         int numTaken = 0;
                         for (int i = 0; i < quantity; i++) {
 
-                            // If any of this item are remaining in the container
+                            //If any of this item are remaining in the container
                             if (item.count > 0) {
-
-                                // Remove from current active inventory
-                                item.count -= 1;
                                 try {
 
-                                    // Add to player's pockets
-                                    game.player.getInventory().addItem(item.name,
-                                            game.player.getFocused_inventory().getItem(item.name));
+                                    //Add to player's pockets
+                                    game.player.getInventory().addItem(item.name, game.player.getFocused_inventory().getItem(item.name));
 
-                                    // If pockets become full
+                                //If pockets become full
                                 } catch (ItemSizeException e) {
 
-                                    // If some were taken
-                                    if (numTaken > 0) {
-                                        System.out.println("There isn't enough room in my pockets, so I take "
-                                                + numTaken + " instead.");
+                                    //If some were taken
+                                    if(numTaken>0){
+                                        System.out.println("There isn't enough room in my pockets, so I take " + numTaken + " instead.");
                                         return;
                                     }
 
-                                    // If none were taken, because pockets were too full
+                                    //If none were taken, because pockets were too full
                                     System.out.println("There's no space left in my pockets!");
                                 } catch (ItemNotFoundException e) {
                                     e.printStackTrace();
                                 }
+
+                                //Remove from current active inventory
+                                item.count -= 1;
                                 numTaken++;
                             } else {
 
-                                // Some items were taken, so print out number taken
+                                //Some items were taken, so print out number taken
                                 System.out.println("There isn't enough of these, so I take " + numTaken + " instead.");
                                 return;
                             }
                         }
 
-                        // Best case scenario, all desired items are taken
+                        //Best case scenario, all desired items are taken
                         System.out.println("I take " + quantity + " " + itemName + ".");
                         return;
                     }
                 }
 
-                // Desired item type does not exist
+                //Desired item type does not exist
                 System.out.println("I can't find any of those in here...");
                 return;
             }
 
-            // Tried to take an item from pockets
+            //Tried to take an item from pockets
             System.out.println("I can't take things from myself!");
         }
-
-        @Override
-        public Object getData() {
-            return data;
-        }
-
     }
 
-    // LEAVE ITEM
-    class LeaveCommand implements CommInterface {
+    //LEAVE ITEM
+    class LeaveCommand implements CommInterface{
 
         String data;
 
-        LeaveCommand(String data) {
+        LeaveCommand(String data){
             this.data = data;
         }
 
         @Override
         public void execute() {
 
-            // Targeted inventory is the room's root inventory by default
+            //Targeted inventory is the room's root inventory by default
             Inventory target = game.current_map.nav.getCurrentRoom().getRoot_inventory();
 
-            // If current active inventory is not the player's pockets, set it as the target
-            if (game.player.getFocused_inventory() != game.player.getInventory()) {
+            //If current active inventory is not the player's pockets, set it as the target
+            if (game.player.getFocused_inventory()!=game.player.getInventory()) {
                 target = game.player.getFocused_inventory();
             }
 
-            // Get item info in player's pockets
+            //Get item info in player's pockets
             Inventory.Stack[] itemInfo = game.player.getInventory().getAllNames();
             String itemName = data.substring(data.indexOf(" ") + 1);
 
-            // Get number of items to take from optional player input
+            //Get number of items to take from optional player input
             int quantity;
             try {
                 quantity = Integer.parseInt(data.substring(0, data.indexOf(" ")));
@@ -330,341 +288,291 @@ public class Command {
                 itemName = data;
             }
 
-            // Find item match
+            //Find item match
             for (Inventory.Stack item : itemInfo) {
                 if (item.name.equalsIgnoreCase(itemName)) {
 
-                    // Keep track of number of items put in
+                    //Keep track of number of items put in
                     int numPut = 0;
                     for (int i = 0; i < quantity; i++) {
 
-                        // If player has any more of the item
+                        //If player has any more of the item
                         if (item.count > 0) {
 
-                            // Remove from pockets
-                            item.count -= 1;
                             try {
 
-                                // Put item into targeted inventory
+                                //Put item into targeted inventory
                                 target.addItem(item.name, game.player.getInventory().getItem(item.name));
 
-                                // If container full
+                            //If container full
                             } catch (ItemSizeException e) {
 
-                                // If some items fit in
-                                if (numPut > 0) {
-                                    System.out.println("There's not enough space inside the " + target.getName()
-                                            + ", so I leave " + numPut + " instead.");
+                                //If some items fit in
+                                if(numPut>0){
+                                    System.out.println("There's not enough space inside the " + target.getName() +", so I leave "+ numPut +" instead.");
                                     return;
                                 }
 
-                                // If no items fit in
-                                System.out
-                                        .println("There's no space inside the " + target.getName() + " to put this...");
+                                //If no items fit in
+                                System.out.println("There's no space inside the " + target.getName() +" to put this...");
                                 return;
                             } catch (ItemNotFoundException e) {
                                 e.printStackTrace();
                             }
+
+                            //Remove from pockets
+                            item.count -= 1;
                             numPut++;
                         } else {
 
-                            // Player was only able to put some of the desired item into the container
+                            //Player was only able to put some of the desired item into the container
                             System.out.println("I don't have enough of these, so I leave " + numPut + " instead.");
                             return;
                         }
                     }
 
-                    // Best case scenario, player places the desired quantity into the target
-                    // successfully
+                    //Best case scenario, player places the desired quantity into the target successfully
                     System.out.println("I leave " + quantity + " " + itemName + ".");
                     return;
                 }
             }
 
-            // Player does not have any of this item
+            //Player does not have any of this item
             System.out.println("I can't find any of those in my pockets...");
         }
-
-        @Override
-        public Object getData() {
-            return data;
-        }
-
     }
 
-    // PRINT HELP
-    class HelpCommand implements CommInterface {
-
-        String data;
-
-        HelpCommand(String data) {
-            this.data = data;
-        }
+    //PRINT HELP
+    class HelpCommand implements CommInterface{
 
         @Override
-        public void execute() {
+        public void execute(){
 
-            // Print help, line by line
-            for (int i = 0; i < usageContent.length; i++) {
-                System.out.println(usageContent[i]);
-            }
-        }
-
-        @Override
-        public Object getData() {
-            return "";
+            //Print help, line by line
+           for(int i = 0; i < usageContent.length; i++){
+               System.out.println(usageContent[i]);
+           }
         }
     }
 
-    // SEARCH
-    class SearchCommand implements CommInterface {
-
-        String data;
-
-        SearchCommand(String data) {
-            this.data = data;
-        }
+    //SEARCH
+    class SearchCommand implements CommInterface{
 
         @Override
-        public void execute() {
+        public void execute(){
 
-            // Search Room
-            if (game.player.getFocused_inventory() == game.current_map.nav.getCurrentRoom().getRoot_inventory()) {
+            //Search Room
+            if(game.player.getFocused_inventory() == game.current_map.nav.getCurrentRoom().getRoot_inventory()) {
 
-                // Get Loose Items
+                //Get Loose Items
                 Inventory.Stack[] items = game.player.getFocused_inventory().getAllNames();
                 if (items.length > 0) {
-                    System.out.printf("After a quick search of the room, I find the following %d item%s:\n",
-                            items.length, items.length > 1 ? "s" : "");
+                    System.out.printf("After a quick search of the room, I find the following %d item%s:\n", items.length, items.length > 1 ? "s" : "");
                     for (Inventory.Stack item : items) {
                         System.out.println(String.format("- %s x%d", item.name, item.count));
                     }
-                } else {
+                }else{
                     System.out.println("I can't find any loose items here.");
                 }
 
                 ArrayList<Inventory> inventories = game.current_map.nav.getCurrentRoom().getInventories();
-                // Get Open Inventories
+                //Get Open Inventories
                 if (inventories.size() > 0) {
-                    System.out.printf("I find %d container%s:\n", inventories.size(),
-                            inventories.size() > 1 ? "s" : "");
+                    System.out.printf("I find %d container%s:\n", inventories.size(), inventories.size() > 1 ? "s" : "");
                     for (Inventory inv : inventories) {
                         System.out.println("- " + inv.getName());
                     }
                 }
-            } else {
-                // Search container
+            }else{
+                //Search container
 
-                // Get Loose Items
+                //Get Loose Items
                 Inventory.Stack[] items = game.player.getFocused_inventory().getAllNames();
                 if (items.length > 0) {
-                    System.out.printf("Rummaging through the %s, I find the following %d item%s:\n",
-                            game.player.getFocused_inventory().getName(), items.length, items.length > 1 ? "s" : "");
+                    System.out.printf("Rummaging through the %s, I find the following %d item%s:\n", game.player.getFocused_inventory().getName(), items.length, items.length > 1 ? "s" : "");
                     for (Inventory.Stack item : items) {
                         System.out.println(String.format("- %s x%d", item.name, item.count));
                     }
                 }
             }
         }
-
-        @Override
-        public Object getData() {
-            return "";
-        }
     }
 
-    // MOVE
-    class MoveCommand implements CommInterface {
+    //MOVE
+    class MoveCommand implements CommInterface{
 
         String data;
 
-        MoveCommand(String data) {
+        MoveCommand(String data){
             this.data = data;
         }
 
         @Override
-        public void execute() {
+        public void execute(){
 
-            // Check for room
-            for (RoomBase r : game.current_map.nav.getCurrentRoom().getAttached_rooms()) {
+            //Check for room
+            for(RoomBase r: game.current_map.nav.getCurrentRoom().getAttached_rooms()){
 
-                // Go to correct room
-                if (r.getName().equalsIgnoreCase(data)) {
+                //Go to correct room
+                if(r.getName().equalsIgnoreCase(data)) {
                     game.current_map.nav.moveTo(r);
+                    System.out.println("I move into the " + r.getName());
+                    System.out.println(r.getRoomInfo());
 
-                    // Set focused inventory to room root
-                    game.player.setFocused_inventory(game.current_map.nav.getCurrentRoom().getRoot_inventory());
+                    //Set focused inventory to room root
+                    game.player.setFocused_inventory(r.getRoot_inventory());
+
+                    //Move Guards
+                    for (RoomBase room : game.current_map.getAllRooms()) {
+                        for (Guard g : room.getGuards()) {
+                            g.patrol();
+                        }
+                    }
+                    return;
+                }
+            }
+
+            //Room not found
+            System.out.println("There's no access to that room from here...");
+        }
+    }
+
+    //PEEK
+    class PeekCommand implements CommInterface{
+
+        String data;
+
+        PeekCommand(String data){
+            this.data = data;
+        }
+
+        @Override
+        public void execute(){
+
+            //Check for room
+            for(RoomBase r: game.current_map.nav.getCurrentRoom().getAttached_rooms()){
+
+                //Peek correct room
+                if(r.getName().equalsIgnoreCase(data))System.out.println(r.getPeekInfo());
+
+                //Check for guards
+                if(r.getGuards().size()>0){
+                    System.out.println(String.format("There %s %d guard%s in there!", (r.getGuards().size()>1)?"are":"is", r.getGuards().size(), (r.getGuards().size()>1)?"s":""));
                     return;
                 }
 
-            }
-
-            // Room not found
-            System.out.println("There's no access to that room from here...");
-        }
-
-        @Override
-        public Object getData() {
-            return data;
-        }
-    }
-
-    // PEEK
-    class PeekCommand implements CommInterface {
-
-        String data;
-
-        PeekCommand(String data) {
-            this.data = data;
-        }
-
-        @Override
-        public void execute() {
-
-            // Check for room
-            for (RoomBase r : game.current_map.nav.getCurrentRoom().getAttached_rooms()) {
-
-                // Peek correct room
-                if (r.getName().equalsIgnoreCase(data))
-                    System.out.println(r.getPeekInfo());
+                System.out.println("Looks all clear...");
                 return;
             }
 
-            // Room not found
+            //Room not found
             System.out.println("I can't see that room from here...");
         }
-
-        @Override
-        public Object getData() {
-            return data;
-        }
     }
 
-    // CHECK DOORS
-    class CheckDoorsCommand implements CommInterface {
-
-        String data;
-
-        CheckDoorsCommand(String data) {
-            this.data = data;
-        }
+    //WAIT
+    class WaitCommand implements CommInterface{
 
         @Override
-        public void execute() {
+        public void execute(){
 
-            // Get possible paths
-            ArrayList<RoomBase> rooms = game.current_map.nav.getCurrentRoom().getAttached_rooms();
-
-            // Check for rooms attached to current room
-            System.out.printf("I look around the room and see %d door%s:\n", rooms.size(), rooms.size() > 1 ? "s" : "");
-            for (RoomBase r : rooms) {
-                System.out.println("- " + r.getName());
+            //Move Guards
+            System.out.println("I'll wait here for now...");
+            for(RoomBase r: game.current_map.getAllRooms()){
+                for(Guard g: r.getGuards()){
+                    g.patrol();
+                }
             }
         }
-
-        @Override
-        public Object getData() {
-            return "";
-        }
     }
 
-    // OPEN INVENTORY
-    class OpenCommand implements CommInterface {
+    //CHECK DOORS
+    class CheckDoorsCommand implements CommInterface{
+
+        @Override
+        public void execute(){
+
+            //Get possible paths
+            ArrayList<RoomBase> rooms = game.current_map.nav.getCurrentRoom().getAttached_rooms();
+
+           //Check for rooms attached to current room
+            System.out.printf("I look around the room and see %d door%s:\n", rooms.size(), rooms.size()>1?"s":"");
+            for(RoomBase r: rooms) {
+                System.out.println("- " + r.getName());
+            }
+         }
+    }
+
+    //OPEN INVENTORY
+    class OpenCommand implements CommInterface{
         String data;
 
-        OpenCommand(String data) {
+        OpenCommand(String data){
             this.data = data;
         }
 
         @Override
-        public void execute() {
+        public void execute(){
 
-            // List of inventories in the room
+            //List of inventories in the room
             ArrayList<Inventory> inventories = game.current_map.nav.getCurrentRoom().getInventories();
 
-            // Check if input matches
-            for (Inventory inventory : inventories) {
-                if (inventory.getName().equalsIgnoreCase(data)) {
+            //Check if input matches
+            for(Inventory inventory : inventories){
+                if(inventory.getName().equalsIgnoreCase(data)){
 
-                    // Set focus to targeted inventory
+                    //Set focus to targeted inventory
                     System.out.println("I open up the " + inventory.getName());
                     game.player.setFocused_inventory(inventory);
                     return;
                 }
             }
 
-            // Player's pockets
-            if (data.equalsIgnoreCase("Pockets")) {
+            //Player's pockets
+            if(data.equalsIgnoreCase("Pockets")){
 
-                // Set focus to targeted inventory
+                //Set focus to targeted inventory
                 System.out.println("I open up my pockets.");
                 game.player.setFocused_inventory(game.player.getInventory());
                 return;
             }
 
-            // Container not found
+            //Container not found
             System.out.println("I can't find that container, maybe I just imagined it...");
-        }
-
-        @Override
-        public Object getData() {
-            return data;
         }
     }
 
-    // CLOSE INVENTORY
-    class CloseCommand implements CommInterface {
-
-        String data;
-
-        CloseCommand(String data) {
-            this.data = data;
-        }
+    //CLOSE INVENTORY
+    class CloseCommand implements CommInterface{
 
         @Override
-        public void execute() {
+        public void execute(){
 
-            // Only close if not in room root
-            if (game.player.getFocused_inventory() != game.current_map.nav.getCurrentRoom().getRoot_inventory()) {
+            //Only close if not in room root
+            if(game.player.getFocused_inventory()!=game.current_map.nav.getCurrentRoom().getRoot_inventory()) {
 
-                // Close Focused Inventory
+                //Close Focused Inventory
                 System.out.println("I close the " + game.player.getFocused_inventory().getName());
 
-                // Reopen Room Root
+                //Reopen Room Root
                 game.player.setFocused_inventory(game.current_map.nav.getCurrentRoom().getRoot_inventory());
                 return;
             }
 
-            // In room root
+            //In room root
             System.out.println("I haven't left anything open...");
-        }
-
-        @Override
-        public Object getData() {
-            return "";
         }
     }
 
-    // EXIT GAME
-    class ExitCommand implements CommInterface {
-
-        String data;
-
-        ExitCommand(String data) {
-            this.data = data;
-        }
+    //EXIT GAME
+    class ExitCommand implements CommInterface{
 
         @Override
-        public void execute() {
+        public void execute(){
 
-            // Exit
+            //Exit
             System.out.println("You are a terrible person.");
             System.exit(0);
-        }
-
-        @Override
-        public Object getData() {
-            return "";
         }
     }
 }

@@ -32,6 +32,8 @@ public class GameMap extends MapBase {
         mini_lab_storage_shared = new StorageRoom();
         mini_lab_elevator = new Elevator();
 
+        
+
         // Name each room (if needed)
         start_hall_left.setName("Long hallway");
         start_hall_right.setName("Short hallway");
@@ -60,6 +62,10 @@ public class GameMap extends MapBase {
 
         // Set the starting room
         nav.setDefaultRoom(starting_room);
+
+        // Register rooms
+        registerRooms(start_hall_left, start_hall_right, starting_room, mini_lab_1, mini_lab_2, mini_lab_storage,
+                mini_lab_storage_shared, mini_lab_elevator);
     }
 
     @Override

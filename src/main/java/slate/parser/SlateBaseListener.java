@@ -112,6 +112,18 @@ public class SlateBaseListener implements SlateListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterWaitcomm(SlateParser.WaitcommContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitWaitcomm(SlateParser.WaitcommContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterHelpcomm(SlateParser.HelpcommContext ctx) { }
 	/**
 	 * {@inheritDoc}

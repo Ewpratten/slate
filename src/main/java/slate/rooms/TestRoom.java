@@ -8,9 +8,10 @@ import slate.items.TestItem;
 public class TestRoom extends RoomBase {
 
     public TestRoom() {
-        this.name = "Test room";
-        this.room_info = "This room may change dimensions randomly";
-        this.peek_info = "Looks odd...";
+
+        name = "Test room";
+        room_info = "This room may change dimensions randomly";
+        peek_info = "Looks odd...";
 
         //Root Inventory
 

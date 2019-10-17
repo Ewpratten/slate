@@ -1,5 +1,6 @@
 package slate.bases;
 
+import slate.Guard;
 import slate.Inventory;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ public class RoomBase {
     ArrayList<ItemBase> items = new ArrayList<ItemBase>();
     ArrayList<Inventory> inventories = new ArrayList<Inventory>();
     protected ArrayList<RoomBase> attached_rooms = new ArrayList<RoomBase>();
+    public ArrayList<Guard> guards = new ArrayList<Guard>();
     public boolean visited = false;
 
     protected String name, peek_info, room_info = "";
@@ -37,9 +39,10 @@ public class RoomBase {
      */
     public RoomBase(RoomBase room) {
         root_inventory = room.root_inventory;
-        items = new ArrayList<ItemBase>(room.items);
+        items = room.items;
         inventories = room.inventories;
-        attached_rooms = new ArrayList<RoomBase>(room.attached_rooms);
+        guards = room.guards;
+        attached_rooms = room.attached_rooms;
         visited = room.visited;
         name = room.name;
         peek_info = room.peek_info;
@@ -92,6 +95,13 @@ public class RoomBase {
     public boolean equals(RoomBase room) {
         return room.getName() == getName() && room.getRoomInfo() == getRoomInfo() && room.getPeekInfo() == getPeekInfo()
                 && attached_rooms.equals(room.attached_rooms) && items.equals(room.items) && visited == room.visited;
+    }
+
+    /*
+     * Get guards
+     */
+    public ArrayList<Guard> getGuards(){
+        return guards;
     }
 
     public Inventory getRoot_inventory() {

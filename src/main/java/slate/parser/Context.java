@@ -73,6 +73,12 @@ public class Context {
         public ParserRuleContext open(SlateParser parser) { return parser.movecomm(); }
     }
 
+    //WAIT
+    static class WaitContext implements ContextInterface {
+        @Override
+        public ParserRuleContext open(SlateParser parser) { return parser.waitcomm(); }
+    }
+
     //OPEN
     static class OpenContext implements ContextInterface{
         @Override

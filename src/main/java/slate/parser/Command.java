@@ -2,6 +2,7 @@ package slate.parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import slate.App;
+import slate.Guard;
 import slate.Inventory;
 import slate.bases.RoomBase;
 import slate.exceptions.ItemNotFoundException;
@@ -51,10 +52,11 @@ public class Command{
         usagesMap.put(SlateParser.CHECKDOORS, usageContent[21]);
         usagesMap.put(SlateParser.PEEK, usageContent[23]);
         usagesMap.put(SlateParser.MOVE, usageContent[26]);
-        usagesMap.put(SlateParser.SEARCH, usageContent[29]);
-        usagesMap.put(SlateParser.OPEN, usageContent[32]);
-        usagesMap.put(SlateParser.CLOSE, usageContent[35]);
-        usagesMap.put(SlateParser.EXIT,  usageContent[38]);
+        usagesMap.put(SlateParser.WAIT, usageContent[29]);
+        usagesMap.put(SlateParser.SEARCH, usageContent[32]);
+        usagesMap.put(SlateParser.OPEN, usageContent[35]);
+        usagesMap.put(SlateParser.CLOSE, usageContent[38]);
+        usagesMap.put(SlateParser.EXIT,  usageContent[41]);
     }
 
     int type;
@@ -96,23 +98,23 @@ public class Command{
         //Link types to commands
         HashMap<Integer, CommInterface> commandMap = new HashMap<Integer, CommInterface>();
 
-        commandMap.put(SlateParser.PICKUP, new PickupCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0).getText()):null));
-        commandMap.put(SlateParser.LEAVE, new LeaveCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0).getText()):null));
+        commandMap.put(SlateParser.PICKUP, new PickupCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
+        commandMap.put(SlateParser.LEAVE, new LeaveCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
         commandMap.put(SlateParser.SAY, new SayCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
         commandMap.put(SlateParser.SHOUT, new ShoutCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
         commandMap.put(SlateParser.MOVE, new MoveCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
         commandMap.put(SlateParser.PEEK, new PeekCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
         commandMap.put(SlateParser.OPEN, new OpenCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
-        commandMap.put(SlateParser.CHECKDOORS, new CheckDoorsCommand(null));
-        commandMap.put(SlateParser.SEARCH, new SearchCommand(null));
-        commandMap.put(SlateParser.CLOSE, new CloseCommand(null));
-        commandMap.put(SlateParser.HELP, new HelpCommand(null));
-        commandMap.put(SlateParser.EXIT, new ExitCommand(null));
+        commandMap.put(SlateParser.WAIT, new WaitCommand());
+        commandMap.put(SlateParser.CHECKDOORS, new CheckDoorsCommand());
+        commandMap.put(SlateParser.SEARCH, new SearchCommand());
+        commandMap.put(SlateParser.CLOSE, new CloseCommand());
+        commandMap.put(SlateParser.HELP, new HelpCommand());
+        commandMap.put(SlateParser.EXIT, new ExitCommand());
 
+        //Execute proper command
         CommInterface command = commandMap.get(type);
-
-        //Check returns data value if data required, otherwise returns "".
-        if(command.getData()!=null)command.execute();
+        command.execute();
     }
 
     //Prints usage data for current command
@@ -130,7 +132,6 @@ public class Command{
 
         //All Commands Must have an Execute Method
         public void execute();
-        public Object getData();
     }
 
     //SAY
@@ -147,11 +148,6 @@ public class Command{
 
             //Print message
             System.out.println(data);
-        }
-
-        @Override
-        public Object getData(){
-            return data;
         }
     }
 
@@ -170,12 +166,6 @@ public class Command{
             //Print message
             System.out.println((data).toUpperCase());
         }
-
-        @Override
-        public Object getData(){
-            return data;
-        }
-
     }
 
     //PICK UP ITEM
@@ -217,9 +207,6 @@ public class Command{
 
                             //If any of this item are remaining in the container
                             if (item.count > 0) {
-
-                                //Remove from current active inventory
-                                item.count -= 1;
                                 try {
 
                                     //Add to player's pockets
@@ -239,6 +226,9 @@ public class Command{
                                 } catch (ItemNotFoundException e) {
                                     e.printStackTrace();
                                 }
+
+                                //Remove from current active inventory
+                                item.count -= 1;
                                 numTaken++;
                             } else {
 
@@ -262,12 +252,6 @@ public class Command{
             //Tried to take an item from pockets
             System.out.println("I can't take things from myself!");
         }
-
-        @Override
-        public Object getData(){
-            return data;
-        }
-
     }
 
     //LEAVE ITEM
@@ -314,8 +298,6 @@ public class Command{
                         //If player has any more of the item
                         if (item.count > 0) {
 
-                            //Remove from pockets
-                            item.count -= 1;
                             try {
 
                                 //Put item into targeted inventory
@@ -336,6 +318,9 @@ public class Command{
                             } catch (ItemNotFoundException e) {
                                 e.printStackTrace();
                             }
+
+                            //Remove from pockets
+                            item.count -= 1;
                             numPut++;
                         } else {
 
@@ -354,22 +339,10 @@ public class Command{
             //Player does not have any of this item
             System.out.println("I can't find any of those in my pockets...");
         }
-
-        @Override
-        public Object getData(){
-            return data;
-        }
-
     }
 
     //PRINT HELP
     class HelpCommand implements CommInterface{
-
-        String data;
-
-        HelpCommand(String data){
-            this.data = data;
-        }
 
         @Override
         public void execute(){
@@ -379,21 +352,10 @@ public class Command{
                System.out.println(usageContent[i]);
            }
         }
-
-        @Override
-        public Object getData(){
-            return "";
-        }
     }
 
     //SEARCH
     class SearchCommand implements CommInterface{
-
-        String data;
-
-        SearchCommand(String data){
-            this.data = data;
-        }
 
         @Override
         public void execute(){
@@ -433,11 +395,6 @@ public class Command{
                 }
             }
         }
-
-        @Override
-        public Object getData(){
-            return "";
-        }
     }
 
     //MOVE
@@ -456,22 +413,26 @@ public class Command{
             for(RoomBase r: game.current_map.nav.getCurrentRoom().getAttached_rooms()){
 
                 //Go to correct room
-                if(r.getName().equalsIgnoreCase(data)){
+                if(r.getName().equalsIgnoreCase(data)) {
                     game.current_map.nav.moveTo(r);
+                    System.out.println("I move into the " + r.getName());
+                    System.out.println(r.getRoomInfo());
 
                     //Set focused inventory to room root
-                    game.player.setFocused_inventory(game.current_map.nav.getCurrentRoom().getRoot_inventory());
+                    game.player.setFocused_inventory(r.getRoot_inventory());
+
+                    //Move Guards
+                    for (RoomBase room : game.current_map.getAllRooms()) {
+                        for (Guard g : room.getGuards()) {
+                            g.patrol();
+                        }
+                    }
+                    return;
                 }
-                return;
             }
 
             //Room not found
             System.out.println("There's no access to that room from here...");
-        }
-
-        @Override
-        public Object getData(){
-           return data;
         }
     }
 
@@ -492,27 +453,40 @@ public class Command{
 
                 //Peek correct room
                 if(r.getName().equalsIgnoreCase(data))System.out.println(r.getPeekInfo());
+
+                //Check for guards
+                if(r.getGuards().size()>0){
+                    System.out.println(String.format("There %s %d guard%s in there!", (r.getGuards().size()>1)?"are":"is", r.getGuards().size(), (r.getGuards().size()>1)?"s":""));
+                    return;
+                }
+
+                System.out.println("Looks all clear...");
                 return;
             }
 
             //Room not found
             System.out.println("I can't see that room from here...");
         }
+    }
+
+    //WAIT
+    class WaitCommand implements CommInterface{
 
         @Override
-        public Object getData(){
-            return data;
+        public void execute(){
+
+            //Move Guards
+            System.out.println("I'll wait here for now...");
+            for(RoomBase r: game.current_map.getAllRooms()){
+                for(Guard g: r.getGuards()){
+                    g.patrol();
+                }
+            }
         }
     }
 
     //CHECK DOORS
     class CheckDoorsCommand implements CommInterface{
-
-        String data;
-
-        CheckDoorsCommand(String data){
-            this.data = data;
-        }
 
         @Override
         public void execute(){
@@ -526,12 +500,6 @@ public class Command{
                 System.out.println("- " + r.getName());
             }
          }
-
-
-        @Override
-        public Object getData(){
-            return "";
-        }
     }
 
     //OPEN INVENTORY
@@ -571,22 +539,10 @@ public class Command{
             //Container not found
             System.out.println("I can't find that container, maybe I just imagined it...");
         }
-
-
-        @Override
-        public Object getData(){
-            return data;
-        }
     }
 
     //CLOSE INVENTORY
     class CloseCommand implements CommInterface{
-
-        String data;
-
-        CloseCommand(String data){
-            this.data = data;
-        }
 
         @Override
         public void execute(){
@@ -605,21 +561,10 @@ public class Command{
             //In room root
             System.out.println("I haven't left anything open...");
         }
-
-        @Override
-        public Object getData(){
-            return "";
-        }
     }
 
     //EXIT GAME
     class ExitCommand implements CommInterface{
-
-        String data;
-
-        ExitCommand(String data){
-            this.data = data;
-        }
 
         @Override
         public void execute(){
@@ -627,11 +572,6 @@ public class Command{
             //Exit
             System.out.println("You are a terrible person.");
             System.exit(0);
-        }
-
-        @Override
-        public Object getData(){
-            return "";
         }
     }
 }

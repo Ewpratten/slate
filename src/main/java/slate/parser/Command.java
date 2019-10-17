@@ -1,19 +1,20 @@
 package slate.parser;
 
-import org.antlr.v4.runtime.ParserRuleContext;
-import slate.App;
-import slate.Guard;
-import slate.Inventory;
-import slate.bases.RoomBase;
-import slate.exceptions.ItemNotFoundException;
-import slate.exceptions.ItemSizeException;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.antlr.v4.runtime.ParserRuleContext;
+
+import slate.App;
+import slate.Guard;
+import slate.Inventory;
+import slate.bases.RoomBase;
+import slate.exceptions.ItemNotFoundException;
+import slate.exceptions.ItemSizeException;
 
 //Command Object
 public class Command{

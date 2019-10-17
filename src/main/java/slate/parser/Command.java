@@ -1,20 +1,19 @@
 package slate.parser;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.antlr.v4.runtime.ParserRuleContext;
-
 import slate.App;
 import slate.Guard;
 import slate.Inventory;
 import slate.bases.RoomBase;
 import slate.exceptions.ItemNotFoundException;
 import slate.exceptions.ItemSizeException;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 //Command Object
 public class Command{
@@ -229,7 +228,6 @@ public class Command{
                                 }
 
                                 //Remove from current active inventory
-                                item.count -= 1;
                                 numTaken++;
                             } else {
 
@@ -320,8 +318,6 @@ public class Command{
                                 e.printStackTrace();
                             }
 
-                            //Remove from pockets
-                            item.count -= 1;
                             numPut++;
                         } else {
 
@@ -393,7 +389,11 @@ public class Command{
                     for (Inventory.Stack item : items) {
                         System.out.println(String.format("- %s x%d", item.name, item.count));
                     }
+                    return;
                 }
+
+                //Nothing Found
+                System.out.println("My pockets are empty...");
             }
         }
     }
@@ -520,6 +520,36 @@ public class Command{
             //Check if input matches
             for(Inventory inventory : inventories){
                 if(inventory.getName().equalsIgnoreCase(data)){
+
+                    //Locked Container
+                    if(inventory.getLocks()>0) {
+                        System.out.println(String.format("The %s has %d locks on it...", inventory.getName(), inventory.getLocks()));
+                        while (inventory.getLocks() > 0) {
+                            if (game.player.getInventory().getStorage().containsKey("Key")) {
+                                System.out.println("Should I use a key to unlock one of them? [Y/N]");
+                                if (Commands.sc.nextLine().toUpperCase().charAt(0) == 'Y') {
+                                    try{
+                                        game.player.getInventory().getItem("Key");
+                                    }catch(ItemNotFoundException e){
+                                        e.printStackTrace();
+                                    }
+                                    System.out.println("I remove one lock...");
+                                    inventory.unlock();
+
+                                    if (inventory.getLocks() == 0) {
+                                        System.out.println(String.format("I unlocked the %s.", inventory.getName()));
+                                        break;
+                                    }
+                                } else {
+                                    return;
+                                }
+                                System.out.println(String.format("The %s still has %d locks on it...", inventory.getName(), inventory.getLocks()));
+                                continue;
+                            }
+                            System.out.println("I don't have any keys, so I can't unlock it.");
+                            return;
+                        }
+                    }
 
                     //Set focus to targeted inventory
                     System.out.println("I open up the " + inventory.getName());

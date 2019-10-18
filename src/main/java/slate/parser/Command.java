@@ -8,10 +8,7 @@ import slate.bases.RoomBase;
 import slate.exceptions.ItemNotFoundException;
 import slate.exceptions.ItemSizeException;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,7 +16,6 @@ import java.util.HashMap;
 public class Command{
 
     //Reading in Command Usage Data
-    static File file;
     static byte[] data;
     static String[] usageContent;
     static HashMap<Integer, String> usagesMap = new HashMap<Integer, String>();
@@ -27,17 +23,13 @@ public class Command{
 
     static {
         try {
-            //Get file from res folder
-            file = new File(Commands.class.getResource("../../commands/CommandUsage.slateinfo").toURI());
 
             //Place all bytes into array
-            data = Files.readAllBytes(file.toPath());
+            data = App.class.getResourceAsStream("/commands/CommandUsage.slateinfo").readAllBytes();
 
             //Create an array of lines from byte array
             usageContent = new String(data, "UTF-8").split("\\r?\\n");
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
             e.printStackTrace();
         } catch (NullPointerException e) {
             e.printStackTrace();

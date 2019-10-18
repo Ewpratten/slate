@@ -22,6 +22,15 @@ public class App {
 
     App() {
 
+        //Print header at game start
+        System.out.println(" _____ _       ___ _____ _____ \n" +
+                "/  ___| |     / _ \\_   _|  ___|\n" +
+                "\\ `--.| |    / /_\\ \\| | | |__  \n" +
+                " `--. \\ |    |  _  || | |  __| \n" +
+                "/\\__/ / |____| | | || | | |___ \n" +
+                "\\____/\\_____/\\_| |_/\\_/ \\____/ \n" +
+                "-------------------------------------------------------");
+
         // Pint the map introduction text
         System.out.println(current_map.getDescription());
         System.out.println(current_map.nav.getCurrentRoom().getRoomInfo());

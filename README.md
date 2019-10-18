@@ -29,7 +29,7 @@ In _Slate_, you play as a disgruntled office drone at an advanced chemical resea
 _Slate_ has many features, and much of the design process can be explored on the [wiki](https://github.com/Java-prog-class-2019/slate/wiki).
 
 ## Requirements
-This program requires Java 11, and will fail without it. We recommend installing java 11 through [sdkman](), as it simplifies the installation and linking process. With Java 11 installed, the following command must be run in the root of the project to init our libraries:
+This program requires Java 11, and will fail without it. We recommend installing java 11 through [sdkman](https://sdkman.io/), as it simplifies the installation and linking process. With Java 11 installed, the following command must be run in the root of the project to init our libraries:
 ```sh
 # Linux
 ./gradlew assemble

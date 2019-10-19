@@ -3,6 +3,7 @@ package slate.rooms;
 import slate.Inventory;
 import slate.bases.RoomBase;
 import slate.exceptions.ItemSizeException;
+import slate.items.Key;
 import slate.items.TestItem;
 
 public class TestRoom extends RoomBase {
@@ -17,8 +18,11 @@ public class TestRoom extends RoomBase {
 
         //Ground Item
         TestItem item = new TestItem();
+        Key key = new Key();
         try {
             root_inventory.addItem(item.getName(), item);
+            root_inventory.addItem(key.getName(), key);
+            root_inventory.addItem(key.getName(), key);
         } catch (ItemSizeException e) {
             e.printStackTrace();
         }
@@ -32,6 +36,16 @@ public class TestRoom extends RoomBase {
             e.printStackTrace();
         }
         addInventory(testBox);
+
+        //Locked Box
+        Inventory lockedBox = new Inventory("Locked Box", 2,2);
+        item = new TestItem();
+        try {
+            lockedBox.addItem(item.getName(), item);
+        } catch (ItemSizeException e){
+            e.printStackTrace();
+        }
+        addInventory(lockedBox);
     }
 
 }

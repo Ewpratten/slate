@@ -4,7 +4,6 @@
 package slate;
 
 import slate.bases.MapBase;
-import slate.maps.GameMap;
 import slate.maps.TestMap;
 import slate.parser.Command;
 
@@ -15,13 +14,22 @@ public class App {
     public Player player = Player.getInstance();
 
     // Define the map to use
-    public MapBase current_map = new GameMap();
+    public MapBase current_map = new TestMap();
 
     public static void main(String[] args) {
         new App();
     }
 
     App() {
+
+        //Print header at game start
+        System.out.println(" _____ _       ___ _____ _____ \n" +
+                "/  ___| |     / _ \\_   _|  ___|\n" +
+                "\\ `--.| |    / /_\\ \\| | | |__  \n" +
+                " `--. \\ |    |  _  || | |  __| \n" +
+                "/\\__/ / |____| | | || | | |___ \n" +
+                "\\____/\\_____/\\_| |_/\\_/ \\____/ \n" +
+                "-------------------------------------------------------");
 
         // Pint the map introduction text
         System.out.println(current_map.getDescription());

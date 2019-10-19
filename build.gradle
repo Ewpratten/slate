@@ -56,3 +56,17 @@ test {
 run {
 standardInput = System.in
 }
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Slate',
+                'Implementation-Version': 1.0,
+                'Main-Class': 'slate.App'
+    }
+
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+

@@ -10,6 +10,12 @@ import java.util.Map.Entry;
 
 public class Inventory {
 
+    int locks;
+
+    public void unlock(){
+        locks--;
+    }
+
     /**
      * Collection of duplicate items
      */
@@ -49,6 +55,20 @@ public class Inventory {
     public Inventory(String name, int size) {
         this.name = name;
         this.max_size = size;
+        this.locks = 0;
+    }
+
+    /**
+     * Locked inventory
+     *
+     * @param name
+     * @param size
+     * @param locks
+     */
+    public Inventory(String name, int size, int locks) {
+        this.name = name;
+        this.max_size = size;
+        this.locks = locks;
     }
 
     /**
@@ -152,5 +172,13 @@ public class Inventory {
 
     public String getName(){
         return name;
+    }
+
+    public HashMap<String, ItemCollection> getStorage(){
+        return storage;
+    }
+
+    public int getLocks() {
+        return locks;
     }
 }

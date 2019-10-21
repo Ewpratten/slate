@@ -2,7 +2,7 @@
 A text-based adventure game by: [@exvacuum](https://github.com/exvacuum) and [@ewpratten](https://github.com/ewpratten)
 
 ## Objective
-In _Slate_, you play as a disgruntled office drone at an advanced chemical research center. Fed up with the constant existential dread and stress of a full-time job, your objective is to infiltrate the lab and retireive _the artifact_, an suitably-named artifact of great scientific importance. Gaining possession of this object will make you rich overnight.
+In _Slate_, you play as a disgruntled office drone at an advanced chemical research center. Fed up with the constant existential dread and stress of a full-time job, your objective is to infiltrate the lab and retireive _the artifact_, a suitably-named artifact of great scientific importance. Gaining possession of this object will make you rich overnight.
 
 ## Features
  - Rooms

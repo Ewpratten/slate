@@ -4,6 +4,7 @@
 package slate;
 
 import slate.bases.MapBase;
+import slate.maps.GameMap;
 import slate.maps.TestMap;
 import slate.parser.Command;
 
@@ -14,7 +15,7 @@ public class App {
     public Player player = Player.getInstance();
 
     // Define the map to use
-    public MapBase current_map = new TestMap();
+    public MapBase current_map = new GameMap();
 
     public static void main(String[] args) {
         new App();

@@ -28,6 +28,9 @@ public class RoomBase {
         return room_info;
     }
 
+    /**
+     * Empty, optional constructor to be overridden
+     */
     public RoomBase() {
 
     }
@@ -133,7 +136,15 @@ public class RoomBase {
         inventories.add(inventory);
     }
 
-    public void setName(String name) {
+    
+    /**
+     * Set the room name, and get the room. This can be used as an optional, chainable, constructor.
+     * 
+     * @param name Room name
+     * @return Current room
+     */
+    public RoomBase named(String name) {
         this.name = name;
+        return this;
     }
 }

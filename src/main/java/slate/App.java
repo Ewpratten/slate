@@ -54,6 +54,11 @@ public class App {
                 if(current_map.nav.getCurrentRoom().getGuards().size()>0){
                     System.out.println("I ran into a guard, I'm lucky nobody has added any penalties to the game yet.");
                 }
+
+                //Win Game
+                if(current_map.nav.getCurrentRoom().equals(current_map.nav.getDefaultRoom())&&player.getInventory().getStorage().containsKey("Artifact")){
+                    System.out.println("I won!");
+                }
             }
         }
     }

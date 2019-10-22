@@ -413,7 +413,35 @@ public class Command{
 
                 //Go to correct room
                 if(r.getName().equalsIgnoreCase(data)) {
+                    //Locked Door
+                    if(r.getLocks()>0) {
+                        System.out.println(String.format("The door has %d locks on it...", r.getLocks()));
+                        while (r.getLocks() > 0) {
+                            if (game.player.getInventory().getStorage().containsKey("Key")) {
+                                System.out.println("Should I use a key to unlock one of them? [Y/N]");
+                                if (Commands.sc.nextLine().toUpperCase().charAt(0) == 'Y') {
+                                    try {
+                                        game.player.getInventory().getItem("Key");
+                                    } catch (ItemNotFoundException e) {
+                                        e.printStackTrace();
+                                    }
+                                    System.out.println("I remove one lock...");
+                                    r.unlock();
 
+                                    if (r.getLocks() == 0) {
+                                        System.out.println(String.format("I unlocked the dor to the %s.", r.getName()));
+                                        break;
+                                    }
+                                } else {
+                                    return;
+                                }
+                                System.out.println(String.format("The door still has %d locks on it...", r.getLocks()));
+                                continue;
+                            }
+                            System.out.println("I don't have any keys, so I can't unlock it.");
+                            return;
+                        }
+                    }
                     //Move
                     game.current_map.nav.moveTo(r);
                     System.out.println("I move into the " + r.getName());

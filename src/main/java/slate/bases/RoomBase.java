@@ -17,6 +17,12 @@ public class RoomBase {
 
     protected Inventory root_inventory = new Inventory("Room", 100);
 
+    public int locks;
+
+    public void unlock(){
+        locks--;
+    }
+
     public String getName() {
         return name;
     }
@@ -151,5 +157,20 @@ public class RoomBase {
     public RoomBase named(String name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * Set the room name, and get the room. This can be used as an optional, chainable, constructor.
+     *
+     * @param num locks needed
+     * @return Current room
+     */
+    public RoomBase withLocks(int num) {
+        this.locks = num;
+        return this;
+    }
+
+    public int getLocks() {
+        return locks;
     }
 }

@@ -59,13 +59,13 @@ public class GameMap extends MapBase {
         floor2_main_hall = (new Hallway()).named("Long hallway");
         floor2_side_hall = (new Hallway()).named("Dark hallway");
         floor2_brk_room = new BreakRoom();
-        floor2_storage = (new StorageRoom()).named("Locked storage room");
-        floor2_rear_elevator = (new Elevator()).named("Freight elevator");
+        floor2_storage = (new StorageRoom()).named("Locked storage room").withLocks(1);
+        floor2_rear_elevator = (new Elevator()).named("Freight elevator").withLocks(1);
 
         // 3rd floor
         final_elevator = (new Elevator()).named("Freight elevator");
         final_hall = (new Hallway()).named("Vault hallway");
-        vault = new Vault();
+        vault = (new Vault()).withLocks(2);
 
         /* Linking rooms */
         linkRooms();

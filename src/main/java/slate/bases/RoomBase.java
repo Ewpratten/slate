@@ -5,12 +5,13 @@ import slate.Inventory;
 import slate.exceptions.ItemSizeException;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RoomBase {
     ArrayList<ItemBase> items = new ArrayList<ItemBase>();
     ArrayList<Inventory> inventories = new ArrayList<Inventory>();
     protected ArrayList<RoomBase> attached_rooms = new ArrayList<RoomBase>();
-    public ArrayList<Guard> guards = new ArrayList<Guard>();
+    public CopyOnWriteArrayList<Guard> guards = new CopyOnWriteArrayList<Guard>();
     public boolean visited;
 
     protected String name, peek_info, room_info = "";
@@ -92,7 +93,18 @@ public class RoomBase {
     }
 
     /**
-     * Get a list of names of For information on how to update a webdocs page, see [the guide](https://cs.5024.ca/webdocs/docs/meta). Don't forget to add your GitHub username to the page's authors list!all items in the room
+     * Spawn a guard into a room
+     *
+     * @param num Number to add
+     */
+    public void addGuards(int num) {
+        for(int i = 0; i<num; i++) {
+            this.guards.add(new Guard(this));
+        }
+    }
+
+    /**
+     * Get a list of names of all items in the room
      * 
      * @return List of all item names
      */
@@ -121,7 +133,7 @@ public class RoomBase {
     /*
      * Get guards
      */
-    public ArrayList<Guard> getGuards(){
+    public CopyOnWriteArrayList<Guard> getGuards(){
         return guards;
     }
 

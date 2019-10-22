@@ -1,8 +1,5 @@
 package slate;
 
-import slate.exceptions.ItemSizeException;
-import slate.items.TestItem;
-
 public class Player {
     private static Player m_instance = null;
     private Inventory inventory;
@@ -10,12 +7,6 @@ public class Player {
 
     private Player() {
         inventory = new Inventory("Pockets",20);
-        TestItem item = new TestItem();
-        try {
-            inventory.addItem(item.getName(), item);
-        } catch (ItemSizeException e) {
-            e.printStackTrace();
-        }
     }
 
     public static Player getInstance() {

@@ -27,7 +27,7 @@ public class GameMap extends MapBase {
      */
     public GameMap() {
         nav = new Navigator();
-        description = "I find myself in a building.. Maybe I should look around?";
+        description = "I step into the building... It has to be here somewhere... Maybe I should look around?";
 
         /* Define rooms */
 
@@ -73,6 +73,9 @@ public class GameMap extends MapBase {
 
         /* Fill rooms with items */
         placeItems();
+
+        /* Spawn Guards */
+        spawnGuards();
 
         /* Config navigator */
         initNavigator();
@@ -158,7 +161,18 @@ public class GameMap extends MapBase {
 
         // Put the artifact in the vault
         vault.addItem(new Artifact());
-        
+
+    }
+
+    /**
+     * Spawn guards into map
+     */
+    private void spawnGuards() {
+
+        //Spawn Guards
+        large_lab.addGuards(2);
+        large_lab_brk_room.addGuards(1);
+        floor2_brk_room.addGuards(1);
     }
 
     /**

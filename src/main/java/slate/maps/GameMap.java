@@ -3,6 +3,7 @@ package slate.maps;
 import slate.Navigator;
 import slate.bases.MapBase;
 import slate.bases.RoomBase;
+import slate.items.Artifact;
 import slate.items.Key;
 import slate.rooms.BreakRoom;
 import slate.rooms.Elevator;
@@ -154,6 +155,9 @@ public class GameMap extends MapBase {
         mini_lab_storage_shared.addItem(new Key());
         large_lab_brk_room.addItem(new Key());
         floor2_storage.addItem(new Key());
+
+        // Put the artifact in the vault
+        vault.addItem(new Artifact());
         
     }
 

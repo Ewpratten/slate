@@ -165,7 +165,7 @@ public class Inventory {
         } else {
 
             // Handle new item
-            storage.put(name, new ItemCollection(item, 1));
+            storage.put(name, new ItemCollection(new ItemBase(item), 1));
 
         }
     }

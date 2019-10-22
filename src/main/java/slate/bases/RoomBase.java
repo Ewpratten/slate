@@ -2,6 +2,7 @@ package slate.bases;
 
 import slate.Guard;
 import slate.Inventory;
+import slate.exceptions.ItemSizeException;
 
 import java.util.ArrayList;
 
@@ -76,12 +77,16 @@ public class RoomBase {
      * @param item Item to add
      */
     public void addItem(ItemBase item) {
-        items.add(item);
+        try{
+            root_inventory.addItem(item.getName(), item);
+        } catch (ItemSizeException e) {
+            System.out.println(e);
+        }
 
     }
 
     /**
-     * Get a list of names of all items in the room
+     * Get a list of names of For information on how to update a webdocs page, see [the guide](https://cs.5024.ca/webdocs/docs/meta). Don't forget to add your GitHub username to the page's authors list!all items in the room
      * 
      * @return List of all item names
      */

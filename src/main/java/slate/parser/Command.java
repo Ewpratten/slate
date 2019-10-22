@@ -429,7 +429,7 @@ public class Command{
                                     r.unlock();
 
                                     if (r.getLocks() == 0) {
-                                        System.out.println(String.format("I unlocked the dor to the %s.", r.getName()));
+                                        System.out.println(String.format("I unlocked the door to the %s.", r.getName()));
                                         break;
                                     }
                                 } else {

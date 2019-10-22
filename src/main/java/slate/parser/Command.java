@@ -1,6 +1,11 @@
 package slate.parser;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.antlr.v4.runtime.ParserRuleContext;
+
 import slate.App;
 import slate.Guard;
 import slate.Inventory;
@@ -8,10 +13,6 @@ import slate.bases.RoomBase;
 import slate.exceptions.ItemNotFoundException;
 import slate.exceptions.ItemSizeException;
 import slate.maps.TestMap;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 //Command Object
 public class Command{
@@ -186,6 +187,9 @@ public class Command{
                 try {
                     quantity = Integer.parseInt(data.substring(0, data.indexOf(" ")));
                 } catch (NumberFormatException e) {
+                    quantity = 1;
+                    itemName = data;
+                } catch (StringIndexOutOfBoundsException e) {
                     quantity = 1;
                     itemName = data;
                 }
@@ -425,7 +429,7 @@ public class Command{
                                     r.unlock();
 
                                     if (r.getLocks() == 0) {
-                                        System.out.println(String.format("I unlocked the dor to the %s.", r.getName()));
+                                        System.out.println(String.format("I unlocked the door to the %s.", r.getName()));
                                         break;
                                     }
                                 } else {

@@ -14,6 +14,10 @@ public class Navigator {
 
     }
 
+    public RoomBase getDefaultRoom() {
+        return default_room;
+    }
+
     public RoomBase getCurrentRoom() {
         return current_room;
     }

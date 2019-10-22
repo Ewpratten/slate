@@ -137,4 +137,14 @@ public interface SlateListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitClosecomm(SlateParser.ClosecommContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SlateParser#superlongcomm}.
+	 * @param ctx the parse tree
+	 */
+	void enterSuperlongcomm(SlateParser.SuperlongcommContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SlateParser#superlongcomm}.
+	 * @param ctx the parse tree
+	 */
+	void exitSuperlongcomm(SlateParser.SuperlongcommContext ctx);
 }

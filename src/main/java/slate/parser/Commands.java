@@ -28,6 +28,7 @@ public class Commands {
         contextMap.put(SlateParser.PEEK, new Context.PeekContext());
         contextMap.put(SlateParser.OPEN, new Context.OpenContext());
         contextMap.put(SlateParser.CLOSE, new Context.CloseContext());
+        contextMap.put(SlateParser.SECRET, new Context.SecretContext());
     }
 
     //Get player's input (Static, call with Commands.getInput();)

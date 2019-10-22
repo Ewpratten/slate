@@ -88,4 +88,10 @@ public interface SlateVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitClosecomm(SlateParser.ClosecommContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SlateParser#superlongcomm}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSuperlongcomm(SlateParser.SuperlongcommContext ctx);
 }

@@ -98,4 +98,12 @@ public class Context {
             return parser.exitcomm();
         }
     }
+
+    //SECRET
+    static class SecretContext implements ContextInterface {
+        @Override
+        public ParserRuleContext open(SlateParser parser) {
+            return parser.superlongcomm();
+        }
+    }
 }

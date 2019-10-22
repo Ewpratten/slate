@@ -7,6 +7,7 @@ import slate.Inventory;
 import slate.bases.RoomBase;
 import slate.exceptions.ItemNotFoundException;
 import slate.exceptions.ItemSizeException;
+import slate.maps.TestMap;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -103,6 +104,7 @@ public class Command{
         commandMap.put(SlateParser.CLOSE, new CloseCommand());
         commandMap.put(SlateParser.HELP, new HelpCommand());
         commandMap.put(SlateParser.EXIT, new ExitCommand());
+        commandMap.put(SlateParser.SECRET, new SecretCommand());
 
         //Execute proper command
         CommInterface command = commandMap.get(type);
@@ -407,9 +409,14 @@ public class Command{
 
                 //Go to correct room
                 if(r.getName().equalsIgnoreCase(data)) {
+
+                    //Move
                     game.current_map.nav.moveTo(r);
                     System.out.println("I move into the " + r.getName());
                     System.out.println(r.getRoomInfo());
+
+                    //Set current room as visited
+                    game.current_map.nav.getCurrentRoom().visited = true;
 
                     //Set focused inventory to room root
                     game.player.setFocused_inventory(r.getRoot_inventory());
@@ -490,7 +497,7 @@ public class Command{
            //Check for rooms attached to current room
             System.out.printf("I look around the room and see %d door%s:\n", rooms.size(), rooms.size()>1?"s":"");
             for(RoomBase r: rooms) {
-                System.out.println("- " + r.getName());
+                System.out.println("- " + r.getName() + (r.visited?" [Visited]":""));
             }
          }
     }
@@ -595,6 +602,18 @@ public class Command{
             //Exit
             System.out.println("You are a terrible person.");
             System.exit(0);
+        }
+    }
+
+    //SECRET COMMAND
+    class SecretCommand implements CommInterface{
+
+        @Override
+        public void execute(){
+
+            System.out.println("I feel ill...");
+            game.current_map = new TestMap();
+            System.out.println("I CCCAN TASTE MY T#ETH< &&&&&&&&& FFF###L TH3 UNIVERS________\n :(");
         }
     }
 }

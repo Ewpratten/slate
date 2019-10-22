@@ -10,7 +10,7 @@ public class RoomBase {
     ArrayList<Inventory> inventories = new ArrayList<Inventory>();
     protected ArrayList<RoomBase> attached_rooms = new ArrayList<RoomBase>();
     public ArrayList<Guard> guards = new ArrayList<Guard>();
-    public boolean visited = false;
+    public boolean visited;
 
     protected String name, peek_info, room_info = "";
 

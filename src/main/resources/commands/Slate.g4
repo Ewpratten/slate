@@ -84,6 +84,11 @@ grammar Slate;
 
  EXIT                : (COMMANDINDICATOR (Q U I T | E X I T)) ;
 
+ SECRET              : ((COMMANDINDICATOR S U P E R WHITESPACE*? L O N G WHITESPACE*? S E C R E T WHITESPACE*? C O M M A N D
+                        WHITESPACE*? D E S I G N E D WHITESPACE*? T O WHITESPACE*? D E M O N S T R A T E WHITESPACE*? T H E WHITESPACE*?
+                        E A S E WHITESPACE*? B Y WHITESPACE*? W H I C H WHITESPACE*? O N E WHITESPACE*? C A N WHITESPACE*? C R E A T E WHITESPACE*?
+                        A N WHITESPACE*? A L I A S A B L E WHITESPACE*? C O M M A N D WHITESPACE*? O F WHITESPACE*? A N Y WHITESPACE*? L E N G T H)) ;
+
 /*
  * Parser Rules
  */
@@ -113,3 +118,5 @@ grammar Slate;
  opencomm          : (OPEN WHITESPACE+?  TEXT) ;
 
  closecomm         : (CLOSE) ;
+
+ superlongcomm     : (SECRET) ;

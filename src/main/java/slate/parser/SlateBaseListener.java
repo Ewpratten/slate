@@ -167,6 +167,18 @@ public class SlateBaseListener implements SlateListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitClosecomm(SlateParser.ClosecommContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSuperlongcomm(SlateParser.SuperlongcommContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSuperlongcomm(SlateParser.SuperlongcommContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

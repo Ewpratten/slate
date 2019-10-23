@@ -1,11 +1,6 @@
 package slate.parser;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.antlr.v4.runtime.ParserRuleContext;
-
 import slate.App;
 import slate.Guard;
 import slate.Inventory;
@@ -13,6 +8,10 @@ import slate.bases.RoomBase;
 import slate.exceptions.ItemNotFoundException;
 import slate.exceptions.ItemSizeException;
 import slate.maps.TestMap;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 //Command Object
 public class Command{
@@ -481,19 +480,27 @@ public class Command{
         public void execute(){
 
             //Check for room
-            for(RoomBase r: game.current_map.nav.getCurrentRoom().getAttached_rooms()){
+            for(RoomBase r: game.current_map.nav.getCurrentRoom().getAttached_rooms()) {
 
                 //Peek correct room
-                if(r.getName().equalsIgnoreCase(data))System.out.println(r.getPeekInfo());
+                if (r.getName().equalsIgnoreCase(data)) {
+                    System.out.println(r.getPeekInfo());
 
-                //Check for guards
-                if(r.getGuards().size()>0){
-                    System.out.println(String.format("There %s %d guard%s in there!", (r.getGuards().size()>1)?"are":"is", r.getGuards().size(), (r.getGuards().size()>1)?"s":""));
+                    //Check for guards
+                    if (r.getGuards().size() > 0) {
+                        System.out.println(String.format("There %s %d guard%s in there!", (r.getGuards().size() > 1) ? "are" : "is", r.getGuards().size(), (r.getGuards().size() > 1) ? "s" : ""));
+                        return;
+                    }
+
+                    System.out.println("Looks all clear...");
+                    for (RoomBase ar : r.getAttached_rooms()) {
+                        if (ar.getGuards().size() > 0) {
+                            System.out.println("However, I hear distant footsteps...");
+                            return;
+                        }
+                    }
                     return;
                 }
-
-                System.out.println("Looks all clear...");
-                return;
             }
 
             //Room not found

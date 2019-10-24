@@ -8,8 +8,4 @@ public class LogBook extends ItemBase {
 		name = "Log Book";
 		weight = 2;
 	}
-
-	public LogBook(ItemBase item) {
-		super(item);
-	}
 }

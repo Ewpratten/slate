@@ -19,6 +19,7 @@ public class Commands {
         contextMap.put(SlateParser.SHOUT, new Context.ShoutContext());
         contextMap.put(SlateParser.PICKUP, new Context.PickupContext());
         contextMap.put(SlateParser.LEAVE, new Context.LeaveContext());
+        contextMap.put(SlateParser.USE, new Context.UseContext());
         contextMap.put(SlateParser.HELP, new Context.HelpContext());
         contextMap.put(SlateParser.EXIT, new Context.ExitContext());
         contextMap.put(SlateParser.CHECKDOORS, new Context.CheckDoorsContext());

@@ -33,10 +33,9 @@ public class App {
 
         // Pint the map introduction text
         System.out.println(current_map.getDescription());
-        System.out.println(current_map.nav.getCurrentRoom().getRoomInfo());
 
         //Set starting inventory
-        player.setFocused_inventory(current_map.nav.getCurrentRoom().getRoot_inventory());
+        player.setFocusedInventory(current_map.nav.getCurrentRoom().getRoot_inventory());
 
         while (true) {
             Command[] comms = getInput();

@@ -1,20 +1,25 @@
 package slate.bases;
 
-public class ItemBase {
+import slate.Player;
 
-    protected boolean is_consumable;
+public class ItemBase implements Cloneable{
+
+    public boolean is_consumable;
+    public boolean is_food;
     protected boolean is_stackable;
     protected int weight;
     protected int key_id = -1; // Set this to something else if the item is a key
-    protected String name;
+    public String name;
 
     public ItemBase(){}
 
-    public ItemBase(ItemBase item){
-        this.is_consumable = item.is_consumable;
-        this.is_stackable = item.is_stackable;
-        this.weight = item.weight;
-        this.name = new String(item.name);
+    public static ItemBase copyItem(ItemBase item){
+        try{
+             return (ItemBase)item.clone();
+        }catch (CloneNotSupportedException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     
@@ -25,4 +30,6 @@ public class ItemBase {
     public String getName(){
         return name;
     }
+
+    public void use(Player player){}
 }

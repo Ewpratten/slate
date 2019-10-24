@@ -17,6 +17,9 @@ If pockets are currently open, places items on floor of room.
 Otherwise places items form pockets to current active container.
 Usage: LEAVE/PUT NUMBER? ITEM NAME
 ----------------
+Use: Consumes an Item
+Usage: USE ITEM_NAME
+----------------
 Check Doors: Lists available room paths.
 Usage: CHECK DOORS
 ----------------

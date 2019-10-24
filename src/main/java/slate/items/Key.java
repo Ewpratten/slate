@@ -9,7 +9,4 @@ public class Key extends ItemBase {
 		weight = 1;
 	}
 
-	public Key(ItemBase item) {
-		super(item);
-	}
 }

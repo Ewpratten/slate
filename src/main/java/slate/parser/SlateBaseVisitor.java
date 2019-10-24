@@ -109,4 +109,11 @@ public class SlateBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements 
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitSuperlongcomm(SlateParser.SuperlongcommContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitUsecomm(SlateParser.UsecommContext ctx) { return visitChildren(ctx); }
 }

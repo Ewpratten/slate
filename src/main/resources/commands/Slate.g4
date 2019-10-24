@@ -67,6 +67,8 @@ grammar Slate;
                                           G O (WHITESPACE? T O)?|
                                           C D)) ;
 
+ USE                 : (COMMANDINDICATOR (U S E | E X P E R I E N C E | C O N S U M E));
+
  WAIT                : (COMMANDINDICATOR (W A I T | S T A Y)) ;
 
  PICKUP              : (COMMANDINDICATOR (P I C K WHITESPACE? U P|
@@ -82,7 +84,7 @@ grammar Slate;
 
  TEXT                : (IDENTIFIER (WHITESPACE|EOF))+ ;
 
- EXIT                : (COMMANDINDICATOR (Q U I T | E X I T)) ;
+ EXIT                : (COMMANDINDICATOR (Q U I T | E X I T | E X P E R I E N C E WHITESPACE+? D I E)) ;
 
  SECRET              : ((COMMANDINDICATOR S U P E R WHITESPACE*? L O N G WHITESPACE*? S E C R E T WHITESPACE*? C O M M A N D
                         WHITESPACE*? D E S I G N E D WHITESPACE*? T O WHITESPACE*? D E M O N S T R A T E WHITESPACE*? T H E WHITESPACE*?
@@ -115,8 +117,10 @@ grammar Slate;
 
  exitcomm          : (EXIT) ;
 
- opencomm          : (OPEN WHITESPACE+?  TEXT) ;
+ opencomm          : (OPEN WHITESPACE+? TEXT) ;
 
  closecomm         : (CLOSE) ;
 
  superlongcomm     : (SECRET) ;
+
+ usecomm           : (USE WHITESPACE+? TEXT);

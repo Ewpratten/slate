@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import slate.App;
 import slate.Guard;
 import slate.Inventory;
-import slate.bases.RoomBase;
+import slate.Room;
 import slate.exceptions.ItemNotFoundException;
 import slate.exceptions.ItemSizeException;
 import slate.maps.TestMap;
@@ -42,14 +42,15 @@ public class Command{
         usagesMap.put(SlateParser.SHOUT, usageContent[9]);
         usagesMap.put(SlateParser.PICKUP, usageContent[12]);
         usagesMap.put(SlateParser.LEAVE, usageContent[17]);
-        usagesMap.put(SlateParser.CHECKDOORS, usageContent[21]);
-        usagesMap.put(SlateParser.PEEK, usageContent[23]);
-        usagesMap.put(SlateParser.MOVE, usageContent[26]);
-        usagesMap.put(SlateParser.WAIT, usageContent[29]);
-        usagesMap.put(SlateParser.SEARCH, usageContent[32]);
-        usagesMap.put(SlateParser.OPEN, usageContent[35]);
-        usagesMap.put(SlateParser.CLOSE, usageContent[38]);
-        usagesMap.put(SlateParser.EXIT,  usageContent[41]);
+        usagesMap.put(SlateParser.USE, usageContent[20]);
+        usagesMap.put(SlateParser.CHECKDOORS, usageContent[22]);
+        usagesMap.put(SlateParser.PEEK, usageContent[25]);
+        usagesMap.put(SlateParser.MOVE, usageContent[29]);
+        usagesMap.put(SlateParser.WAIT, usageContent[32]);
+        usagesMap.put(SlateParser.SEARCH, usageContent[35]);
+        usagesMap.put(SlateParser.OPEN, usageContent[38]);
+        usagesMap.put(SlateParser.CLOSE, usageContent[41]);
+        usagesMap.put(SlateParser.EXIT,  usageContent[44]);
     }
 
     int type;
@@ -93,6 +94,7 @@ public class Command{
 
         commandMap.put(SlateParser.PICKUP, new PickupCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
         commandMap.put(SlateParser.LEAVE, new LeaveCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
+        commandMap.put(SlateParser.USE, new UseCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
         commandMap.put(SlateParser.SAY, new SayCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
         commandMap.put(SlateParser.SHOUT, new ShoutCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
         commandMap.put(SlateParser.MOVE, new MoveCommand((context.getToken(SlateParser.TEXT,0))!=null?(context.getToken(SlateParser.TEXT,0)).getText():null));
@@ -175,20 +177,17 @@ public class Command{
         public void execute() {
 
             //If current active inventory is not player's pockets
-            if (game.player.getFocused_inventory()!=game.player.getInventory()) {
+            if (game.player.getFocusedInventory()!=game.player.getInventory()) {
 
                 //Get item data in current active inventory
-                Inventory.Stack[] itemInfo = game.player.getFocused_inventory().getAllNames();
+                Inventory.Stack[] itemInfo = game.player.getFocusedInventory().getAllNames();
                 String itemName = data.substring(data.indexOf(" ") + 1);
 
                 //Get number of items to take from optional player input
                 int quantity;
                 try {
                     quantity = Integer.parseInt(data.substring(0, data.indexOf(" ")));
-                } catch (NumberFormatException e) {
-                    quantity = 1;
-                    itemName = data;
-                } catch (StringIndexOutOfBoundsException e) {
+                } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
                     quantity = 1;
                     itemName = data;
                 }
@@ -203,35 +202,29 @@ public class Command{
                         for (int i = 0; i < quantity; i++) {
 
                             //If any of this item are remaining in the container
-                            if (item.count > 0) {
-                                try {
+                            try {
 
-                                    //Add to player's pockets
-                                    game.player.getInventory().addItem(item.name, game.player.getFocused_inventory().getItem(item.name));
+                                //Add to player's pockets
+                                game.player.getInventory().putItem(item.name, game.player.getFocusedInventory().removeItem(item.name));
 
-                                //If pockets become full
-                                } catch (ItemSizeException e) {
+                            //If pockets become full
+                            } catch (ItemSizeException e) {
 
-                                    //If some were taken
-                                    if(numTaken>0){
-                                        System.out.println("There isn't enough room in my pockets, so I take " + numTaken + " instead.");
-                                        return;
-                                    }
-
-                                    //If none were taken, because pockets were too full
-                                    System.out.println("There's no space left in my pockets!");
-                                } catch (ItemNotFoundException e) {
-                                    e.printStackTrace();
+                                //If some were taken
+                                if(numTaken>0){
+                                    System.out.println("There isn't enough room in my pockets, so I take " + numTaken + " instead.");
+                                    return;
                                 }
 
-                                //Remove from current active inventory
-                                numTaken++;
-                            } else {
-
-                                //Some items were taken, so print out number taken
+                                //If none were taken, because pockets were too full
+                                System.out.println("There's no space left in my pockets!");
+                            } catch (ItemNotFoundException e) {
                                 System.out.println("There isn't enough of these, so I take " + numTaken + " instead.");
                                 return;
                             }
+
+                            //Remove from current active inventory
+                            numTaken++;
                         }
 
                         //Best case scenario, all desired items are taken
@@ -266,8 +259,8 @@ public class Command{
             Inventory target = game.current_map.nav.getCurrentRoom().getRoot_inventory();
 
             //If current active inventory is not the player's pockets, set it as the target
-            if (game.player.getFocused_inventory()!=game.player.getInventory()) {
-                target = game.player.getFocused_inventory();
+            if (game.player.getFocusedInventory()!=game.player.getInventory()) {
+                target = game.player.getFocusedInventory();
             }
 
             //Get item info in player's pockets
@@ -297,7 +290,7 @@ public class Command{
                             try {
 
                                 //Put item into targeted inventory
-                                target.addItem(item.name, game.player.getInventory().getItem(item.name));
+                                target.putItem(item.name, game.player.getInventory().removeItem(item.name));
 
                             //If container full
                             } catch (ItemSizeException e) {
@@ -335,6 +328,45 @@ public class Command{
         }
     }
 
+    //USE ITEM
+    class UseCommand implements CommInterface{
+
+        String data;
+
+        UseCommand(String data){
+            this.data = data;
+        }
+
+        @Override
+        public void execute(){
+
+            //Get item info in player's pockets
+            Inventory.Stack[] itemInfo = game.player.getInventory().getAllNames();
+
+            for (Inventory.Stack item : itemInfo){
+
+                //Find Item
+                if(data.equalsIgnoreCase(item.name)){
+
+                    //Check if item is consumable
+                    if(game.player.getInventory().getStorage().get(item.name).getItem().is_consumable){
+
+                        //Consume Item
+                        System.out.println(String.format("I %s the %s.", (game.player.getInventory().getStorage().get(item.name).getItem().is_food?"ate":"used"), item.name));
+                        try{
+                            game.player.getInventory().removeItem(item.name).use(game.player);
+
+                        }catch (ItemNotFoundException e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+
+        }
+    }
+
     //PRINT HELP
     class HelpCommand implements CommInterface{
 
@@ -355,10 +387,10 @@ public class Command{
         public void execute(){
 
             //Search Room
-            if(game.player.getFocused_inventory() == game.current_map.nav.getCurrentRoom().getRoot_inventory()) {
+            if(game.player.getFocusedInventory() == game.current_map.nav.getCurrentRoom().getRoot_inventory()) {
 
                 //Get Loose Items
-                Inventory.Stack[] items = game.player.getFocused_inventory().getAllNames();
+                Inventory.Stack[] items = game.player.getFocusedInventory().getAllNames();
                 if (items.length > 0) {
                     System.out.printf("After a quick search of the room, I find the following %d item%s:\n", items.length, items.length > 1 ? "s" : "");
                     for (Inventory.Stack item : items) {
@@ -380,9 +412,9 @@ public class Command{
                 //Search container
 
                 //Get Loose Items
-                Inventory.Stack[] items = game.player.getFocused_inventory().getAllNames();
+                Inventory.Stack[] items = game.player.getFocusedInventory().getAllNames();
                 if (items.length > 0) {
-                    System.out.printf("Rummaging through the %s, I find the following %d item%s:\n", game.player.getFocused_inventory().getName(), items.length, items.length > 1 ? "s" : "");
+                    System.out.printf("Rummaging through the %s, I find the following %d item%s:\n", game.player.getFocusedInventory().getName(), items.length, items.length > 1 ? "s" : "");
                     for (Inventory.Stack item : items) {
                         System.out.println(String.format("- %s x%d", item.name, item.count));
                     }
@@ -390,7 +422,7 @@ public class Command{
                 }
 
                 //Nothing Found
-                System.out.println("My pockets are empty...");
+                System.out.println(String.format("The %s %s empty...", game.player.getFocusedInventory().getName(), game.player.getFocusedInventory().getName().equalsIgnoreCase("pockets")?"are":"is"));
             }
         }
     }
@@ -408,7 +440,7 @@ public class Command{
         public void execute(){
 
             //Check for room
-            for(RoomBase r: game.current_map.nav.getCurrentRoom().getAttached_rooms()){
+            for(Room r: game.current_map.nav.getCurrentRoom().getAttached_rooms()){
 
                 //Go to correct room
                 if(r.getName().equalsIgnoreCase(data)) {
@@ -420,7 +452,7 @@ public class Command{
                                 System.out.println("Should I use a key to unlock one of them? [Y/N]");
                                 if (Commands.sc.nextLine().toUpperCase().charAt(0) == 'Y') {
                                     try {
-                                        game.player.getInventory().getItem("Key");
+                                        game.player.getInventory().removeItem("Key");
                                     } catch (ItemNotFoundException e) {
                                         e.printStackTrace();
                                     }
@@ -428,7 +460,7 @@ public class Command{
                                     r.unlock();
 
                                     if (r.getLocks() == 0) {
-                                        System.out.println(String.format("I unlocked the door to the %s.", r.getName()));
+                                        System.out.println(String.format("I unlocked the door to %s.", r.getName()));
                                         break;
                                     }
                                 } else {
@@ -441,22 +473,27 @@ public class Command{
                             return;
                         }
                     }
+
                     //Move
                     game.current_map.nav.moveTo(r);
-                    System.out.println("I move into the " + r.getName());
+                    System.out.println("I move into " + r.getName());
                     System.out.println(r.getRoomInfo());
 
                     //Set current room as visited
                     game.current_map.nav.getCurrentRoom().visited = true;
 
                     //Set focused inventory to room root
-                    game.player.setFocused_inventory(r.getRoot_inventory());
+                    game.player.setFocusedInventory(r.getRoot_inventory());
+
+                    //Handle Player Buffs
+                    game.player.drainBuff();
 
                     //Move Guards
-                    for (RoomBase room : game.current_map.getAllRooms()) {
+                    for (Room room : game.current_map.getAllRooms()) {
                         for (Guard g : room.getGuards()) {
                             g.patrol();
                         }
+                        room.getGuards().removeAll(room.getMovedGuards());
                     }
                     return;
                 }
@@ -480,7 +517,7 @@ public class Command{
         public void execute(){
 
             //Check for room
-            for(RoomBase r: game.current_map.nav.getCurrentRoom().getAttached_rooms()) {
+            for(Room r: game.current_map.nav.getCurrentRoom().getAttached_rooms()) {
 
                 //Peek correct room
                 if (r.getName().equalsIgnoreCase(data)) {
@@ -489,11 +526,10 @@ public class Command{
                     //Check for guards
                     if (r.getGuards().size() > 0) {
                         System.out.println(String.format("There %s %d guard%s in there!", (r.getGuards().size() > 1) ? "are" : "is", r.getGuards().size(), (r.getGuards().size() > 1) ? "s" : ""));
-                        return;
+                    }else {
+                        System.out.println("Looks all clear...");
                     }
-
-                    System.out.println("Looks all clear...");
-                    for (RoomBase ar : r.getAttached_rooms()) {
+                    for (Room ar : r.getAttached_rooms()) {
                         if (ar.getGuards().size() > 0) {
                             System.out.println("However, I hear distant footsteps...");
                             return;
@@ -516,7 +552,7 @@ public class Command{
 
             //Move Guards
             System.out.println("I'll wait here for now...");
-            for(RoomBase r: game.current_map.getAllRooms()){
+            for(Room r: game.current_map.getAllRooms()){
                 for(Guard g: r.getGuards()){
                     g.patrol();
                 }
@@ -531,11 +567,11 @@ public class Command{
         public void execute(){
 
             //Get possible paths
-            ArrayList<RoomBase> rooms = game.current_map.nav.getCurrentRoom().getAttached_rooms();
+            ArrayList<Room> rooms = game.current_map.nav.getCurrentRoom().getAttached_rooms();
 
            //Check for rooms attached to current room
             System.out.printf("I look around the room and see %d door%s:\n", rooms.size(), rooms.size()>1?"s":"");
-            for(RoomBase r: rooms) {
+            for(Room r: rooms) {
                 System.out.println("- " + r.getName() + (r.visited?" [Visited]":""));
             }
          }
@@ -567,7 +603,7 @@ public class Command{
                                 System.out.println("Should I use a key to unlock one of them? [Y/N]");
                                 if (Commands.sc.nextLine().toUpperCase().charAt(0) == 'Y') {
                                     try{
-                                        game.player.getInventory().getItem("Key");
+                                        game.player.getInventory().removeItem("Key");
                                     }catch(ItemNotFoundException e){
                                         e.printStackTrace();
                                     }
@@ -591,7 +627,7 @@ public class Command{
 
                     //Set focus to targeted inventory
                     System.out.println("I open up the " + inventory.getName());
-                    game.player.setFocused_inventory(inventory);
+                    game.player.setFocusedInventory(inventory);
                     return;
                 }
             }
@@ -601,7 +637,7 @@ public class Command{
 
                 //Set focus to targeted inventory
                 System.out.println("I open up my pockets.");
-                game.player.setFocused_inventory(game.player.getInventory());
+                game.player.setFocusedInventory(game.player.getInventory());
                 return;
             }
 
@@ -617,13 +653,13 @@ public class Command{
         public void execute(){
 
             //Only close if not in room root
-            if(game.player.getFocused_inventory()!=game.current_map.nav.getCurrentRoom().getRoot_inventory()) {
+            if(game.player.getFocusedInventory()!=game.current_map.nav.getCurrentRoom().getRoot_inventory()) {
 
                 //Close Focused Inventory
-                System.out.println("I close the " + game.player.getFocused_inventory().getName());
+                System.out.println("I close the " + game.player.getFocusedInventory().getName());
 
                 //Reopen Room Root
-                game.player.setFocused_inventory(game.current_map.nav.getCurrentRoom().getRoot_inventory());
+                game.player.setFocusedInventory(game.current_map.nav.getCurrentRoom().getRoot_inventory());
                 return;
             }
 

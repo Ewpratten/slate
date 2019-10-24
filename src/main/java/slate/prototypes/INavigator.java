@@ -1,6 +1,6 @@
 package slate.prototypes;
 
-import slate.bases.RoomBase;
+import slate.Room;
 
 /**
  * To do anything in the current room:
@@ -12,8 +12,8 @@ import slate.bases.RoomBase;
  */
 public interface INavigator {
 
-    public RoomBase getCurrentRoom();
+    public Room getCurrentRoom();
 
-    public void moveTo(RoomBase room);
+    public void moveTo(Room room);
 
 }

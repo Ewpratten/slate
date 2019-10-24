@@ -9,8 +9,4 @@ public class Sword extends ItemBase {
 		name = "Sword";
 		weight = 5;
 	}
-
-	public Sword(ItemBase item) {
-		super(item);
-	}
 }

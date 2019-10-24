@@ -18,18 +18,18 @@ public class SlateParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		NUMBER=1, WORD=2, WHITESPACE=3, NEWLINE=4, SAY=5, SHOUT=6, PEEK=7, SEARCH=8, 
-		OPEN=9, CLOSE=10, CHECKDOORS=11, MOVE=12, WAIT=13, PICKUP=14, LEAVE=15, 
-		HELP=16, IDENTIFIER=17, TEXT=18, EXIT=19, SECRET=20;
+		OPEN=9, CLOSE=10, CHECKDOORS=11, MOVE=12, USE=13, WAIT=14, PICKUP=15, 
+		LEAVE=16, HELP=17, IDENTIFIER=18, TEXT=19, EXIT=20, SECRET=21;
 	public static final int
 		RULE_saycomm = 0, RULE_shoutcomm = 1, RULE_pickupcomm = 2, RULE_leavecomm = 3, 
 		RULE_checkdoorscomm = 4, RULE_peekcomm = 5, RULE_searchcomm = 6, RULE_movecomm = 7, 
 		RULE_waitcomm = 8, RULE_helpcomm = 9, RULE_exitcomm = 10, RULE_opencomm = 11, 
-		RULE_closecomm = 12, RULE_superlongcomm = 13;
+		RULE_closecomm = 12, RULE_superlongcomm = 13, RULE_usecomm = 14;
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"saycomm", "shoutcomm", "pickupcomm", "leavecomm", "checkdoorscomm", 
 			"peekcomm", "searchcomm", "movecomm", "waitcomm", "helpcomm", "exitcomm", 
-			"opencomm", "closecomm", "superlongcomm"
+			"opencomm", "closecomm", "superlongcomm", "usecomm"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -42,8 +42,8 @@ public class SlateParser extends Parser {
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, "NUMBER", "WORD", "WHITESPACE", "NEWLINE", "SAY", "SHOUT", "PEEK", 
-			"SEARCH", "OPEN", "CLOSE", "CHECKDOORS", "MOVE", "WAIT", "PICKUP", "LEAVE", 
-			"HELP", "IDENTIFIER", "TEXT", "EXIT", "SECRET"
+			"SEARCH", "OPEN", "CLOSE", "CHECKDOORS", "MOVE", "USE", "WAIT", "PICKUP", 
+			"LEAVE", "HELP", "IDENTIFIER", "TEXT", "EXIT", "SECRET"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -131,9 +131,9 @@ public class SlateParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(28);
+			setState(30);
 			match(SAY);
-			setState(30); 
+			setState(32); 
 			_errHandler.sync(this);
 			_alt = 1+1;
 			do {
@@ -141,7 +141,7 @@ public class SlateParser extends Parser {
 				case 1+1:
 					{
 					{
-					setState(29);
+					setState(31);
 					match(WHITESPACE);
 					}
 					}
@@ -149,11 +149,11 @@ public class SlateParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(32); 
+				setState(34); 
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
 			} while ( _alt!=1 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-			setState(34);
+			setState(36);
 			match(TEXT);
 			}
 			}
@@ -203,9 +203,9 @@ public class SlateParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(36);
+			setState(38);
 			match(SHOUT);
-			setState(38); 
+			setState(40); 
 			_errHandler.sync(this);
 			_alt = 1+1;
 			do {
@@ -213,7 +213,7 @@ public class SlateParser extends Parser {
 				case 1+1:
 					{
 					{
-					setState(37);
+					setState(39);
 					match(WHITESPACE);
 					}
 					}
@@ -221,11 +221,11 @@ public class SlateParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(40); 
+				setState(42); 
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
 			} while ( _alt!=1 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-			setState(42);
+			setState(44);
 			match(TEXT);
 			}
 			}
@@ -275,9 +275,9 @@ public class SlateParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(44);
+			setState(46);
 			match(PICKUP);
-			setState(46); 
+			setState(48); 
 			_errHandler.sync(this);
 			_alt = 1+1;
 			do {
@@ -285,7 +285,7 @@ public class SlateParser extends Parser {
 				case 1+1:
 					{
 					{
-					setState(45);
+					setState(47);
 					match(WHITESPACE);
 					}
 					}
@@ -293,11 +293,11 @@ public class SlateParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(48); 
+				setState(50); 
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
 			} while ( _alt!=1 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-			setState(50);
+			setState(52);
 			match(TEXT);
 			}
 			}
@@ -347,9 +347,9 @@ public class SlateParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(52);
+			setState(54);
 			match(LEAVE);
-			setState(54); 
+			setState(56); 
 			_errHandler.sync(this);
 			_alt = 1+1;
 			do {
@@ -357,7 +357,7 @@ public class SlateParser extends Parser {
 				case 1+1:
 					{
 					{
-					setState(53);
+					setState(55);
 					match(WHITESPACE);
 					}
 					}
@@ -365,11 +365,11 @@ public class SlateParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(56); 
+				setState(58); 
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
 			} while ( _alt!=1 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-			setState(58);
+			setState(60);
 			match(TEXT);
 			}
 			}
@@ -413,7 +413,7 @@ public class SlateParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(60);
+			setState(62);
 			match(CHECKDOORS);
 			}
 			}
@@ -463,9 +463,9 @@ public class SlateParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(62);
+			setState(64);
 			match(PEEK);
-			setState(64); 
+			setState(66); 
 			_errHandler.sync(this);
 			_alt = 1+1;
 			do {
@@ -473,7 +473,7 @@ public class SlateParser extends Parser {
 				case 1+1:
 					{
 					{
-					setState(63);
+					setState(65);
 					match(WHITESPACE);
 					}
 					}
@@ -481,11 +481,11 @@ public class SlateParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(66); 
+				setState(68); 
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 			} while ( _alt!=1 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-			setState(68);
+			setState(70);
 			match(TEXT);
 			}
 			}
@@ -529,7 +529,7 @@ public class SlateParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(70);
+			setState(72);
 			match(SEARCH);
 			}
 			}
@@ -579,9 +579,9 @@ public class SlateParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(72);
+			setState(74);
 			match(MOVE);
-			setState(74); 
+			setState(76); 
 			_errHandler.sync(this);
 			_alt = 1+1;
 			do {
@@ -589,7 +589,7 @@ public class SlateParser extends Parser {
 				case 1+1:
 					{
 					{
-					setState(73);
+					setState(75);
 					match(WHITESPACE);
 					}
 					}
@@ -597,11 +597,11 @@ public class SlateParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(76); 
+				setState(78); 
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			} while ( _alt!=1 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-			setState(78);
+			setState(80);
 			match(TEXT);
 			}
 			}
@@ -645,7 +645,7 @@ public class SlateParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(80);
+			setState(82);
 			match(WAIT);
 			}
 			}
@@ -689,7 +689,7 @@ public class SlateParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(82);
+			setState(84);
 			match(HELP);
 			}
 			}
@@ -733,7 +733,7 @@ public class SlateParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(84);
+			setState(86);
 			match(EXIT);
 			}
 			}
@@ -783,9 +783,9 @@ public class SlateParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(86);
+			setState(88);
 			match(OPEN);
-			setState(88); 
+			setState(90); 
 			_errHandler.sync(this);
 			_alt = 1+1;
 			do {
@@ -793,7 +793,7 @@ public class SlateParser extends Parser {
 				case 1+1:
 					{
 					{
-					setState(87);
+					setState(89);
 					match(WHITESPACE);
 					}
 					}
@@ -801,11 +801,11 @@ public class SlateParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(90); 
+				setState(92); 
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
 			} while ( _alt!=1 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-			setState(92);
+			setState(94);
 			match(TEXT);
 			}
 			}
@@ -849,7 +849,7 @@ public class SlateParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(94);
+			setState(96);
 			match(CLOSE);
 			}
 			}
@@ -893,7 +893,7 @@ public class SlateParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(96);
+			setState(98);
 			match(SECRET);
 			}
 			}
@@ -909,30 +909,104 @@ public class SlateParser extends Parser {
 		return _localctx;
 	}
 
+	public static class UsecommContext extends ParserRuleContext {
+		public TerminalNode USE() { return getToken(SlateParser.USE, 0); }
+		public TerminalNode TEXT() { return getToken(SlateParser.TEXT, 0); }
+		public List<TerminalNode> WHITESPACE() { return getTokens(SlateParser.WHITESPACE); }
+		public TerminalNode WHITESPACE(int i) {
+			return getToken(SlateParser.WHITESPACE, i);
+		}
+		public UsecommContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_usecomm; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SlateListener ) ((SlateListener)listener).enterUsecomm(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SlateListener ) ((SlateListener)listener).exitUsecomm(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SlateVisitor ) return ((SlateVisitor<? extends T>)visitor).visitUsecomm(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final UsecommContext usecomm() throws RecognitionException {
+		UsecommContext _localctx = new UsecommContext(_ctx, getState());
+		enterRule(_localctx, 28, RULE_usecomm);
+		try {
+			int _alt;
+			enterOuterAlt(_localctx, 1);
+			{
+			{
+			setState(100);
+			match(USE);
+			setState(102); 
+			_errHandler.sync(this);
+			_alt = 1+1;
+			do {
+				switch (_alt) {
+				case 1+1:
+					{
+					{
+					setState(101);
+					match(WHITESPACE);
+					}
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
+				}
+				setState(104); 
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
+			} while ( _alt!=1 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+			setState(106);
+			match(TEXT);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\26e\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\27o\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4"+
-		"\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\3\2\3\2\6\2!\n\2\r\2\16\2\"\3\2\3\2"+
-		"\3\3\3\3\6\3)\n\3\r\3\16\3*\3\3\3\3\3\4\3\4\6\4\61\n\4\r\4\16\4\62\3\4"+
-		"\3\4\3\5\3\5\6\59\n\5\r\5\16\5:\3\5\3\5\3\6\3\6\3\7\3\7\6\7C\n\7\r\7\16"+
-		"\7D\3\7\3\7\3\b\3\b\3\t\3\t\6\tM\n\t\r\t\16\tN\3\t\3\t\3\n\3\n\3\13\3"+
-		"\13\3\f\3\f\3\r\3\r\6\r[\n\r\r\r\16\r\\\3\r\3\r\3\16\3\16\3\17\3\17\3"+
-		"\17\t\"*\62:DN\\\2\20\2\4\6\b\n\f\16\20\22\24\26\30\32\34\2\2\2]\2\36"+
-		"\3\2\2\2\4&\3\2\2\2\6.\3\2\2\2\b\66\3\2\2\2\n>\3\2\2\2\f@\3\2\2\2\16H"+
-		"\3\2\2\2\20J\3\2\2\2\22R\3\2\2\2\24T\3\2\2\2\26V\3\2\2\2\30X\3\2\2\2\32"+
-		"`\3\2\2\2\34b\3\2\2\2\36 \7\7\2\2\37!\7\5\2\2 \37\3\2\2\2!\"\3\2\2\2\""+
-		"#\3\2\2\2\" \3\2\2\2#$\3\2\2\2$%\7\24\2\2%\3\3\2\2\2&(\7\b\2\2\')\7\5"+
-		"\2\2(\'\3\2\2\2)*\3\2\2\2*+\3\2\2\2*(\3\2\2\2+,\3\2\2\2,-\7\24\2\2-\5"+
-		"\3\2\2\2.\60\7\20\2\2/\61\7\5\2\2\60/\3\2\2\2\61\62\3\2\2\2\62\63\3\2"+
-		"\2\2\62\60\3\2\2\2\63\64\3\2\2\2\64\65\7\24\2\2\65\7\3\2\2\2\668\7\21"+
-		"\2\2\679\7\5\2\28\67\3\2\2\29:\3\2\2\2:;\3\2\2\2:8\3\2\2\2;<\3\2\2\2<"+
-		"=\7\24\2\2=\t\3\2\2\2>?\7\r\2\2?\13\3\2\2\2@B\7\t\2\2AC\7\5\2\2BA\3\2"+
-		"\2\2CD\3\2\2\2DE\3\2\2\2DB\3\2\2\2EF\3\2\2\2FG\7\24\2\2G\r\3\2\2\2HI\7"+
-		"\n\2\2I\17\3\2\2\2JL\7\16\2\2KM\7\5\2\2LK\3\2\2\2MN\3\2\2\2NO\3\2\2\2"+
-		"NL\3\2\2\2OP\3\2\2\2PQ\7\24\2\2Q\21\3\2\2\2RS\7\17\2\2S\23\3\2\2\2TU\7"+
-		"\22\2\2U\25\3\2\2\2VW\7\25\2\2W\27\3\2\2\2XZ\7\13\2\2Y[\7\5\2\2ZY\3\2"+
-		"\2\2[\\\3\2\2\2\\]\3\2\2\2\\Z\3\2\2\2]^\3\2\2\2^_\7\24\2\2_\31\3\2\2\2"+
-		"`a\7\f\2\2a\33\3\2\2\2bc\7\26\2\2c\35\3\2\2\2\t\"*\62:DN\\";
+		"\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\3\2\3\2\6\2#\n\2\r\2\16\2"+
+		"$\3\2\3\2\3\3\3\3\6\3+\n\3\r\3\16\3,\3\3\3\3\3\4\3\4\6\4\63\n\4\r\4\16"+
+		"\4\64\3\4\3\4\3\5\3\5\6\5;\n\5\r\5\16\5<\3\5\3\5\3\6\3\6\3\7\3\7\6\7E"+
+		"\n\7\r\7\16\7F\3\7\3\7\3\b\3\b\3\t\3\t\6\tO\n\t\r\t\16\tP\3\t\3\t\3\n"+
+		"\3\n\3\13\3\13\3\f\3\f\3\r\3\r\6\r]\n\r\r\r\16\r^\3\r\3\r\3\16\3\16\3"+
+		"\17\3\17\3\20\3\20\6\20i\n\20\r\20\16\20j\3\20\3\20\3\20\n$,\64<FP^j\2"+
+		"\21\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36\2\2\2g\2 \3\2\2\2\4(\3\2\2"+
+		"\2\6\60\3\2\2\2\b8\3\2\2\2\n@\3\2\2\2\fB\3\2\2\2\16J\3\2\2\2\20L\3\2\2"+
+		"\2\22T\3\2\2\2\24V\3\2\2\2\26X\3\2\2\2\30Z\3\2\2\2\32b\3\2\2\2\34d\3\2"+
+		"\2\2\36f\3\2\2\2 \"\7\7\2\2!#\7\5\2\2\"!\3\2\2\2#$\3\2\2\2$%\3\2\2\2$"+
+		"\"\3\2\2\2%&\3\2\2\2&\'\7\25\2\2\'\3\3\2\2\2(*\7\b\2\2)+\7\5\2\2*)\3\2"+
+		"\2\2+,\3\2\2\2,-\3\2\2\2,*\3\2\2\2-.\3\2\2\2./\7\25\2\2/\5\3\2\2\2\60"+
+		"\62\7\21\2\2\61\63\7\5\2\2\62\61\3\2\2\2\63\64\3\2\2\2\64\65\3\2\2\2\64"+
+		"\62\3\2\2\2\65\66\3\2\2\2\66\67\7\25\2\2\67\7\3\2\2\28:\7\22\2\29;\7\5"+
+		"\2\2:9\3\2\2\2;<\3\2\2\2<=\3\2\2\2<:\3\2\2\2=>\3\2\2\2>?\7\25\2\2?\t\3"+
+		"\2\2\2@A\7\r\2\2A\13\3\2\2\2BD\7\t\2\2CE\7\5\2\2DC\3\2\2\2EF\3\2\2\2F"+
+		"G\3\2\2\2FD\3\2\2\2GH\3\2\2\2HI\7\25\2\2I\r\3\2\2\2JK\7\n\2\2K\17\3\2"+
+		"\2\2LN\7\16\2\2MO\7\5\2\2NM\3\2\2\2OP\3\2\2\2PQ\3\2\2\2PN\3\2\2\2QR\3"+
+		"\2\2\2RS\7\25\2\2S\21\3\2\2\2TU\7\20\2\2U\23\3\2\2\2VW\7\23\2\2W\25\3"+
+		"\2\2\2XY\7\26\2\2Y\27\3\2\2\2Z\\\7\13\2\2[]\7\5\2\2\\[\3\2\2\2]^\3\2\2"+
+		"\2^_\3\2\2\2^\\\3\2\2\2_`\3\2\2\2`a\7\25\2\2a\31\3\2\2\2bc\7\f\2\2c\33"+
+		"\3\2\2\2de\7\27\2\2e\35\3\2\2\2fh\7\17\2\2gi\7\5\2\2hg\3\2\2\2ij\3\2\2"+
+		"\2jk\3\2\2\2jh\3\2\2\2kl\3\2\2\2lm\7\25\2\2m\37\3\2\2\2\n$,\64<FP^j";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

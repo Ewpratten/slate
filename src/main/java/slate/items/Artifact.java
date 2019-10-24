@@ -10,7 +10,4 @@ public class Artifact extends ItemBase {
 		weight = 3;
 	}
 
-	public Artifact(ItemBase item) {
-		super(item);
-	}
 }

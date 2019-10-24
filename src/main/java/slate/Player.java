@@ -3,7 +3,9 @@ package slate;
 public class Player {
     private static Player m_instance = null;
     private Inventory inventory;
-    private Inventory focused_inventory;
+    private Inventory focusedInventory;
+
+    public int invisTurns = 0;
 
     private Player() {
         inventory = new Inventory("Pockets",20);
@@ -22,11 +24,15 @@ public class Player {
         return inventory;
     }
 
-    public Inventory getFocused_inventory() {
-        return focused_inventory;
+    public Inventory getFocusedInventory() {
+        return focusedInventory;
     }
 
-    public void setFocused_inventory(Inventory new_inventory) {
-        focused_inventory = new_inventory;
+    public void setFocusedInventory(Inventory newInventory) {
+        focusedInventory = newInventory;
+    }
+
+    public void drainBuff(){
+        invisTurns = Math.max(invisTurns-1, 0);
     }
 }

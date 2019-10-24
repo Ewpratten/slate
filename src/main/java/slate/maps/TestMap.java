@@ -1,10 +1,8 @@
 package slate.maps;
 
-import slate.Guard;
 import slate.Navigator;
 import slate.bases.MapBase;
-import slate.bases.RoomBase;
-import slate.rooms.TestRoom;
+import slate.Room;
 
 import java.util.ArrayList;
 
@@ -14,18 +12,15 @@ public class TestMap extends MapBase {
      * Here we define this map, and it's rooms
      */
     public TestMap() {
-        rooms = new ArrayList<RoomBase>();
+        rooms = new ArrayList<Room>();
         nav = new Navigator();
-        description = "You find yourself in a land of 1s and 0s. This is the test world. A place where your fate (and computer) is at the hands of the developers. Proceed at your own risk.";
 
         // Set up starting rooms
 
         /* Rooms */
-        RoomBase first_room = new TestRoom();
-        RoomBase second_room = new TestRoom();
+        Room first_room = new Room("TEST ROOM DUIFAHJHIUGEGUGFHD", "BLEEDDDBLEEDDDDEDEELBE", "NaN");
+        Room second_room = new Room("VOIDSPACE", "WELCOME To", "ooJIDknjnjdNDJ$*(*8");
 
-        //Put a guard here for now
-        second_room.guards.add(new Guard(second_room));
         first_room.addPathway(second_room);
         rooms.add(first_room);
         rooms.add(second_room);
@@ -46,7 +41,7 @@ public class TestMap extends MapBase {
     /*
     * Gets a list of every room on the map.
     */
-    public ArrayList<RoomBase> getAllRooms(){
+    public ArrayList<Room> getAllRooms(){
         return rooms;
     }
 }

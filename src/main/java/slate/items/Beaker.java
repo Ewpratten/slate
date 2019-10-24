@@ -9,7 +9,4 @@ public class Beaker extends ItemBase {
 		weight = 7;
 	}
 
-	public Beaker(ItemBase item) {
-		super(item);
-	}
 }

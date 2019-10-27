@@ -91,6 +91,10 @@ public class Room implements Cloneable{
         root_inventory.addItem(item);
     }
 
+    public void addItem(ItemBase item, int num) {
+        root_inventory.addItem(item, num);
+    }
+
     /**
      * Spawn a guard into a room
      *

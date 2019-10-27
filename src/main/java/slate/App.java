@@ -33,10 +33,9 @@ public class App {
 
         // Pint the map introduction text
         System.out.println(current_map.getDescription());
-        System.out.println(current_map.nav.getCurrentRoom().getRoomInfo());
 
         //Set starting inventory
-        player.setFocused_inventory(current_map.nav.getCurrentRoom().getRoot_inventory());
+        player.setFocusedInventory(current_map.nav.getCurrentRoom().getRoot_inventory());
 
         while (true) {
             Command[] comms = getInput();
@@ -53,6 +52,11 @@ public class App {
                 //Handle running into guards
                 if(current_map.nav.getCurrentRoom().getGuards().size()>0){
                     System.out.println("I ran into a guard, I'm lucky nobody has added any penalties to the game yet.");
+                }
+
+                //Win Game
+                if(current_map.nav.getCurrentRoom().equals(current_map.nav.getDefaultRoom())&&player.getInventory().getStorage().containsKey("Artifact")){
+                    System.out.println("I won!");
                 }
             }
         }

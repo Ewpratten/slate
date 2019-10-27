@@ -1,35 +1,31 @@
 package slate;
 
 
-import slate.bases.RoomBase;
-
 public class Navigator {
 
-    RoomBase default_room;
-    RoomBase current_room;
+    Room default_room;
+    Room current_room;
 
-    public void setDefaultRoom(RoomBase room) {
+    public void setDefaultRoom(Room room) {
         default_room = room;
-        current_room = new RoomBase(room);
+        current_room = Room.copyRoom(room);
 
     }
 
-    public RoomBase getDefaultRoom() {
+    public Room getDefaultRoom() {
         return default_room;
     }
 
-    public RoomBase getCurrentRoom() {
+    public Room getCurrentRoom() {
         return current_room;
     }
 
-    public void moveTo(RoomBase room) {
+    public void moveTo(Room room) {
         // Mark the room
         room.visited = true;
 
         // Set the room as the current
         current_room = room;
-
-        // System.out.println(room.getName());
 
     }
 

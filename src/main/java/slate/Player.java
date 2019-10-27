@@ -1,21 +1,17 @@
 package slate;
 
-import slate.exceptions.ItemSizeException;
-import slate.items.TestItem;
-
 public class Player {
     private static Player m_instance = null;
     private Inventory inventory;
-    private Inventory focused_inventory;
+    private Inventory focusedInventory;
+
+    public int invisTurns = 0;
+    public int etherealTurns = 0;
+    public int timeScale = 0;
+    public boolean isFlask;
 
     private Player() {
         inventory = new Inventory("Pockets",20);
-        TestItem item = new TestItem();
-        try {
-            inventory.addItem(item.getName(), item);
-        } catch (ItemSizeException e) {
-            e.printStackTrace();
-        }
     }
 
     public static Player getInstance() {
@@ -31,11 +27,15 @@ public class Player {
         return inventory;
     }
 
-    public Inventory getFocused_inventory() {
-        return focused_inventory;
+    public Inventory getFocusedInventory() {
+        return focusedInventory;
     }
 
-    public void setFocused_inventory(Inventory new_inventory) {
-        focused_inventory = new_inventory;
+    public void setFocusedInventory(Inventory newInventory) {
+        focusedInventory = newInventory;
+    }
+
+    public void drainBuff(){
+        invisTurns = Math.max(invisTurns-1, 0);
     }
 }

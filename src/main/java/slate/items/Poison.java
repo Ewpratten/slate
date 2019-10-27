@@ -8,8 +8,4 @@ public class Poison extends ItemBase {
 		name = "Poison";
 		weight = 5;
 	}
-
-	public Poison(ItemBase item) {
-		super(item);
-	}
 }

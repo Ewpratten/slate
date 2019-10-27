@@ -9,7 +9,4 @@ public class TestItem extends ItemBase {
 		weight = 1;
 	}
 
-	public TestItem(ItemBase item) {
-		super(item);
-	}
 }

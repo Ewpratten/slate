@@ -1,19 +1,18 @@
-package slate.bases;
+package slate;
 
-import slate.Guard;
-import slate.Inventory;
-import slate.exceptions.ItemSizeException;
+import slate.bases.ItemBase;
 
 import java.util.ArrayList;
 
-public class RoomBase {
+public class Room implements Cloneable{
     ArrayList<ItemBase> items = new ArrayList<ItemBase>();
     ArrayList<Inventory> inventories = new ArrayList<Inventory>();
-    protected ArrayList<RoomBase> attached_rooms = new ArrayList<RoomBase>();
+    protected ArrayList<Room> attached_rooms = new ArrayList<Room>();
     public ArrayList<Guard> guards = new ArrayList<Guard>();
+    public ArrayList<Guard> movedGuards = new ArrayList<Guard>();
     public boolean visited;
 
-    protected String name, peek_info, room_info = "";
+    protected String name, peekInfo, roomInfo;
 
     protected Inventory root_inventory = new Inventory("Room", 100);
 
@@ -28,18 +27,28 @@ public class RoomBase {
     }
 
     public String getPeekInfo() {
-        return peek_info;
+        return peekInfo;
     }
 
     public String getRoomInfo() {
-        return room_info;
+        return roomInfo;
     }
 
     /**
-     * Empty, optional constructor to be overridden
+     * Constructors, optionally locked
      */
-    public RoomBase() {
+    public Room(String name, String desc, String peek) {
+        this.name = name;
+        this.roomInfo = desc;
+        this.peekInfo = peek;
+        this.locks = 0;
+    }
 
+    public Room(String name, String desc, String peek, int locks) {
+        this.name = name;
+        this.roomInfo = desc;
+        this.peekInfo = peek;
+        this.locks = locks;
     }
 
     /**
@@ -47,21 +56,17 @@ public class RoomBase {
      * 
      * @param room
      */
-    public RoomBase(RoomBase room) {
-        root_inventory = room.root_inventory;
-        items = room.items;
-        inventories = room.inventories;
-        guards = room.guards;
-        attached_rooms = room.attached_rooms;
-        visited = room.visited;
-        name = room.name;
-        peek_info = room.peek_info;
-        room_info = room.room_info;
-
+    public static Room copyRoom(Room room) {
+        try{
+            return (Room) room.clone();
+        }catch(CloneNotSupportedException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public void addPathway(RoomBase... rooms) {
-        for (RoomBase room : rooms) {
+    public void addPathway(Room... rooms) {
+        for (Room room : rooms) {
             addPathway(room);
 
         }
@@ -72,7 +77,7 @@ public class RoomBase {
      * 
      * @param room New room
      */
-    public void addPathway(RoomBase room) {
+    public void addPathway(Room room) {
         // This will override pre-existing rooms
         attached_rooms.add(room);
     }
@@ -83,16 +88,26 @@ public class RoomBase {
      * @param item Item to add
      */
     public void addItem(ItemBase item) {
-        try{
-            root_inventory.addItem(item.getName(), item);
-        } catch (ItemSizeException e) {
-            System.out.println(e);
-        }
+        root_inventory.addItem(item);
+    }
 
+    public void addItem(ItemBase item, int num) {
+        root_inventory.addItem(item, num);
     }
 
     /**
-     * Get a list of names of For information on how to update a webdocs page, see [the guide](https://cs.5024.ca/webdocs/docs/meta). Don't forget to add your GitHub username to the page's authors list!all items in the room
+     * Spawn a guard into a room
+     *
+     * @param num Number to add
+     */
+    public void addGuards(int num) {
+        for(int i = 0; i<num; i++) {
+            this.guards.add(new Guard(this));
+        }
+    }
+
+    /**
+     * Get a list of names of all items in the room
      * 
      * @return List of all item names
      */
@@ -109,11 +124,11 @@ public class RoomBase {
     /*
      * Get attached rooms
      */
-    public ArrayList<RoomBase> getAttached_rooms() {
+    public ArrayList<Room> getAttached_rooms() {
         return attached_rooms;
     }
 
-    public boolean equals(RoomBase room) {
+    public boolean equals(Room room) {
         return room.getName() == getName() && room.getRoomInfo() == getRoomInfo() && room.getPeekInfo() == getPeekInfo()
                 && attached_rooms.equals(room.attached_rooms) && items.equals(room.items) && visited == room.visited;
     }
@@ -123,6 +138,13 @@ public class RoomBase {
      */
     public ArrayList<Guard> getGuards(){
         return guards;
+    }
+
+    /*
+     Get Moved Guards
+     */
+    public ArrayList<Guard> getMovedGuards(){
+        return movedGuards;
     }
 
     public Inventory getRoot_inventory() {
@@ -154,7 +176,7 @@ public class RoomBase {
      * @param name Room name
      * @return Current room
      */
-    public RoomBase named(String name) {
+    public Room named(String name) {
         this.name = name;
         return this;
     }
@@ -165,7 +187,7 @@ public class RoomBase {
      * @param num locks needed
      * @return Current room
      */
-    public RoomBase withLocks(int num) {
+    public Room withLocks(int num) {
         this.locks = num;
         return this;
     }

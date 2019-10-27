@@ -1,78 +1,67 @@
 package slate.maps;
 
+import slate.Inventory;
 import slate.Navigator;
 import slate.bases.MapBase;
-import slate.bases.RoomBase;
-import slate.items.Artifact;
-import slate.items.Key;
-import slate.rooms.BreakRoom;
-import slate.rooms.Elevator;
-import slate.rooms.Hallway;
-import slate.rooms.Laboratory;
-import slate.rooms.StartRoom;
-import slate.rooms.StorageRoom;
-import slate.rooms.Vault;
+import slate.Room;
+import slate.items.*;
 
 public class GameMap extends MapBase {
 
     /* Rooms */
-    RoomBase starting_room, start_hall_right, start_hall_left, mini_lab_1, mini_lab_2, mini_lab_storage,
-            mini_lab_storage_shared, mini_lab_elevator, large_lab, large_lab_hall, large_lab_storage,
-            large_lab_elevator, large_lab_brk_room, end_hall, end_hall_storage, end_hall_elevator, floor2_main_hall,
-            floor2_side_hall, floor2_brk_room, floor2_storage, floor2_front_elevator, floor2_rear_elevator,
-            final_elevator, final_hall, vault;
+    private Room entrance, hallA1, hallB1, labA1, labA2,
+            sharedLabStorage, labB, hallB2, chemStorage,
+            teleporter, brkRoomB, hallB3, janitorCloset, employeeElevator, hallC1,
+            hallC2, brkRoomC, lockedStorage, maintenanceElevator, maintenanceHall, vault;
 
     /**
      * Here we define this map, and it's rooms
      */
     public GameMap() {
         nav = new Navigator();
-        description = "I find myself in a building.. Maybe I should look around?";
+        description = "I step into the building... I overheard that the vault has an access path in maintenance somewhere... Maybe I should look around?";
 
         /* Define rooms */
 
         // Starting rooms
-        starting_room = new StartRoom();
-        start_hall_right = (new Hallway()).named("Short hallway");
-        start_hall_left = (new Hallway()).named("Long hallway");
+        entrance = new Room("Entrance","This is the room I started in.", "Looks like where I started...");
+        hallA1 = new Room("Hall A1","This hallway is remarkably well-lit. The A wing seems to hold some auxiliary labs, maybe there's some useful things here.", "I see brightly-lit pristine, white walls...");
+        hallB1 = new Room("Hall B1","I wonder where all these rooms lead... the B wing serves as a place for the main research lab.", "I see a long, looming hall...");
 
-        // Mini labs
-        mini_lab_1 = (new Laboratory()).named("Small lab A");
-        mini_lab_2 = (new Laboratory()).named("Small lab B");
-        mini_lab_storage = new StorageRoom();
-        mini_lab_storage_shared = (new StorageRoom()).named("Shared storage room");
-        mini_lab_elevator = new Elevator();
+        // A Wing
+        labA1 = new Room("Lab A1","This lab is the picture of cleanliness. Maybe I can find some useful chemicals in here.", "A small chemical laboratory...");
+        labA2 = new Room("Lab A2","As I step into the lab, I am instantly repulsed by a rancid, rotting smell.\nThere's a table in the center of the room, spattered with blood. I might be sick...", "The window is very foggy...");
+        sharedLabStorage = new Room("Shared Storage Room","As I step into this gargantuan storage room, I feel so insignificant... there's got to be something useful here.", "A large storage room...");
 
-        // Large lab
-        large_lab = (new Laboratory()).named("Large lab");
-        large_lab_hall = (new Hallway()).named("Side hallway");
-        large_lab_storage = new StorageRoom();
-        large_lab_elevator = new Elevator();
-        large_lab_brk_room = new BreakRoom();
+        // B Wing
+        labB = new Room("Lab B", "This large laboratory is jam-packed with all sorts of interesting specimens.", "An absolutely immense laboratory...");
+        hallB2 = new Room("Hall B2", "This hallway is rather tight and dimly-lit.", "I can't see inside very well...");
+        chemStorage = new Room("Chemical Storage", "This closet contains shelves of chemicals... maybe I can find some useful ones.", "I see rows of dimly-lit shelves...");
+        teleporter = new Room("Completely Euclidean Elevator", "I can feel every nerve ending in my body.", "Nothing weird here whatsoever...");
+        brkRoomB = new Room("Break Room", "This is a risky place to be, but... I am a little hungry.", "A break room, fridge and all!");
+        hallB3 = new Room("Hall B3", "As I enter the hall, I almost slip on a sizeable puddle of what I can only hope is water.", "There's an elevator through here...");
+        janitorCloset = new Room("Janitorial Closet", "This closet seems to hold various supplies that a janitor would use.", "A simple closet...");
+        employeeElevator = new Room("Employee Elevator", "This elevator allows employees access to the basement. Luckily, I have clearance for that area.", "This elevator will  take me to the basement...");
 
-        // End hall
-        end_hall = (new Hallway()).named("Small hallway");
-        end_hall_storage = new StorageRoom();
-        end_hall_elevator = new Elevator();
+        // Basement
+        hallC1 = new Room("Hall C1", "This dimly-lit hallway brings back memories of my childhood.", "Smells like a used towel...");
+        hallC2 = new Room("Hall C2", "I would hate to have to work down here... just unpleasant.", "I can make out a \"wet floor\" sign...");
+        brkRoomC = new Room("Break Room", "This room offers some relief from the grossness of the rest of this dank place.", "It actually looks clean in there...");
+        lockedStorage = new Room("Storage Locker", "This locker is filled with rusty shelves and cases... bound to find something good.", "I can't see much through the door's slits...", 1);
+        maintenanceElevator = new Room("Maintenance Elevator", "I am unsure whether to trust this rickety elevator, but I guess I don't have a choice.", "A crude elevator with a rusty gate...");
 
-        // 2nd floor
-        floor2_front_elevator = new Elevator();
-        floor2_main_hall = (new Hallway()).named("Long hallway");
-        floor2_side_hall = (new Hallway()).named("Dark hallway");
-        floor2_brk_room = new BreakRoom();
-        floor2_storage = (new StorageRoom()).named("Locked storage room").withLocks(1);
-        floor2_rear_elevator = (new Elevator()).named("Freight elevator").withLocks(1);
-
-        // 3rd floor
-        final_elevator = (new Elevator()).named("Freight elevator");
-        final_hall = (new Hallway()).named("Vault hallway");
-        vault = (new Vault()).withLocks(2);
+        // Maintenance Shaft
+        maintenanceHall = new Room("Maintenance Hall", "This hall is an incredibly tight fit...", "I really don't want to climb in there...");
+        vault = new Room("Vault", "I actually made it! Now all I've got to do is take the artifact and get out of here!", "The artifact is right in there!", 2);
 
         /* Linking rooms */
         linkRooms();
 
         /* Fill rooms with items */
         placeItems();
+
+        /* Spawn Guards */
+        spawnGuards();
 
         /* Config navigator */
         initNavigator();
@@ -84,65 +73,59 @@ public class GameMap extends MapBase {
      */
     private void linkRooms() {
         // Link starting room to it's hallways
-        starting_room.addPathway(start_hall_left, start_hall_right);
+        entrance.addPathway(hallB1, hallA1);
 
         // Link the right hallway to the labs, elevator, and storage room
-        start_hall_right.addPathway(starting_room, mini_lab_1, mini_lab_2, mini_lab_storage, mini_lab_elevator);
-        mini_lab_storage.addPathway(start_hall_right);
-        mini_lab_elevator.addPathway(start_hall_right);
+        hallA1.addPathway(entrance, labA1, labA2);
 
         // Link the mini labs to their shared storage room
-        mini_lab_1.addPathway(start_hall_right, mini_lab_storage_shared);
-        mini_lab_2.addPathway(start_hall_right, mini_lab_storage_shared);
+        labA1.addPathway(hallA1, sharedLabStorage);
+        labA2.addPathway(hallA1, sharedLabStorage);
 
         // Link the minilab shared storage to the mini labs
-        mini_lab_storage_shared.addPathway(mini_lab_1, mini_lab_2);
+        sharedLabStorage.addPathway(labA1, labA2);
 
         // Link left hallway
-        start_hall_left.addPathway(starting_room, large_lab);
+        hallB1.addPathway(entrance, labB);
 
         // Link the large lab
-        large_lab.addPathway(start_hall_left, large_lab_hall, large_lab_storage, large_lab_brk_room, end_hall);
+        labB.addPathway(hallB1, hallB2, chemStorage, brkRoomB, hallB3);
 
         // Link the large lab hall
-        large_lab_hall.addPathway(large_lab, large_lab_storage, large_lab_elevator);
+        hallB2.addPathway(labB, chemStorage, teleporter);
 
         // Link the large lab storage
-        large_lab_storage.addPathway(large_lab, large_lab_hall);
+        chemStorage.addPathway(labB, hallB2);
 
         // Link the large lab elevator
-        large_lab_elevator.addPathway(large_lab_hall, mini_lab_elevator);
+        teleporter.addPathway(hallA1);
 
         // Link large lab brk room
-        large_lab_brk_room.addPathway(large_lab, end_hall);
+        brkRoomB.addPathway(labB, hallB3);
 
         // Link the end hall
-        end_hall.addPathway(large_lab_brk_room, end_hall_storage, end_hall_elevator);
-        end_hall_storage.addPathway(end_hall);
+        hallB3.addPathway(brkRoomB, janitorCloset, employeeElevator);
+        janitorCloset.addPathway(hallB3);
 
         // End hall elevator
-        end_hall_elevator.addPathway(end_hall, floor2_front_elevator);
-
-        // Link 2nd floor to first
-        floor2_front_elevator.addPathway(end_hall_elevator, floor2_main_hall);
+        employeeElevator.addPathway(hallB3, hallC1);
 
         // Link 2nd floor main hall
-        floor2_main_hall.addPathway(floor2_front_elevator, floor2_storage, floor2_side_hall);
-        floor2_storage.addPathway(floor2_main_hall);
+        hallC1.addPathway(employeeElevator, lockedStorage, hallC2);
+        lockedStorage.addPathway(hallC1);
 
         // Link 2nd floor side hall
-        floor2_side_hall.addPathway(floor2_main_hall, floor2_brk_room, floor2_rear_elevator);
-        floor2_brk_room.addPathway(floor2_side_hall);
+        hallC2.addPathway(hallC1, brkRoomC, maintenanceElevator);
+        brkRoomC.addPathway(hallC2);
 
         // Link 3rd floor elevator
-        floor2_rear_elevator.addPathway(floor2_side_hall, final_elevator);
-        final_elevator.addPathway(floor2_rear_elevator, final_hall);
+        maintenanceElevator.addPathway(hallC2, maintenanceHall);
 
         // Link 3rd floor hallway
-        final_hall.addPathway(final_elevator, vault);
+        maintenanceHall.addPathway(maintenanceElevator, vault);
 
         // Link vault
-        vault.addPathway(final_hall);
+        vault.addPathway(maintenanceHall);
     }
 
     /**
@@ -150,15 +133,50 @@ public class GameMap extends MapBase {
      */
     private void placeItems() {
 
-        // Add keys to rooms
-        mini_lab_1.addItem(new Key());
-        mini_lab_storage_shared.addItem(new Key());
-        large_lab_brk_room.addItem(new Key());
-        floor2_storage.addItem(new Key());
+        // Labs
 
-        // Put the artifact in the vault
+        //Lab A1
+        labA1.addItem(new Key());
+        labA1.addItem(new Flask(), 12);
+        labA1.addInventory(new Inventory("Cabinet", 25));
+        labA1.getInventories().get(0).addItem(new Chemical(), 3);
+        labA1.getInventories().get(0).addItem(new Flask());
+
+        //Lab A2
+        labA2.addItem(new Chemical());
+        labA2.addItem(new LogBook(LogBook.ROOM_LABA2));
+        labA2.addInventory(new Inventory("Cage", 25, 5));
+        labA2.getInventories().get(0).addItem(new Key(), 5);
+
+        sharedLabStorage.addItem(new Key());
+
+
+        lockedStorage.addItem(new Key());
+
+        // Vault
         vault.addItem(new Artifact());
-        
+
+        //Break Rooms
+
+        brkRoomB.addInventory(new Inventory("Fridge", 50));
+        brkRoomB.getInventories().get(0).addItem(new Apple(), 3);
+        brkRoomB.getInventories().get(0).addItem(new Avocado());
+        brkRoomB.getInventories().get(0).addItem(new Muffin(), 5);
+        brkRoomB.addItem(new Key());
+        brkRoomC.addInventory(new Inventory("Fridge", 50));
+        brkRoomC.getInventories().get(0).addItem(new Apple(), 12);
+
+    }
+
+    /**
+     * Spawn guards into map
+     */
+    private void spawnGuards() {
+
+        //Spawn Guards
+        labB.addGuards(2);
+        brkRoomB.addGuards(1);
+        brkRoomC.addGuards(1);
     }
 
     /**
@@ -166,14 +184,15 @@ public class GameMap extends MapBase {
      */
     private void initNavigator() {
         // Set the starting room
-        nav.setDefaultRoom(starting_room);
+        nav.setDefaultRoom(entrance);
+        entrance.visited = true;
 
         // Register rooms
         // This is required to let the navigation system know about each room
-        registerRooms(starting_room, start_hall_right, start_hall_left, mini_lab_1, mini_lab_2, mini_lab_storage,
-                mini_lab_storage_shared, mini_lab_elevator, large_lab, large_lab_hall, large_lab_storage,
-                large_lab_elevator, large_lab_brk_room, end_hall, end_hall_storage, end_hall_elevator, floor2_main_hall,
-                floor2_side_hall, floor2_brk_room, floor2_storage, floor2_front_elevator, floor2_rear_elevator);
+        registerRooms(entrance, hallA1, hallB1, labA1, labA2,
+                sharedLabStorage, labB, hallB2, chemStorage,
+                brkRoomB, hallB3, janitorCloset, employeeElevator, hallC1,
+                hallC2, brkRoomC, lockedStorage, maintenanceElevator, vault);
     }
 
     @Override

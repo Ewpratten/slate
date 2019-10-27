@@ -106,4 +106,12 @@ public class Context {
             return parser.superlongcomm();
         }
     }
+
+    //USE
+    static class UseContext implements ContextInterface {
+        @Override
+        public ParserRuleContext open(SlateParser parser) {
+            return parser.usecomm();
+        }
+    }
 }

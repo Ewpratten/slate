@@ -6,6 +6,9 @@ public class Player {
     private Inventory focusedInventory;
 
     public int invisTurns = 0;
+    public int etherealTurns = 0;
+    public int timeScale = 0;
+    public boolean isFlask;
 
     private Player() {
         inventory = new Inventory("Pockets",20);

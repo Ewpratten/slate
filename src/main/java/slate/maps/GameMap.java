@@ -133,20 +133,36 @@ public class GameMap extends MapBase {
      */
     private void placeItems() {
 
-        // Add keys to rooms
+        // Labs
+
+        //Lab A1
         labA1.addItem(new Key());
+        labA1.addItem(new Flask(), 12);
+        labA1.addInventory(new Inventory("Cabinet", 25));
+        labA1.getInventories().get(0).addItem(new Chemical(), 3);
+        labA1.getInventories().get(0).addItem(new Flask());
+
+        //Lab A2
+        labA2.addItem(new Chemical());
+        labA2.addItem(new LogBook(LogBook.ROOM_LABA2));
+        labA2.addInventory(new Inventory("Cage", 25, 5));
+        labA2.getInventories().get(0).addItem(new Key(), 5);
+
         sharedLabStorage.addItem(new Key());
-        brkRoomB.addItem(new Key());
+
+
         lockedStorage.addItem(new Key());
 
-        // Put the artifact in the vault
+        // Vault
         vault.addItem(new Artifact());
 
-        //Food
+        //Break Rooms
+
         brkRoomB.addInventory(new Inventory("Fridge", 50));
         brkRoomB.getInventories().get(0).addItem(new Apple(), 3);
         brkRoomB.getInventories().get(0).addItem(new Avocado());
         brkRoomB.getInventories().get(0).addItem(new Muffin(), 5);
+        brkRoomB.addItem(new Key());
         brkRoomC.addInventory(new Inventory("Fridge", 50));
         brkRoomC.getInventories().get(0).addItem(new Apple(), 12);
 

@@ -10,6 +10,7 @@ public class ItemBase implements Cloneable{
     protected int weight;
     protected int key_id = -1; // Set this to something else if the item is a key
     public String name;
+    public String verb = "used";
 
     public ItemBase(){}
 

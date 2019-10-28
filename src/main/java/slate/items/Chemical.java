@@ -30,12 +30,12 @@ public class Chemical extends ItemBase {
 				break;
 			case 4:
 				System.out.println("Everything seems to slow down around me...");
-				player.timeScale++;
+				player.timeScale*=2;
 				player.getInventory().addItem(new Flask());
 				break;
 			case 5:
 				System.out.println("Everything seems to speed up around me...");
-				player.timeScale--;
+				player.timeScale/=2;
 				player.getInventory().addItem(new Flask());
 				break;
 			case 6:

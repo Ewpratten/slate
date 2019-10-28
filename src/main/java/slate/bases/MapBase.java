@@ -1,11 +1,13 @@
 package slate.bases;
 
+import slate.App;
 import slate.Navigator;
 import slate.Room;
 
 import java.util.ArrayList;
 
 public abstract class MapBase {
+    public App game;
     public Navigator nav;
     protected String description;
     protected ArrayList<Room> rooms = new ArrayList<Room>();

@@ -10,11 +10,12 @@ import slate.parser.Command;
 import static slate.parser.Commands.getInput;
 
 public class App {
+
     //Player
     public Player player = Player.getInstance();
 
     // Define the map to use
-    public MapBase current_map = new GameMap();
+    public MapBase current_map = new GameMap(this);
 
     public static void main(String[] args) {
         new App();
@@ -59,6 +60,19 @@ public class App {
                     System.out.println("I won!");
                 }
             }
+        }
+    }
+
+    public void moveGuards(){
+        int moved = 0;
+        for(Room r: current_map.getAllRooms()){
+            for(Guard g: r.getGuards()){
+                moved += g.patrol();
+            }
+        }
+
+        if(player.getInventory().getStorage().containsKey("Guard Radio")&&moved>0){
+            System.out.println(String.format("My radio alerts me, telling me %d guard%s have moved position.", moved, moved>1?"s":""));
         }
     }
 }

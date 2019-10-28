@@ -9,6 +9,7 @@ public class PlayerItem extends ItemBase {
         weight = 0;
         is_consumable = true;
         is_food = true;
+        verb = "ate";
     }
 
     @Override

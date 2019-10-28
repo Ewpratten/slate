@@ -11,6 +11,7 @@ public class LogBook extends ItemBase {
 	public static final int ROOM_LABA2 = 0;
 	public static final int ROOM_LABA1 = 1;
 	public static final int ROOM_LABB = 2;
+	public static final int ROOM_BREAKROOMC = 3;
 	String[] contents;
 
 	public LogBook(int room) {
@@ -30,6 +31,10 @@ public class LogBook extends ItemBase {
 			case ROOM_LABB:
 				getContent("labb.logbook");
 				name = "Log Book 684";
+				break;
+			case ROOM_BREAKROOMC:
+				getContent("breakroomc.logbook");
+				name = "Guard's Journal";
 				break;
 		}
 	}

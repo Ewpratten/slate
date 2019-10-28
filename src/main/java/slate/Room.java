@@ -5,6 +5,7 @@ import slate.bases.ItemBase;
 import java.util.ArrayList;
 
 public class Room implements Cloneable{
+    App game;
     ArrayList<ItemBase> items = new ArrayList<ItemBase>();
     ArrayList<Inventory> inventories = new ArrayList<Inventory>();
     protected ArrayList<Room> attached_rooms = new ArrayList<Room>();
@@ -37,14 +38,16 @@ public class Room implements Cloneable{
     /**
      * Constructors, optionally locked
      */
-    public Room(String name, String desc, String peek) {
+    public Room(App game, String name, String desc, String peek) {
+        this.game = game;
         this.name = name;
         this.roomInfo = desc;
         this.peekInfo = peek;
         this.locks = 0;
     }
 
-    public Room(String name, String desc, String peek, int locks) {
+    public Room(App game, String name, String desc, String peek, int locks) {
+        this.game = game;
         this.name = name;
         this.roomInfo = desc;
         this.peekInfo = peek;
@@ -102,7 +105,7 @@ public class Room implements Cloneable{
      */
     public void addGuards(int num) {
         for(int i = 0; i<num; i++) {
-            this.guards.add(new Guard(this));
+            this.guards.add(new Guard(this, game.player));
         }
     }
 

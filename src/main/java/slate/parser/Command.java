@@ -497,12 +497,7 @@ public class Command{
                     game.player.drainBuff();
 
                     //Move Guards
-                    for (Room room : game.current_map.getAllRooms()) {
-                        for (Guard g : room.getGuards()) {
-                            g.patrol();
-                        }
-                        room.getGuards().removeAll(room.getMovedGuards());
-                    }
+                    game.moveGuards();
                     return;
                 }
             }
@@ -560,11 +555,7 @@ public class Command{
 
             //Move Guards
             System.out.println("I'll wait here for now...");
-            for(Room r: game.current_map.getAllRooms()){
-                for(Guard g: r.getGuards()){
-                    g.patrol();
-                }
-            }
+            game.moveGuards();
         }
     }
 
@@ -696,7 +687,7 @@ public class Command{
         public void execute(){
 
             System.out.println("I feel ill...");
-            game.current_map = new TestMap();
+            game.current_map = new TestMap(game);
             System.out.println("I CCCAN TASTE MY T#ETH< &&&&&&&&& FFF###L TH3 UNIVERS________\n :(");
         }
     }

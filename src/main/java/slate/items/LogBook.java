@@ -9,16 +9,27 @@ import java.io.IOException;
 public class LogBook extends ItemBase {
 
 	public static final int ROOM_LABA2 = 0;
+	public static final int ROOM_LABA1 = 1;
+	public static final int ROOM_LABB = 2;
 	String[] contents;
 
 	public LogBook(int room) {
-		name = "Log Book";
 		weight = 2;
 		is_consumable =  true;
+		verb = "read";
 
 		switch (room){
 			case ROOM_LABA2:
 				getContent("laba2.logbook");
+				name = "Log Book 541";
+				break;
+			case ROOM_LABA1:
+				getContent("laba1.logbook");
+				name = "Complaint Form";
+				break;
+			case ROOM_LABB:
+				getContent("labb.logbook");
+				name = "Log Book 684";
 				break;
 		}
 	}

@@ -352,18 +352,24 @@ public class Command{
                     if(game.player.getInventory().getStorage().get(item.name).getItem().is_consumable){
 
                         //Consume Item
-                        System.out.println(String.format("I %s the %s.", (game.player.getInventory().getStorage().get(item.name).getItem().is_food?"ate":"used"), item.name));
+                        System.out.println(String.format("I %s the %s.", (game.player.getInventory().getStorage().get(item.name).getItem().verb), item.name));
                         try{
                             game.player.getInventory().removeItem(item.name).use(game.player);
-
                         }catch (ItemNotFoundException e){
                             e.printStackTrace();
                         }
+                        return;
                     }
+
+                    //Not Consumable
+                    System.out.println("I can't use this.");
+                    return;
                 }
             }
 
-
+            //Item not found
+            System.out.println("I don't seem to have any of those...");
+            return;
         }
     }
 
@@ -450,7 +456,8 @@ public class Command{
                         while (r.getLocks() > 0) {
                             if (game.player.getInventory().getStorage().containsKey("Key")) {
                                 System.out.println("Should I use a key to unlock one of them? [Y/N]");
-                                if (Commands.sc.nextLine().toUpperCase().charAt(0) == 'Y') {
+                                String response = Commands.sc.nextLine();
+                                if ((response.length()>0) && (response.toUpperCase().charAt(0) == 'Y')) {
                                     try {
                                         game.player.getInventory().removeItem("Key");
                                     } catch (ItemNotFoundException e) {
@@ -464,6 +471,7 @@ public class Command{
                                         break;
                                     }
                                 } else {
+                                    System.out.println("I decide to leave the door locked for now.");
                                     return;
                                 }
                                 System.out.println(String.format("The door still has %d locks on it...", r.getLocks()));
@@ -614,7 +622,8 @@ public class Command{
                                         System.out.println(String.format("I unlocked the %s.", inventory.getName()));
                                         break;
                                     }
-                                } else {
+                                }else{
+                                    System.out.println("I decide to leave the container locked for now.");
                                     return;
                                 }
                                 System.out.println(String.format("The %s still has %d locks on it...", inventory.getName(), inventory.getLocks()));

@@ -10,6 +10,7 @@ public class Apple extends ItemBase {
 		weight = 2;
 		is_consumable = true;
 		is_food = true;
+		verb = "ate";
 	}
 
 	@Override

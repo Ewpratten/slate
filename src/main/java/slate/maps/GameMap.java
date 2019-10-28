@@ -9,7 +9,7 @@ import slate.items.*;
 public class GameMap extends MapBase {
 
     /* Rooms */
-    private Room entrance, hallA1, hallB1, labA1, labA2,
+    private Room entrance, hallA, hallB1, labA1, labA2,
             sharedLabStorage, labB, hallB2, chemStorage,
             teleporter, brkRoomB, hallB3, janitorCloset, employeeElevator, hallC1,
             hallC2, brkRoomC, lockedStorage, maintenanceElevator, maintenanceHall, vault;
@@ -25,12 +25,12 @@ public class GameMap extends MapBase {
 
         // Starting rooms
         entrance = new Room("Entrance","This is the room I started in.", "Looks like where I started...");
-        hallA1 = new Room("Hall A1","This hallway is remarkably well-lit. The A wing seems to hold some auxiliary labs, maybe there's some useful things here.", "I see brightly-lit pristine, white walls...");
+        hallA = new Room("Hall A","This hallway is remarkably well-lit. The A wing seems to hold some auxiliary labs, maybe there's some useful things here.", "I see brightly-lit pristine, white walls...");
         hallB1 = new Room("Hall B1","I wonder where all these rooms lead... the B wing serves as a place for the main research lab.", "I see a long, looming hall...");
 
         // A Wing
         labA1 = new Room("Lab A1","This lab is the picture of cleanliness. Maybe I can find some useful chemicals in here.", "A small chemical laboratory...");
-        labA2 = new Room("Lab A2","As I step into the lab, I am instantly repulsed by a rancid, rotting smell.\nThere's a table in the center of the room, spattered with blood. I might be sick...", "The window is very foggy...");
+        labA2 = new Room("Lab A2","As I step into the lab, I am instantly repulsed by a rancid, rotting smell.\nThere's a table in the center of the room, spattered with blood. I might be sick...", "The window is very foggy...",1);
         sharedLabStorage = new Room("Shared Storage Room","As I step into this gargantuan storage room, I feel so insignificant... there's got to be something useful here.", "A large storage room...");
 
         // B Wing
@@ -73,14 +73,14 @@ public class GameMap extends MapBase {
      */
     private void linkRooms() {
         // Link starting room to it's hallways
-        entrance.addPathway(hallB1, hallA1);
+        entrance.addPathway(hallB1, hallA);
 
         // Link the right hallway to the labs, elevator, and storage room
-        hallA1.addPathway(entrance, labA1, labA2);
+        hallA.addPathway(entrance, labA1, labA2);
 
         // Link the mini labs to their shared storage room
-        labA1.addPathway(hallA1, sharedLabStorage);
-        labA2.addPathway(hallA1, sharedLabStorage);
+        labA1.addPathway(hallA, sharedLabStorage);
+        labA2.addPathway(hallA, sharedLabStorage);
 
         // Link the minilab shared storage to the mini labs
         sharedLabStorage.addPathway(labA1, labA2);
@@ -98,7 +98,7 @@ public class GameMap extends MapBase {
         chemStorage.addPathway(labB, hallB2);
 
         // Link the large lab elevator
-        teleporter.addPathway(hallA1);
+        teleporter.addPathway(hallA);
 
         // Link large lab brk room
         brkRoomB.addPathway(labB, hallB3);
@@ -133,20 +133,38 @@ public class GameMap extends MapBase {
      */
     private void placeItems() {
 
+        //Entrance
+        entrance.addItem(new Chemical(), 10);
+
         // Labs
 
         //Lab A1
         labA1.addItem(new Key());
         labA1.addItem(new Flask(), 12);
+        labA1.addItem(new LogBook(LogBook.ROOM_LABA1));
+        labA1.addItem(new Pen());
         labA1.addInventory(new Inventory("Cabinet", 25));
         labA1.getInventories().get(0).addItem(new Chemical(), 3);
         labA1.getInventories().get(0).addItem(new Flask());
 
         //Lab A2
         labA2.addItem(new Chemical());
-        labA2.addItem(new LogBook(LogBook.ROOM_LABA2));
+        labA2.addItem(new Poison());
+        labA2.addInventory(new Inventory("Filing Cabinet", 25));
+        labA2.getInventories().get(0).addItem(new LogBook(LogBook.ROOM_LABA2));
         labA2.addInventory(new Inventory("Cage", 25, 5));
-        labA2.getInventories().get(0).addItem(new Key(), 5);
+        labA2.getInventories().get(1).addItem(new Key(), 5);
+
+        //Lab B
+        labB.addItem(new LogBook(LogBook.ROOM_LABB));
+        labB.addItem(new Pen());
+        labB.addInventory(new Inventory("Glass Cabinet", 50));
+        labB.getInventories().get(0).addItem(new Flask(), 10);
+        labB.getInventories().get(0).addItem(new Chemical(), 2);
+        labB.addInventory(new Inventory("Drawer", 20, 1));
+        labB.getInventories().get(1).addItem(new Key(), 2);
+        labB.getInventories().get(1).addItem(new Pen(), 3);
+        labB.getInventories().get(1).addItem(new Poison());
 
         sharedLabStorage.addItem(new Key());
 
@@ -189,7 +207,7 @@ public class GameMap extends MapBase {
 
         // Register rooms
         // This is required to let the navigation system know about each room
-        registerRooms(entrance, hallA1, hallB1, labA1, labA2,
+        registerRooms(entrance, hallA, hallB1, labA1, labA2,
                 sharedLabStorage, labB, hallB2, chemStorage,
                 brkRoomB, hallB3, janitorCloset, employeeElevator, hallC1,
                 hallC2, brkRoomC, lockedStorage, maintenanceElevator, vault);

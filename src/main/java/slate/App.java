@@ -125,7 +125,9 @@ public class App{
     public static void clearScreen(){
         try{
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        }catch(IOException | InterruptedException e){
+        }catch(IOException e){
+            System.out.print("\033[H\033[2J");
+        }catch (InterruptedException e){
             e.printStackTrace();
         }
     }

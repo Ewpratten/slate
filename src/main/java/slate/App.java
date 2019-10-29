@@ -69,6 +69,7 @@ public class App {
             for(Guard g: r.getGuards()){
                 moved += g.patrol();
             }
+            r.getGuards().removeAll(r.getMovedGuards());
         }
 
         if(player.getInventory().getStorage().containsKey("Guard Radio")&&moved>0){

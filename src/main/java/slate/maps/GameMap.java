@@ -135,9 +135,6 @@ public class GameMap extends MapBase {
      */
     private void placeItems() {
 
-        //Entrance
-        entrance.addItem(new Chemical(), 10);
-
         //Lab A1
         labA1.addItem(new Key());
         labA1.addItem(new Flask(), 12);
@@ -158,6 +155,18 @@ public class GameMap extends MapBase {
         labA2.addInventory(new Inventory("Cage", 25, 5));
         labA2.getInventories().get(1).addItem(new Key(), 5);
 
+        //Shared Storage Room
+        sharedLabStorage.addItem(new Key());
+
+        sharedLabStorage.addInventory(new Inventory("Pen Crate", 500));
+        sharedLabStorage.getInventories().get(0).addItem(new Pen(), 500);
+
+        sharedLabStorage.addInventory(new Inventory("Flask Crate", 500));
+        sharedLabStorage.getInventories().get(1).addItem(new Flask(), 50);
+
+        sharedLabStorage.addInventory(new Inventory("Oblong Crate",50));
+        sharedLabStorage.getInventories().get(2).addItem(new InvisibilityCloak());
+
         //Lab B
         labB.addItem(new LogBook(LogBook.ROOM_LABB));
         labB.addItem(new Pen());
@@ -170,8 +179,6 @@ public class GameMap extends MapBase {
         labB.getInventories().get(1).addItem(new Key(), 2);
         labB.getInventories().get(1).addItem(new Pen(), 3);
         labB.getInventories().get(1).addItem(new Poison());
-
-        sharedLabStorage.addItem(new Key());
 
         lockedStorage.addItem(new Key());
 

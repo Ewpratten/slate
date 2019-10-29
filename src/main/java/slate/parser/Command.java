@@ -2,9 +2,9 @@ package slate.parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import slate.App;
-import slate.Guard;
 import slate.Inventory;
 import slate.Room;
+import slate.bases.ItemBase;
 import slate.exceptions.ItemNotFoundException;
 import slate.exceptions.ItemSizeException;
 import slate.maps.TestMap;
@@ -201,11 +201,13 @@ public class Command{
                         int numTaken = 0;
                         for (int i = 0; i < quantity; i++) {
 
+                            ItemBase removed = null;
                             //If any of this item are remaining in the container
                             try {
 
+                                removed = game.player.getFocusedInventory().removeItem(item.name);
                                 //Add to player's pockets
-                                game.player.getInventory().putItem(item.name, game.player.getFocusedInventory().removeItem(item.name));
+                                game.player.getInventory().putItem(item.name, removed);
 
                             //If pockets become full
                             } catch (ItemSizeException e) {
@@ -218,6 +220,12 @@ public class Command{
 
                                 //If none were taken, because pockets were too full
                                 System.out.println("There's no space left in my pockets!");
+                                try {
+                                    game.player.getFocusedInventory().putItem(item.name, removed);
+                                    return;
+                                }catch (ItemSizeException e2){
+                                    e2.printStackTrace();
+                                }
                             } catch (ItemNotFoundException e) {
                                 System.out.println("There isn't enough of these, so I take " + numTaken + " instead.");
                                 return;

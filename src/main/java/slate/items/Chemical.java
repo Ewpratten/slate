@@ -1,5 +1,6 @@
 package slate.items;
 
+import slate.App;
 import slate.Player;
 import slate.bases.ItemBase;
 
@@ -26,7 +27,8 @@ public class Chemical extends ItemBase {
 				player.getInventory().addItem(new Flask());
 				break;
 			case 3:
-				System.out.println("oH GOd iT BuRNS! WhY did I Think tHis WoULd bE a Good IdEa?\n I straight up died. Lucky the game can't tell yet.");
+				System.out.println("oH GOd iT BuRNS! WhY did I Think tHis WoULd bE a Good IdEa?");
+				App.chemDeath = true;
 				break;
 			case 4:
 				System.out.println("Everything seems to slow down around me...");

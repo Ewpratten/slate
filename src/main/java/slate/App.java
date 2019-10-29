@@ -6,10 +6,16 @@ package slate;
 import slate.bases.MapBase;
 import slate.maps.GameMap;
 import slate.parser.Command;
+import slate.parser.Commands;
+
+import java.io.IOException;
 
 import static slate.parser.Commands.getInput;
 
-public class App {
+public class App{
+
+    static boolean keepPlaying = true;
+    public static boolean chemDeath = false;
 
     //Player
     public Player player = Player.getInstance();
@@ -18,11 +24,17 @@ public class App {
     public MapBase current_map = new GameMap(this);
 
     public static void main(String[] args) {
-        new App();
+        while((new App()).run());
     }
 
     App() {
+        chemDeath = false;
+        player = Player.resetInstance();
+        //Set starting inventory
+        player.setFocusedInventory(current_map.nav.getCurrentRoom().getRoot_inventory());
+    }
 
+    public boolean run(){
         //Print header at game start
         System.out.println(" _____ _       ___ _____ _____ \n" +
                 "/  ___| |     / _ \\_   _|  ___|\n" +
@@ -35,8 +47,7 @@ public class App {
         // Pint the map introduction text
         System.out.println(current_map.getDescription());
 
-        //Set starting inventory
-        player.setFocusedInventory(current_map.nav.getCurrentRoom().getRoot_inventory());
+
 
         while (true) {
             Command[] comms = getInput();
@@ -51,13 +62,33 @@ public class App {
                 }
 
                 //Handle running into guards
-                if(current_map.nav.getCurrentRoom().getGuards().size()>0){
-                    System.out.println("I ran into a guard, I'm lucky nobody has added any penalties to the game yet.");
+                if(current_map.nav.getCurrentRoom().getGuards().size()>0 && player.invisTurns==0){
+                    System.out.println("I ran into a guard.");
+                    if(gameOver(false)){
+                        return true;
+                    }
+                    keepPlaying = false;
+                    return false;
+                }
+
+                //Acid Death
+                if(chemDeath){
+                    System.out.println("Dead is me.");
+                    if(gameOver(false)){
+                        return true;
+                    }
+                    keepPlaying = false;
+                    return false;
                 }
 
                 //Win Game
                 if(current_map.nav.getCurrentRoom().equals(current_map.nav.getDefaultRoom())&&player.getInventory().getStorage().containsKey("Artifact")){
-                    System.out.println("I won!");
+                    System.out.println("I actually stole the priceless artifact that would have saved the lives of thousands of people! I won!");
+                    if(gameOver(true)){
+                        return true;
+                    }
+                    keepPlaying = false;
+                    return false;
                 }
             }
         }
@@ -74,6 +105,28 @@ public class App {
 
         if(player.getInventory().getStorage().containsKey("Guard Radio")&&moved>0){
             System.out.println(String.format("My radio alerts me, telling me %d guard%s have moved position.", moved, moved>1?"s":""));
+        }
+    }
+
+    public static boolean gameOver(boolean won){
+        if(!won) {
+            System.out.println("GAME OVER");
+        }
+        System.out.println("Play Again? [Y/N]");
+        String response = Commands.sc.nextLine();
+        if((response.length()>0) && (Character.toUpperCase(response.charAt(0))=='Y')){
+            clearScreen();
+            return true;
+        }
+
+        return false;
+    }
+
+    public static void clearScreen(){
+        try{
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        }catch(IOException | InterruptedException e){
+            e.printStackTrace();
         }
     }
 }

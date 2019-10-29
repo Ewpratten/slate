@@ -9,7 +9,6 @@ public class Apple extends ItemBase {
 		name = "Apple";
 		weight = 2;
 		is_consumable = true;
-		is_food = true;
 		verb = "ate";
 	}
 

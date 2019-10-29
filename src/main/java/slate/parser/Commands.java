@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Commands {
 
     //Scanner for player input
-    static Scanner sc = new Scanner(System.in);
+    public static Scanner sc = new Scanner(System.in);
     //Map contexts
     static HashMap<Integer, Context.ContextInterface> contextMap = new HashMap<Integer, Context.ContextInterface>();
     static {

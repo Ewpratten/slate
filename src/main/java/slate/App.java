@@ -35,7 +35,12 @@ public class App{
         player.setFocusedInventory(current_map.nav.getCurrentRoom().getRoot_inventory());
     }
 
-    public boolean run(){
+    /**
+     * 
+     * @return
+     */
+    public boolean run() {
+        // Clear the screen
         clearScreen();
 
         //Print header at game start

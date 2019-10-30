@@ -148,6 +148,12 @@ public class Inventory {
         }
     }
 
+    public void removeItems(String name, int num) throws ItemNotFoundException {
+       for(int i = 0; i<num; i++){
+           removeItem(name);
+       }
+    }
+
     /**
      * Adds an item, this is what to call outside of this class to add an item to storage
      *

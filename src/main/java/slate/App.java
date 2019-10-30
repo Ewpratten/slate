@@ -4,6 +4,7 @@
 package slate;
 
 import slate.bases.MapBase;
+import slate.exceptions.ItemNotFoundException;
 import slate.maps.GameMap;
 import slate.parser.Command;
 import slate.parser.Commands;
@@ -70,7 +71,24 @@ public class App{
 
                 //Handle running into guards
                 if(current_map.nav.getCurrentRoom().getGuards().size()>0 && player.invisTurns==0){
-                    System.out.println("I ran into a guard.");
+                    boolean multiGuards = (current_map.nav.getCurrentRoom().getGuards().size()>1);
+
+                    System.out.println(String.format("I ran into%s guard%s.", multiGuards?"":" a", multiGuards?"s":""));
+                    if(player.getInventory().getStorage().containsKey("Poison")){
+                        if(player.getInventory().getStorage().get("Poison").count>=current_map.nav.getCurrentRoom().getGuards().size()) {
+                            System.out.println(String.format("I use some poison to stun the guard%s. I'd better run!", multiGuards?"s":""));
+                            try{
+                                player.getInventory().removeItems("Poison", current_map.nav.getCurrentRoom().getGuards().size());
+                            }catch (ItemNotFoundException e){
+                                e.printStackTrace();
+                            }
+
+                            //Guards speed up
+                            player.timeScale/=4.0;
+                            continue;
+                        }
+                    }
+
                     if(gameOver(false)){
                         return true;
                     }
@@ -111,7 +129,7 @@ public class App{
         }
 
         if(player.getInventory().getStorage().containsKey("Guard Radio")&&moved>0){
-            System.out.println(String.format("My radio alerts me, telling me %d guard%s have moved position.", moved, moved>1?"s":""));
+            System.out.println(String.format("My radio alerts me, telling me %d guard%s ha%s moved position.", moved, moved>1?"s":"", moved>1?"ve":"s"));
         }
     }
 

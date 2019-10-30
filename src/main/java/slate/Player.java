@@ -1,7 +1,5 @@
 package slate;
 
-import slate.items.Radio;
-
 public class Player {
     private static Player m_instance = null;
     private Inventory inventory;
@@ -13,10 +11,7 @@ public class Player {
     public boolean isFlask;
 
     private Player() {
-        inventory = new Inventory("Pockets", 100);
-        
-        // This is for testing (so we don't accidentally end the game)
-        // inventory.addItem(new Radio());
+        inventory = new Inventory("Pockets",100);
     }
 
     public static Player getInstance() {

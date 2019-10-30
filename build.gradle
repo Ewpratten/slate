@@ -17,6 +17,8 @@ plugins {
     id 'application'
 
     id 'antlr'
+
+    id "edu.sc.seis.launch4j" version "2.4.6"
 }
 
 repositories {
@@ -32,7 +34,11 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 
+    //antlr
     antlr "org.antlr:antlr4:4.7.2"
+
+    // launch4j
+    // classpath 'edu.sc.seis.gradle:launch4j:2.4.6'
 }
 
 sourceSets {
@@ -70,3 +76,10 @@ task fatJar(type: Jar) {
     with jar
 }
 
+
+apply plugin: 'edu.sc.seis.launch4j'
+
+launch4j {
+  mainClassName = 'slate.App'
+//   icon = "${projectDir}/icons/myApp.ico"
+}

@@ -7,6 +7,6 @@ public class Pen extends ItemBase {
 
 	public Pen() {
 		name = "Pen";
-		weight = 3;
+		weight = 1;
 	}
 }

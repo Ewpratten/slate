@@ -2,9 +2,9 @@ package slate.parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import slate.App;
-import slate.Guard;
 import slate.Inventory;
 import slate.Room;
+import slate.bases.ItemBase;
 import slate.exceptions.ItemNotFoundException;
 import slate.exceptions.ItemSizeException;
 import slate.maps.TestMap;
@@ -179,62 +179,78 @@ public class Command{
             //If current active inventory is not player's pockets
             if (game.player.getFocusedInventory()!=game.player.getInventory()) {
 
-                //Get item data in current active inventory
-                Inventory.Stack[] itemInfo = game.player.getFocusedInventory().getAllNames();
-                String itemName = data.substring(data.indexOf(" ") + 1);
+                //If player is not currently ethereal
+                if (game.player.etherealTurns == 0) {
 
-                //Get number of items to take from optional player input
-                int quantity;
-                try {
-                    quantity = Integer.parseInt(data.substring(0, data.indexOf(" ")));
-                } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
-                    quantity = 1;
-                    itemName = data;
-                }
+                    //Get item data in current active inventory
+                    Inventory.Stack[] itemInfo = game.player.getFocusedInventory().getAllNames();
+                    String itemName = data.substring(data.indexOf(" ") + 1);
 
-                //Find item match
-                for (Inventory.Stack item : itemInfo) {
-                    if (item.name.equalsIgnoreCase(itemName)) {
+                    //Get number of items to take from optional player input
+                    int quantity;
+                    try {
+                        quantity = Integer.parseInt(data.substring(0, data.indexOf(" ")));
+                    } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
+                        quantity = 1;
+                        itemName = data;
+                    }
+
+                    //Find item match
+                    for (Inventory.Stack item : itemInfo) {
+                        if (item.name.equalsIgnoreCase(itemName)) {
 
                         /*Transfer items
                         Keep track of how many are taken*/
-                        int numTaken = 0;
-                        for (int i = 0; i < quantity; i++) {
+                            int numTaken = 0;
+                            for (int i = 0; i < quantity; i++) {
 
-                            //If any of this item are remaining in the container
-                            try {
+                                ItemBase removed = null;
+                                //If any of this item are remaining in the container
+                                try {
 
-                                //Add to player's pockets
-                                game.player.getInventory().putItem(item.name, game.player.getFocusedInventory().removeItem(item.name));
+                                    removed = game.player.getFocusedInventory().removeItem(item.name);
+                                    //Add to player's pockets
+                                    game.player.getInventory().putItem(item.name, removed);
 
-                            //If pockets become full
-                            } catch (ItemSizeException e) {
+                                    //If pockets become full
+                                } catch (ItemSizeException e) {
 
-                                //If some were taken
-                                if(numTaken>0){
-                                    System.out.println("There isn't enough room in my pockets, so I take " + numTaken + " instead.");
+                                    //If some were taken
+                                    if (numTaken > 0) {
+                                        System.out.println("There isn't enough room in my pockets, so I take " + numTaken + " instead.");
+                                        return;
+                                    }
+
+                                    //If none were taken, because pockets were too full
+                                    System.out.println("There's no space left in my pockets!");
+                                    try {
+                                        game.player.getFocusedInventory().putItem(item.name, removed);
+                                        return;
+                                    } catch (ItemSizeException e2) {
+                                        e2.printStackTrace();
+                                    }
+                                } catch (ItemNotFoundException e) {
+                                    System.out.println("There isn't enough of these, so I take " + numTaken + " instead.");
                                     return;
                                 }
 
-                                //If none were taken, because pockets were too full
-                                System.out.println("There's no space left in my pockets!");
-                            } catch (ItemNotFoundException e) {
-                                System.out.println("There isn't enough of these, so I take " + numTaken + " instead.");
-                                return;
+                                //Remove from current active inventory
+                                numTaken++;
                             }
 
-                            //Remove from current active inventory
-                            numTaken++;
+                            //Best case scenario, all desired items are taken
+                            System.out.println("I take " + quantity + " " + itemName + ".");
+                            return;
                         }
-
-                        //Best case scenario, all desired items are taken
-                        System.out.println("I take " + quantity + " " + itemName + ".");
-                        return;
                     }
+
+                    //Desired item type does not exist
+                    System.out.println("I can't find any of those in here...");
+                    return;
                 }
 
-                //Desired item type does not exist
-                System.out.println("I can't find any of those in here...");
+                //Ethereal
+                System.out.println("My hands simply pass through the item.");
                 return;
             }
 
@@ -255,76 +271,83 @@ public class Command{
         @Override
         public void execute() {
 
-            //Targeted inventory is the room's root inventory by default
-            Inventory target = game.current_map.nav.getCurrentRoom().getRoot_inventory();
+            //If player is not currently ethereal
+            if (game.player.etherealTurns==0) {
 
-            //If current active inventory is not the player's pockets, set it as the target
-            if (game.player.getFocusedInventory()!=game.player.getInventory()) {
-                target = game.player.getFocusedInventory();
-            }
+                //Targeted inventory is the room's root inventory by default
+                Inventory target = game.current_map.nav.getCurrentRoom().getRoot_inventory();
 
-            //Get item info in player's pockets
-            Inventory.Stack[] itemInfo = game.player.getInventory().getAllNames();
-            String itemName = data.substring(data.indexOf(" ") + 1);
+                //If current active inventory is not the player's pockets, set it as the target
+                if (game.player.getFocusedInventory() != game.player.getInventory()) {
+                    target = game.player.getFocusedInventory();
+                }
 
-            //Get number of items to take from optional player input
-            int quantity;
-            try {
-                quantity = Integer.parseInt(data.substring(0, data.indexOf(" ")));
-            } catch (NumberFormatException e) {
-                quantity = 1;
-                itemName = data;
-            }
+                //Get item info in player's pockets
+                Inventory.Stack[] itemInfo = game.player.getInventory().getAllNames();
+                String itemName = data.substring(data.indexOf(" ") + 1);
 
-            //Find item match
-            for (Inventory.Stack item : itemInfo) {
-                if (item.name.equalsIgnoreCase(itemName)) {
+                //Get number of items to take from optional player input
+                int quantity;
+                try {
+                    quantity = Integer.parseInt(data.substring(0, data.indexOf(" ")));
+                } catch (NumberFormatException e) {
+                    quantity = 1;
+                    itemName = data;
+                }
 
-                    //Keep track of number of items put in
-                    int numPut = 0;
-                    for (int i = 0; i < quantity; i++) {
+                //Find item match
+                for (Inventory.Stack item : itemInfo) {
+                    if (item.name.equalsIgnoreCase(itemName)) {
 
-                        //If player has any more of the item
-                        if (item.count > 0) {
+                        //Keep track of number of items put in
+                        int numPut = 0;
+                        for (int i = 0; i < quantity; i++) {
 
-                            try {
+                            //If player has any more of the item
+                            if (item.count > 0) {
 
-                                //Put item into targeted inventory
-                                target.putItem(item.name, game.player.getInventory().removeItem(item.name));
+                                try {
 
-                            //If container full
-                            } catch (ItemSizeException e) {
+                                    //Put item into targeted inventory
+                                    target.putItem(item.name, game.player.getInventory().removeItem(item.name));
 
-                                //If some items fit in
-                                if(numPut>0){
-                                    System.out.println("There's not enough space inside the " + target.getName() +", so I leave "+ numPut +" instead.");
+                                    //If container full
+                                } catch (ItemSizeException e) {
+
+                                    //If some items fit in
+                                    if (numPut > 0) {
+                                        System.out.println("There's not enough space inside the " + target.getName() + ", so I leave " + numPut + " instead.");
+                                        return;
+                                    }
+
+                                    //If no items fit in
+                                    System.out.println("There's no space inside the " + target.getName() + " to put this...");
                                     return;
+                                } catch (ItemNotFoundException e) {
+                                    e.printStackTrace();
                                 }
 
-                                //If no items fit in
-                                System.out.println("There's no space inside the " + target.getName() +" to put this...");
+                                numPut++;
+                            } else {
+
+                                //Player was only able to put some of the desired item into the container
+                                System.out.println("I don't have enough of these, so I leave " + numPut + " instead.");
                                 return;
-                            } catch (ItemNotFoundException e) {
-                                e.printStackTrace();
                             }
-
-                            numPut++;
-                        } else {
-
-                            //Player was only able to put some of the desired item into the container
-                            System.out.println("I don't have enough of these, so I leave " + numPut + " instead.");
-                            return;
                         }
-                    }
 
-                    //Best case scenario, player places the desired quantity into the target successfully
-                    System.out.println("I leave " + quantity + " " + itemName + ".");
-                    return;
+                        //Best case scenario, player places the desired quantity into the target successfully
+                        System.out.println("I leave " + quantity + " " + itemName + ".");
+                        return;
+                    }
                 }
+
+                //Player does not have any of this item
+                System.out.println("I can't find any of those in my pockets...");
             }
 
-            //Player does not have any of this item
-            System.out.println("I can't find any of those in my pockets...");
+            //Player is ethereal
+            System.out.println("My hands simply pass trough the object...");
         }
     }
 
@@ -420,7 +443,7 @@ public class Command{
                 //Get Loose Items
                 Inventory.Stack[] items = game.player.getFocusedInventory().getAllNames();
                 if (items.length > 0) {
-                    System.out.printf("Rummaging through the %s, I find the following %d item%s:\n", game.player.getFocusedInventory().getName(), items.length, items.length > 1 ? "s" : "");
+                    System.out.printf("Rummaging through the %s, I find the following item%s:\n", game.player.getFocusedInventory().getName(), items.length > 1 ? "s" : "");
                     for (Inventory.Stack item : items) {
                         System.out.println(String.format("- %s x%d", item.name, item.count));
                     }
@@ -484,6 +507,7 @@ public class Command{
 
                     //Move
                     game.current_map.nav.moveTo(r);
+                    App.clearScreen();
                     System.out.println("I move into " + r.getName());
                     System.out.println(r.getRoomInfo());
 
@@ -556,6 +580,7 @@ public class Command{
             //Move Guards
             System.out.println("I'll wait here for now...");
             game.moveGuards();
+            game.player.drainBuff();
         }
     }
 

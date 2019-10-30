@@ -5,10 +5,7 @@ import slate.Player;
 public class ItemBase implements Cloneable{
 
     public boolean is_consumable;
-    public boolean is_food;
-    protected boolean is_stackable;
     protected int weight;
-    protected int key_id = -1; // Set this to something else if the item is a key
     public String name;
     public String verb = "used";
 

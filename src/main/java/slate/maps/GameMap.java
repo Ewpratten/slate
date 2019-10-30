@@ -106,7 +106,7 @@ public class GameMap extends MapBase {
         brkRoomB.addPathway(labB, hallB3);
 
         // Link the end hall
-        hallB3.addPathway(brkRoomB, janitorCloset, employeeElevator);
+        hallB3.addPathway(labB, brkRoomB, janitorCloset, employeeElevator);
         janitorCloset.addPathway(hallB3);
 
         // End hall elevator
@@ -135,9 +135,6 @@ public class GameMap extends MapBase {
      */
     private void placeItems() {
 
-        //Entrance
-        entrance.addItem(new Chemical(), 10);
-
         //Lab A1
         labA1.addItem(new Key());
         labA1.addItem(new Flask(), 12);
@@ -157,6 +154,7 @@ public class GameMap extends MapBase {
 
         labA2.addInventory(new Inventory("Cage", 25, 5));
         labA2.getInventories().get(1).addItem(new Key(), 5);
+        labA2.getInventories().get(1).addItem(new StickyBaby(), 5);
 
         //Lab B
         labB.addItem(new LogBook(LogBook.ROOM_LABB));
@@ -170,13 +168,6 @@ public class GameMap extends MapBase {
         labB.getInventories().get(1).addItem(new Key(), 2);
         labB.getInventories().get(1).addItem(new Pen(), 3);
         labB.getInventories().get(1).addItem(new Poison());
-
-        sharedLabStorage.addItem(new Key());
-
-        lockedStorage.addItem(new Key());
-
-        // Vault
-        vault.addItem(new Artifact());
 
         //Break Rooms
         brkRoomB.addItem(new Key());
@@ -193,6 +184,46 @@ public class GameMap extends MapBase {
         brkRoomC.addInventory(new Inventory("Fridge", 50));
         brkRoomC.getInventories().get(0).addItem(new Apple(), 12);
 
+        //Shared Storage Room
+        sharedLabStorage.addItem(new Key());
+
+        sharedLabStorage.addInventory(new Inventory("Pen Crate", 500));
+        sharedLabStorage.getInventories().get(0).addItem(new Pen(), 500);
+
+        sharedLabStorage.addInventory(new Inventory("Flask Crate", 500));
+        sharedLabStorage.getInventories().get(1).addItem(new Flask(), 50);
+
+        sharedLabStorage.addInventory(new Inventory("Oblong Crate",50));
+        sharedLabStorage.getInventories().get(2).addItem(new InvisibilityCloak());
+
+        //Chemical Storage Room
+        chemStorage.addItem(new Muffin());
+
+        chemStorage.addInventory(new Inventory("Poison Box", 50));
+        chemStorage.getInventories().get(0).addItem(new Poison(), 3);
+        chemStorage.getInventories().get(0).addItem(new Flask(), 9);
+
+        chemStorage.addInventory(new Inventory("Glass Cabinet", 20));
+        chemStorage.getInventories().get(1).addItem(new Chemical(), 3);
+        chemStorage.getInventories().get(1).addItem(new Flask());
+
+        //Janitor's Closet
+        janitorCloset.addItem(new Apple());
+        janitorCloset.addItem(new Poison());
+        janitorCloset.addItem(new Pen());
+        janitorCloset.addItem(new Key(), 3);
+
+        //Locked Storage Room
+        lockedStorage.addItem(new Key());
+
+        // Vault
+        vault.addItem(new Artifact());
+
+        vault.addInventory(new Inventory("Strange Cuboid", 1000000, 34597786));
+        vault.getInventories().get(0).addItem(new TestItem(), 1337);
+
+        vault.addInventory(new Inventory("Soggy Box", 20));
+        vault.getInventories().get(1).addItem(new StickyBaby());
     }
 
     /**

@@ -9,7 +9,6 @@ public class Muffin extends ItemBase {
 		name = "Muffin";
 		weight = 3;
 		is_consumable = true;
-		is_food = true;
 		verb = "ate";
 	}
 

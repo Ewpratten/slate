@@ -13,7 +13,7 @@ public class Guard {
     }
 
     public int patrol(){
-        if(turnsSinceLastMove>0&&(Math.random()>(2/(3.0*player.timeScale)) || turnsSinceLastMove>3*player.timeScale)){
+        if(turnsSinceLastMove>0&&(Math.random()>(2/(3.0*player.timeScale)) || turnsSinceLastMove>(3*player.timeScale))){
             turnsSinceLastMove = 0;
             currentRoom.getMovedGuards().add(this);
             ArrayList<Room> paths = currentRoom.getAttached_rooms();

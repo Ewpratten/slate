@@ -37,3 +37,21 @@ This program requires Java 11, and will fail without it. We recommend installing
 # Windows
 .\gradlew.bat assemble
 ```
+
+## Packaging and deployment
+Application packaging is handled by [GNU Make](https://www.gnu.org/software/make/). For each release of Slate, the following artifacts are generated:
+ - A cross-platform [FatJAR](https://stackoverflow.com/a/29925421)
+ - A windows-only executable with portable JRE
+
+To generate a package bundle, the following tools are needed:
+ - ZIP
+ - Make
+ - Java 11
+ - Gradle >=5.0
+
+With these programs installed, run the following in the project root:
+```sh
+make package
+```
+
+The outputs will be generated in `./output/`. Each file should be added as a binary to the GitHub Release.

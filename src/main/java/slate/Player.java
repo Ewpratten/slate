@@ -13,8 +13,10 @@ public class Player {
     public boolean isFlask;
 
     private Player() {
-        inventory = new Inventory("Pockets",100);
-        inventory.addItem(new Radio());
+        inventory = new Inventory("Pockets", 100);
+        
+        // This is for testing (so we don't accidentally end the game)
+        // inventory.addItem(new Radio());
     }
 
     public static Player getInstance() {

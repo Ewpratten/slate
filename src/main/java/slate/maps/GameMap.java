@@ -74,6 +74,7 @@ public class GameMap extends MapBase {
      * All code to link rooms to eachother should go here
      */
     private void linkRooms() {
+
         // Link starting room to it's hallways
         entrance.addPathway(hallB1, hallA);
 
@@ -215,6 +216,13 @@ public class GameMap extends MapBase {
 
         //Locked Storage Room
         lockedStorage.addItem(new Key());
+
+        lockedStorage.addInventory(new Inventory("Strong Box", 25, 1));
+        lockedStorage.getInventories().get(0).addItem(new InvisibilityCloak());
+
+        lockedStorage.addInventory(new Inventory("Metal Rack", 50));
+        lockedStorage.getInventories().get(1).addItem(new Radio());
+        lockedStorage.getInventories().get(1).addItem(new Apple());
 
         // Vault
         vault.addItem(new Artifact());

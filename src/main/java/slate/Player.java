@@ -1,7 +1,5 @@
 package slate;
 
-import slate.items.Radio;
-
 public class Player {
     private static Player m_instance = null;
     private Inventory inventory;
@@ -14,7 +12,6 @@ public class Player {
 
     private Player() {
         inventory = new Inventory("Pockets",100);
-        inventory.addItem(new Radio());
     }
 
     public static Player getInstance() {

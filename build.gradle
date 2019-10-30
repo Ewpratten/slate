@@ -19,6 +19,7 @@ plugins {
     id 'antlr'
 
     id "edu.sc.seis.launch4j" version "2.4.6"
+
 }
 
 repositories {

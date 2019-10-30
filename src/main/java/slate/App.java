@@ -34,6 +34,10 @@ public class App{
         player.setFocusedInventory(current_map.nav.getCurrentRoom().getRoot_inventory());
     }
 
+    /**
+     * 
+     * @return
+     */
     public boolean run() {
         // Clear the screen
         clearScreen();

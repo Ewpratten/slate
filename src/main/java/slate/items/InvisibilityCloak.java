@@ -14,6 +14,8 @@ public class InvisibilityCloak extends ItemBase {
 
 	@Override
 	public void use(Player player){
+
+		//Make player invisible for 3 turns
 		player.invisTurns += 3;
 	}
 }

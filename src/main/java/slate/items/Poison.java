@@ -15,6 +15,8 @@ public class Poison extends ItemBase {
 
 	@Override
 	public void use(Player player){
+
+		//Die
 		System.out.println("Why did I do that?");
 		App.chemDeath = true;
 	}

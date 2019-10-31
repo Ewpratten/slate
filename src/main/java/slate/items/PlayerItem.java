@@ -13,6 +13,8 @@ public class PlayerItem extends ItemBase {
 
     @Override
     public void use(Player player) {
+
+        //Eat yourself
         System.out.println("I seriously just ate myself...");
     }
 

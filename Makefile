@@ -19,7 +19,7 @@ run:
 test:
 	$(GRADLE) test
 
-builddocs:
+javadoc:
 	# Build project
 	$(GRADLE) assemble $(SILENCE)
 

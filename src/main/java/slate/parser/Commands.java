@@ -12,6 +12,7 @@ public class Commands {
 
     //Scanner for player input
     public static Scanner sc = new Scanner(System.in);
+
     //Map contexts
     static HashMap<Integer, Context.ContextInterface> contextMap = new HashMap<Integer, Context.ContextInterface>();
     static {

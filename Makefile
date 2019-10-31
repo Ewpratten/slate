@@ -33,6 +33,9 @@ javadoc:
 	# Move the javadoc over
 	mv build/reports/docs/* docs/
 
+	# Solve a JS bug with Javadoc
+	sed -i 's/useModuleDirectories/false/g' docs/search.js
+
 package:
 	# Bundle as a fatjar
 	@$(MAKE)  buildjar

@@ -13,7 +13,7 @@ import slate.exceptions.ItemSizeException;
  */
 public class Inventory {
 
-    // Count of number of locks required to open this Inventory
+    //Number of lock on inventory, must be 0 to be accessible
     int locks;
 
     /**
@@ -69,10 +69,10 @@ public class Inventory {
     String name;
 
     /**
-     * Construct an inventory of a specific size
+     * Construct an inventory of a specific size, no locks
      *
      * @param name Inventory name
-     * @param size Maximum size
+     * @param size Capacity
      */
     public Inventory(String name, int size) {
         this.name = name;
@@ -86,6 +86,7 @@ public class Inventory {
      * @param name  Inventory name
      * @param size  Maximum size
      * @param locks Number of locks required to open the inventory
+     *
      */
     public Inventory(String name, int size, int locks) {
         this.name = name;

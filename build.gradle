@@ -101,7 +101,10 @@ launch4j {
 }
 
 // Generate a javadoc
-task genJavadoc(type: Javadoc) {
-  source = sourceSets.main.allJava
-  destinationDir = reporting.file("docs")
+javadoc{
+    source = "src/main/java"
+    destinationDir = reporting.file("docs")
+
+    exclude 'slate/parser/*.interp'
+    exclude 'slate/parser/*.tokens'
 }

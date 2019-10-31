@@ -1,22 +1,37 @@
 GRADLE=./gradlew
 JAVA=java
+SILENCE= --console=plain
 
 .PHONY: build run
 
 devrun:
-	$(GRADLE) :run --console=plain
+	$(GRADLE) :run $(SILENCE)
 
 buildjar:
-	$(GRADLE) fatjar --console=plain
+	$(GRADLE) fatjar $(SILENCE)
 
 launch4j:
-	$(GRADLE) createExe --console=plain
+	$(GRADLE) createExe $(SILENCE)
 
 run: 
 	$(JAVA) -jar build/lib/slate-all.jar
 
 test:
 	$(GRADLE) test
+
+builddocs:
+	# Build project
+	$(GRADLE) assemble $(SILENCE)
+
+	# Generate Javadoc
+	$(GRADLE) javadoc $(SILENCE)
+
+	# Make dir for use by GitHub
+	rm -rf docs
+	mkdir docs
+
+	# Move the javadoc over
+	mv build/reports/docs/* docs/
 
 package:
 	# Bundle as a fatjar

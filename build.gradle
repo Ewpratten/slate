@@ -99,3 +99,12 @@ launch4j {
     // Icon dir
     //icon = "${projectDir}/icons/myApp.ico"
 }
+
+// Generate a javadoc
+javadoc{
+    source = "src/main/java"
+    destinationDir = reporting.file("docs")
+
+    exclude 'slate/parser/*.interp'
+    exclude 'slate/parser/*.tokens'
+}

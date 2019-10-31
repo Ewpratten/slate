@@ -4,4 +4,4 @@ slate.exceptions
 slate.items
 slate.maps
 slate.parser
-slate.prototypes
+slate.parser.antlrgen

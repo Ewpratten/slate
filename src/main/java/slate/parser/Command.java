@@ -508,6 +508,21 @@ public class Command{
                     //Move
                     game.current_map.nav.moveTo(r);
                     App.clearScreen();
+
+                    //Handle Player Buffs
+                    game.player.drainBuff();
+                    boolean shouldLn = false;
+                    if(game.player.invisTurns>0){
+                        System.out.printf("Invisibility: %d ", game.player.invisTurns);
+                        shouldLn = true;
+                    }
+                    if(game.player.etherealTurns>0){
+                        System.out.printf("Ethereal: %d ", game.player.etherealTurns);
+                        shouldLn = true;
+                    }
+                    if(shouldLn){
+                        System.out.println("\n-------------\n");
+                    }
                     System.out.println("I move into " + r.getName());
                     System.out.println(r.getRoomInfo());
 
@@ -516,9 +531,6 @@ public class Command{
 
                     //Set focused inventory to room root
                     game.player.setFocusedInventory(r.getRoot_inventory());
-
-                    //Handle Player Buffs
-                    game.player.drainBuff();
 
                     //Move Guards
                     game.moveGuards();

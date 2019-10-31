@@ -15,7 +15,7 @@ import static slate.parser.Commands.getInput;
 
 public class App{
 
-    static boolean keepPlaying = true;
+    //Game control booleans, keep track of whether to restart the game on game over, and whether player has died as a result of drinking chemicals.
     public static boolean chemDeath = false;
 
     //Player
@@ -24,26 +24,33 @@ public class App{
     // Define the map to use
     public MapBase current_map = new GameMap(this);
 
+    //Continue to run game over and over until run() returns false when user opts out
     public static void main(String[] args) {
         while((new App()).run());
     }
 
     App() {
+
+        //Resurrect player
         chemDeath = false;
+
+        //Reset player
         player = Player.resetInstance();
+
         //Set starting inventory
         player.setFocusedInventory(current_map.nav.getCurrentRoom().getRoot_inventory());
     }
 
     /**
-     * 
-     * @return
+     * Main game loop
+     * @return Whether to run again
      */
     public boolean run() {
+
         // Clear the screen
         clearScreen();
 
-        //Print header at game start
+        //Print header
         System.out.println(" _____ _       ___ _____ _____ \n" +
                 "/  ___| |     / _ \\_   _|  ___|\n" +
                 "\\ `--.| |    / /_\\ \\| | | |__  \n" +
@@ -55,11 +62,21 @@ public class App{
         // Pint the map introduction text
         System.out.println(current_map.getDescription());
 
-
-
+        /**
+         * Main Loop:
+         * Receives commands and executes each one in succession until complete, or until a syntax error occurs.
+         *
+         * Then, the game checks for and handles multiple scenarios which cause game over.
+         */
         while (true) {
+
+            //Get input
             Command[] comms = getInput();
+
+            //For each command (commands can be strung together using &&)
             for (Command comm : comms) {
+
+                //Link command to this instance of the game
                 comm.game = this;
 
                 //If command is valid, execute it.
@@ -69,88 +86,128 @@ public class App{
                     break;
                 }
 
-                //Handle running into guards
+                /**
+                 * This section must be within the commands section, as if the player moves or waits and encounters guards,
+                 * we want to ensure that old commands are not executed before game over.
+                 */
+
+                //Check for guards in room with player
                 if(current_map.nav.getCurrentRoom().getGuards().size()>0 && player.invisTurns==0){
+
+                    //Check if there are multiple guards
                     boolean multiGuards = (current_map.nav.getCurrentRoom().getGuards().size()>1);
 
                     System.out.println(String.format("I ran into%s guard%s.", multiGuards?"":" a", multiGuards?"s":""));
+
+                    //If player has enough poison, let them use it. (1 per guard)
                     if(player.getInventory().getStorage().containsKey("Poison")){
+
+                        //Make sure player has at least enough for the guards in the room
                         if(player.getInventory().getStorage().get("Poison").count>=current_map.nav.getCurrentRoom().getGuards().size()) {
                             System.out.println(String.format("I use some poison to stun the guard%s. I'd better run!", multiGuards?"s":""));
+
+                            //Remove the poison that was used
                             try{
                                 player.getInventory().removeItems("Poison", current_map.nav.getCurrentRoom().getGuards().size());
                             }catch (ItemNotFoundException e){
                                 e.printStackTrace();
                             }
 
-                            //Guards speed up
-                            player.timeScale/=4.0;
+                            //Guards speed up due to aggravation
+                            player.timeScale/=2.0;
                             continue;
                         }
+
+                        //Player is short on poison
+                        System.out.println("I don't have enough poison to stun them!");
                     }
 
+                    //Ask if player wants to play again.
                     if(gameOver(false)){
                         return true;
                     }
-                    keepPlaying = false;
                     return false;
                 }
 
-                //Acid Death
+                //Chemical Death
                 if(chemDeath){
                     System.out.println("Dead is me.");
+
+                    //Ask if player wants to play again.
                     if(gameOver(false)){
                         return true;
                     }
-                    keepPlaying = false;
                     return false;
                 }
 
-                //Win Game
+                //Win if player reaches entrance while holding artifact
                 if(current_map.nav.getCurrentRoom().equals(current_map.nav.getDefaultRoom())&&player.getInventory().getStorage().containsKey("Artifact")){
                     System.out.println("I actually stole the priceless artifact that would have saved the lives of thousands of people! I won!");
+
+                    //Ask if player wants to play again
                     if(gameOver(true)){
                         return true;
                     }
-                    keepPlaying = false;
                     return false;
                 }
             }
         }
     }
 
+    //Guard Moving, Occurs every Move and Wait
     public void moveGuards(){
+
+        //Keep track of number moved
         int moved = 0;
+
+        //Move all guards in all rooms
         for(Room r: current_map.getAllRooms()){
             for(Guard g: r.getGuards()){
+
+                //The guard patrol method returns 1 in the event of a move, so we can add it to our count
                 moved += g.patrol();
             }
+
+            //Remove all moved guards from room
             r.getGuards().removeAll(r.getMovedGuards());
         }
 
+        //Let player know if guards moved, if the player has a radio
         if(player.getInventory().getStorage().containsKey("Guard Radio")&&moved>0){
             System.out.println(String.format("My radio alerts me, telling me %d guard%s ha%s moved position.", moved, moved>1?"s":"", moved>1?"ve":"s"));
         }
     }
 
+    /**
+     * Game Over
+     * @param won Has the player won?
+     * @return Should the game restart
+     */
     public static boolean gameOver(boolean won){
+
+        //Print sad message on lose
         if(!won) {
             System.out.println("GAME OVER");
         }
+
+        //Determine if player wants to play again
         System.out.println("Play Again? [Y/N]");
         String response = Commands.sc.nextLine();
         if((response.length()>0) && (Character.toUpperCase(response.charAt(0))=='Y')){
-            clearScreen();
             return true;
         }
-
         return false;
     }
 
+    //Method for clearing terminal, works across Windows, Mac OSX, and Linux
     public static void clearScreen(){
         try{
+
+            //Windows cmd.exe
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         }catch(IOException e){
+
+            //Linux/Mac terminal
             System.out.print("\033[H\033[2J");
         }catch (InterruptedException e){
             e.printStackTrace();

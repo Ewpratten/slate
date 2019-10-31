@@ -99,3 +99,9 @@ launch4j {
     // Icon dir
     //icon = "${projectDir}/icons/myApp.ico"
 }
+
+// Generate a javadoc
+task genJavadoc(type: Javadoc) {
+  source = sourceSets.main.allJava
+  destinationDir = reporting.file("docs")
+}

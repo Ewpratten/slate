@@ -32,42 +32,53 @@ public class Command{
 
             //Create an array of lines from byte array
             usageContent = new String(data, "UTF-8").split("\\r?\\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
+        } catch (IOException | NullPointerException e) {
             e.printStackTrace();
         }
 
         //Usage information for each command
-        usagesMap.put(SlateParser.HELP, usageContent[3]);
-        usagesMap.put(SlateParser.SAY, usageContent[6]);
-        usagesMap.put(SlateParser.SHOUT, usageContent[9]);
-        usagesMap.put(SlateParser.PICKUP, usageContent[12]);
-        usagesMap.put(SlateParser.LEAVE, usageContent[17]);
-        usagesMap.put(SlateParser.USE, usageContent[20]);
-        usagesMap.put(SlateParser.CHECKDOORS, usageContent[22]);
-        usagesMap.put(SlateParser.PEEK, usageContent[25]);
-        usagesMap.put(SlateParser.MOVE, usageContent[29]);
-        usagesMap.put(SlateParser.WAIT, usageContent[32]);
-        usagesMap.put(SlateParser.SEARCH, usageContent[35]);
-        usagesMap.put(SlateParser.OPEN, usageContent[38]);
-        usagesMap.put(SlateParser.CLOSE, usageContent[41]);
-        usagesMap.put(SlateParser.EXIT,  usageContent[44]);
+        usagesMap.put(SlateParser.HELP, usageContent[6]);
+        usagesMap.put(SlateParser.SAY, usageContent[9]);
+        usagesMap.put(SlateParser.SHOUT, usageContent[12]);
+        usagesMap.put(SlateParser.PICKUP, usageContent[15]);
+        usagesMap.put(SlateParser.LEAVE, usageContent[20]);
+        usagesMap.put(SlateParser.USE, usageContent[23]);
+        usagesMap.put(SlateParser.CHECKDOORS, usageContent[26]);
+        usagesMap.put(SlateParser.PEEK, usageContent[29]);
+        usagesMap.put(SlateParser.MOVE, usageContent[32]);
+        usagesMap.put(SlateParser.WAIT, usageContent[35]);
+        usagesMap.put(SlateParser.SEARCH, usageContent[38]);
+        usagesMap.put(SlateParser.OPEN, usageContent[41]);
+        usagesMap.put(SlateParser.CLOSE, usageContent[44]);
+        usagesMap.put(SlateParser.EXIT,  usageContent[48]);
     }
 
+    //Command type
     int type;
+
+    //Command context
     private ParserRuleContext context;
+
+    //Parser and Visitor
     SlateParser parser;
     SlateBaseVisitor visitor = new SlateBaseVisitor();
 
-    //Constructor
+    /**Slate Commands take a type, context, and parser. They validate and execute commands according to their type.
+     *
+     * @param type Type of command
+     * @param context Command Context
+     * @param parser Parser
+     */
     Command(int type,  ParserRuleContext context, SlateParser parser) {
         this.type = type;
         this.context = context;
         this.parser = parser;
     }
 
-    //Validate User Input
+    /**Validates that command meets context requirements
+     *
+     * @return True if command passes check
+     */
     public boolean validate(){
 
         //If Valid Command, check syntax
@@ -129,7 +140,7 @@ public class Command{
     interface CommInterface{
 
         //All Commands Must have an Execute Method
-        public void execute();
+        void execute();
     }
 
     //SAY
@@ -193,6 +204,8 @@ public class Command{
                     try {
                         quantity = Integer.parseInt(data.substring(0, data.indexOf(" ")));
                     } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
+
+                        //If unspecified, default quantity should be 1
                         quantity = 1;
                         itemName = data;
                     }
@@ -201,16 +214,20 @@ public class Command{
                     for (Inventory.Stack item : itemInfo) {
                         if (item.name.equalsIgnoreCase(itemName)) {
 
-                        /*Transfer items
-                        Keep track of how many are taken*/
+                            /*Transfer items
+                            Keep track of how many are taken*/
                             int numTaken = 0;
                             for (int i = 0; i < quantity; i++) {
 
+                                //Clear removed
                                 ItemBase removed = null;
+
                                 //If any of this item are remaining in the container
                                 try {
 
+                                    //Remove item, store it temporarily
                                     removed = game.player.getFocusedInventory().removeItem(item.name);
+
                                     //Add to player's pockets
                                     game.player.getInventory().putItem(item.name, removed);
 
@@ -226,17 +243,21 @@ public class Command{
                                     //If none were taken, because pockets were too full
                                     System.out.println("There's no space left in my pockets!");
                                     try {
+
+                                        //Return taken item
                                         game.player.getFocusedInventory().putItem(item.name, removed);
                                         return;
                                     } catch (ItemSizeException e2) {
                                         e2.printStackTrace();
                                     }
                                 } catch (ItemNotFoundException e) {
+
+                                    //Player takes some items, but there aren't enough in this inventory
                                     System.out.println("There isn't enough of these, so I take " + numTaken + " instead.");
                                     return;
                                 }
 
-                                //Remove from current active inventory
+                                //Increment number taken
                                 numTaken++;
                             }
 
@@ -293,6 +314,8 @@ public class Command{
                 try {
                     quantity = Integer.parseInt(data.substring(0, data.indexOf(" ")));
                 } catch (NumberFormatException e) {
+
+                    //If no quantity specified, default to 0
                     quantity = 1;
                     itemName = data;
                 }
@@ -313,7 +336,7 @@ public class Command{
                                     //Put item into targeted inventory
                                     target.putItem(item.name, game.player.getInventory().removeItem(item.name));
 
-                                    //If container full
+                                //If container full
                                 } catch (ItemSizeException e) {
 
                                     //If some items fit in
@@ -329,6 +352,7 @@ public class Command{
                                     e.printStackTrace();
                                 }
 
+                                //Increment number of items left
                                 numPut++;
                             } else {
 
@@ -428,11 +452,14 @@ public class Command{
                         System.out.println(String.format("- %s x%d", item.name, item.count));
                     }
                 }else{
+
+                    //No loose items in current inventory
                     System.out.println("I can't find any loose items here.");
                 }
 
                 ArrayList<Inventory> inventories = game.current_map.nav.getCurrentRoom().getInventories();
-                //Get Open Inventories
+
+                //Get Inventories
                 if (inventories.size() > 0) {
                     System.out.printf("I find %d container%s:\n", inventories.size(), inventories.size() > 1 ? "s" : "");
                     for (Inventory inv : inventories) {
@@ -475,33 +502,47 @@ public class Command{
 
                 //Go to correct room
                 if(r.getName().equalsIgnoreCase(data)) {
+
                     //Locked Door
                     if(r.getLocks()>0) {
                         System.out.println(String.format("The door has %d locks on it...", r.getLocks()));
                         while (r.getLocks() > 0) {
+
+                            //If player has a key, ask if they want to open a lock
                             if (game.player.getInventory().getStorage().containsKey("Key")) {
                                 System.out.println("Should I use a key to unlock one of them? [Y/N]");
                                 String response = Commands.sc.nextLine();
                                 if ((response.length()>0) && (response.toUpperCase().charAt(0) == 'Y')) {
                                     try {
+
+                                        //Consume a key
                                         game.player.getInventory().removeItem("Key");
                                     } catch (ItemNotFoundException e) {
                                         e.printStackTrace();
                                     }
+
+                                    //Decrease lock count on door
                                     System.out.println("I remove one lock...");
                                     r.unlock();
 
+                                    //If all locks have been removed, break out
                                     if (r.getLocks() == 0) {
                                         System.out.println(String.format("I unlocked the door to %s.", r.getName()));
                                         break;
                                     }
                                 } else {
+
+                                    //Do not enter room if player declines to unlock it
                                     System.out.println("I decide to leave the door locked for now.");
                                     return;
                                 }
+
+                                //Print number of locks left, and restart loop
                                 System.out.println(String.format("The door still has %d locks on it...", r.getLocks()));
                                 continue;
                             }
+
+                            //Player has insufficient keys
                             System.out.println("I don't have any keys, so I can't unlock it.");
                             return;
                         }
@@ -509,22 +550,34 @@ public class Command{
 
                     //Move
                     game.current_map.nav.moveTo(r);
+
+                    //Reset terminal
                     App.clearScreen();
 
-                    //Handle Player Buffs
+                    //Drain player buffs
                     game.player.drainBuff();
+
+                    //Track whether to insert a line break
                     boolean shouldLn = false;
+
+                    //Invisibility info
                     if(game.player.invisTurns>0){
                         System.out.printf("Invisibility: %d ", game.player.invisTurns);
                         shouldLn = true;
                     }
+
+                    //Ethereal info
                     if(game.player.etherealTurns>0){
                         System.out.printf("Ethereal: %d ", game.player.etherealTurns);
                         shouldLn = true;
                     }
+
+                    //Insert line break after displaying buff info
                     if(shouldLn){
                         System.out.println("\n-------------\n");
                     }
+
+                    //Print info
                     System.out.println("I move into " + r.getName());
                     System.out.println(r.getRoomInfo());
 
@@ -562,15 +615,21 @@ public class Command{
 
                 //Peek correct room
                 if (r.getName().equalsIgnoreCase(data)) {
+
+                    //Print peek info
                     System.out.println(r.getPeekInfo());
 
                     //Check for guards
                     if (r.getGuards().size() > 0) {
                         System.out.println(String.format("There %s %d guard%s in there!", (r.getGuards().size() > 1) ? "are" : "is", r.getGuards().size(), (r.getGuards().size() > 1) ? "s" : ""));
                     }else {
+
+                        //No guards in immediate room
                         System.out.println("Looks all clear...");
                     }
                     for (Room ar : r.getAttached_rooms()) {
+
+                        //Guards in rooms neighbouring the one the player is peeking
                         if (ar.getGuards().size() > 0) {
                             System.out.println("However, I hear distant footsteps...");
                             return;
@@ -591,7 +650,7 @@ public class Command{
         @Override
         public void execute(){
 
-            //Move Guards
+            //Move guards && drain buffs
             System.out.println("I'll wait here for now...");
             game.moveGuards();
             game.player.drainBuff();
@@ -609,6 +668,8 @@ public class Command{
 
            //Check for rooms attached to current room
             System.out.printf("I look around the room and see %d door%s:\n", rooms.size(), rooms.size()>1?"s":"");
+
+            //Print list
             for(Room r: rooms) {
                 System.out.println("- " + r.getName() + (r.visited?" [Visited]":""));
             }
@@ -637,28 +698,40 @@ public class Command{
                     if(inventory.getLocks()>0) {
                         System.out.println(String.format("The %s has %d locks on it...", inventory.getName(), inventory.getLocks()));
                         while (inventory.getLocks() > 0) {
+                            //If player has a key, allow them to use it on a lock
                             if (game.player.getInventory().getStorage().containsKey("Key")) {
                                 System.out.println("Should I use a key to unlock one of them? [Y/N]");
                                 if (Commands.sc.nextLine().toUpperCase().charAt(0) == 'Y') {
                                     try{
+
+                                        //Consume key
                                         game.player.getInventory().removeItem("Key");
                                     }catch(ItemNotFoundException e){
                                         e.printStackTrace();
                                     }
+
+                                    //Remove a lock
                                     System.out.println("I remove one lock...");
                                     inventory.unlock();
 
+                                    //If no locks left, break out
                                     if (inventory.getLocks() == 0) {
                                         System.out.println(String.format("I unlocked the %s.", inventory.getName()));
                                         break;
                                     }
                                 }else{
+
+                                    //If player declines to unlock the container, do not open it
                                     System.out.println("I decide to leave the container locked for now.");
                                     return;
                                 }
+
+                                //Print number of locks remaining
                                 System.out.println(String.format("The %s still has %d locks on it...", inventory.getName(), inventory.getLocks()));
                                 continue;
                             }
+
+                            //Player has insufficient keys
                             System.out.println("I don't have any keys, so I can't unlock it.");
                             return;
                         }
@@ -725,6 +798,7 @@ public class Command{
         @Override
         public void execute(){
 
+            //Warp to test map, very broken
             System.out.println("I feel ill...");
             game.current_map = new TestMap(game);
             System.out.println("I CCCAN TASTE MY T#ETH< &&&&&&&&& FFF###L TH3 UNIVERS________\n :(");

@@ -1,13 +1,11 @@
 // Generated from D:/Users/barts/eclipse-workspace/slate-dev/src/main/resources/commands\Slate.g4 by ANTLR 4.7.2
-package slate.parser;
+package slate.parser.antlrgen;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
 import org.antlr.v4.runtime.tree.*;
+
 import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class SlateParser extends Parser {
@@ -110,7 +108,7 @@ public class SlateParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_saycomm; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SlateListener ) ((SlateListener)listener).enterSaycomm(this);
+			if ( listener instanceof SlateListener) ((SlateListener)listener).enterSaycomm(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
@@ -118,7 +116,7 @@ public class SlateParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SlateVisitor ) return ((SlateVisitor<? extends T>)visitor).visitSaycomm(this);
+			if ( visitor instanceof SlateVisitor) return ((SlateVisitor<? extends T>)visitor).visitSaycomm(this);
 			else return visitor.visitChildren(this);
 		}
 	}

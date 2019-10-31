@@ -4,6 +4,8 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
+import slate.parser.antlrgen.SlateLexer;
+import slate.parser.antlrgen.SlateParser;
 
 import java.util.HashMap;
 import java.util.Scanner;

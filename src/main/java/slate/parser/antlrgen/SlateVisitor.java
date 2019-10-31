@@ -1,5 +1,5 @@
 // Generated from D:/Users/barts/eclipse-workspace/slate-dev/src/main/resources/commands\Slate.g4 by ANTLR 4.7.2
-package slate.parser;
+package slate.parser.antlrgen;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**

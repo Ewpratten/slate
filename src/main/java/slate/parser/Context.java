@@ -1,6 +1,7 @@
 package slate.parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import slate.parser.antlrgen.SlateParser;
 
 public class Context {
 

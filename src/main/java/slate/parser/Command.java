@@ -8,6 +8,8 @@ import slate.bases.ItemBase;
 import slate.exceptions.ItemNotFoundException;
 import slate.exceptions.ItemSizeException;
 import slate.maps.TestMap;
+import slate.parser.antlrgen.SlateBaseVisitor;
+import slate.parser.antlrgen.SlateParser;
 
 import java.io.IOException;
 import java.util.ArrayList;

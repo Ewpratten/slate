@@ -4,6 +4,8 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
+import slate.parser.antlrgen.SlateLexer;
+import slate.parser.antlrgen.SlateParser;
 
 import java.util.HashMap;
 import java.util.Scanner;
@@ -41,13 +43,20 @@ public class Commands {
         Command[] commands = new Command[commandQueue.length];
 
         for(int i = 0; i < commands.length; i++) {
-        CharStream inputStream = CharStreams.fromString("~"+commandQueue[i]);
+
+            //Append tilde (command indicator) to front of each command, so ANTLR can recognize it
+            CharStream inputStream = CharStreams.fromString("~"+commandQueue[i]);
             commands[i] = parseCommand(inputStream);
         }
 
         return commands;
     }
 
+    /**
+     * Gets a command from an input stream
+     * @param inputStream
+     * @return Command
+     */
     public static Command parseCommand(CharStream inputStream) {
         //Lex
         SlateLexer lexer = new SlateLexer(inputStream);

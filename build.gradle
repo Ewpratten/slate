@@ -107,6 +107,7 @@ javadoc{
 
     exclude 'slate/parser/*.interp'
     exclude 'slate/parser/*.tokens'
+
     exclude 'slate/parser/antlrgen/*.interp'
     exclude 'slate/parser/antlrgen/*.tokens'
 }

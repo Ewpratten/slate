@@ -59,6 +59,8 @@ public class LogBook extends ItemBase {
 	@Override
 	public void use(Player player){
 		for(String s: contents){
+
+			//Read book
 			System.out.println(s);
 		}
 	}

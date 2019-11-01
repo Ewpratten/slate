@@ -15,6 +15,7 @@ public class StickyBaby extends ItemBase {
 	@Override
 	public void use(Player player) {
 
+		//Eat sticky baby
 		System.out.println("I'm just a monster.");
 	}
 }

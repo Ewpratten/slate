@@ -4,7 +4,7 @@ SILENCE= --console=plain
 
 .PHONY: build run
 
-devrun:
+run:
 	$(GRADLE) :run $(SILENCE)
 
 buildjar:
@@ -13,8 +13,6 @@ buildjar:
 launch4j:
 	$(GRADLE) createExe $(SILENCE)
 
-run: 
-	$(JAVA) -jar build/lib/slate-all.jar
 
 test:
 	$(GRADLE) test
@@ -35,6 +33,7 @@ javadoc:
 
 	# Solve a JS bug with Javadoc
 	sed -i 's/useModuleDirectories/false/g' docs/search.js
+
 
 package:
 	# Bundle as a fatjar

@@ -105,6 +105,9 @@ javadoc{
     source = "src/main/java"
     destinationDir = reporting.file("docs")
 
+    exclude 'slate/parser/*.interp'
+    exclude 'slate/parser/*.tokens'
+
     exclude 'slate/parser/antlrgen/*.interp'
     exclude 'slate/parser/antlrgen/*.tokens'
 }
